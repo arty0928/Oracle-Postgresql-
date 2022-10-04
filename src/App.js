@@ -7,7 +7,7 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setPostgresql((current) => { 
-      if (/from dual/i.test(inputValue) === true) {
+      if (/from dual *;/i.test(inputValue) === true) {
         const word = inputValue.split(/FROM/i);
 
         return [...current, {
