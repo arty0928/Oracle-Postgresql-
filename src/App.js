@@ -17,7 +17,7 @@ function App() {
       else return [...current, {
         value: inputValue, 
       },];
-      
+      //새 커밋
     });
 
     setInputValue("");
