@@ -8,7 +8,7 @@ function App() {
     setInputValue("");
   };
   const onPageReset = () => {
-    const remove = document.getElementById('query_sentences');
+    const remove = document.getElementById('query_sentence');
     remove.innerHTML="";
   };
   const handleSubmit = (event) => {
@@ -47,8 +47,8 @@ function App() {
         <button onClick={onReset}>초기화</button>
       </form>
       
-      <ol id="query_sentences">{postgresql.map((item) => (
-        <div id="query_sentence">
+      <ol id="query_sentence">{postgresql.map((item) => (
+        <div>
           {item.value}
         </div>
       ))}</ol>
