@@ -1,44 +1,43 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import React, { useState } from "react";
+
+const root = document.getElementById("root");
 
 function App() {
-  const [postgresql, setPostgresql] = useState([]);
-  const [inputValue, setInputValue] = useState([]);
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setPostgresql((current) => { 
-      if (/from dual *;/i.test(inputValue) === true) {
-        const word = inputValue.split(/FROM/i);
+  const [inputText, setInputText] = useState("");
 
-        return [...current, {
-          value: `${word[0]};`, 
-        },];
-      }
-      else return [...current, {
-        value: inputValue, 
-      },];
-      //새 커밋
-    });
-
-    setInputValue("");
-    
+  const onChange = (event) => {
+    setInputText(event.target.value);
   };
-
+  const onReset = () => {
+    setInputText("");
+  };
+  
   return (
     <div>
-      <form id="oracle-query" onSubmit={handleSubmit}>
-        <input type="text" value ={inputValue}
-          onChange={(event) => {
-            setInputValue(event.target.value);
-        }} />
-        <button type="submit">변환</button>
-      </form>
-      
-      <ol>{postgresql.map((item) => (
-        <div>
-          <span>{item.value}</span>
+        <p>
+          query converter
+        </p>
+
+      <div>
+        <form onSubmit={onReset}>
+          <label htmlFor="oracle-query">oracle-query</label>
+          <input
+            defaultValue={inputText}
+            id="oracle-query"
+            type="text"
+            onChange={onChange}
+          />
+          <button type="submit">변환</button>
+        </form>
+
+        <div className="postgres-query">
+          <span>postgres-query</span>
+          <div>
+          {inputText.indexOf('abc') !== -1 && inputText.replace('abc', 'def')}
+          </div>
         </div>
-      ))}</ol>
+      </div>
     </div>
   );
 }
