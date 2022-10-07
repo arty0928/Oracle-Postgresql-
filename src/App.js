@@ -64,9 +64,9 @@ function App() {
         },]; 
 
       }
-      // PERSCENT_RANK & RPAD & ROW_NUMBER
-      if((/SELECT */i.test(inputValue) === true) && (/PERCENT_RANK */i.test(inputValue) === true || /RPAD */i.test(inputValue) === true 
-      || /ROW_NUMBER */i.test(inputValue) == true))
+      // PERSCENT_RANK & RPAD & ROW_NUMBER & ntile
+      if((/PERCENT_RANK */i.test(inputValue) === true || /RPAD */i.test(inputValue) === true 
+      || /ROW_NUMBER */i.test(inputValue) == true || /ntile */i.test(inputValue) == true))
       {
         var perRQuery = inputValue.split('ORACLE')[0];
         var perRQuery1 = inputValue.split('.')[1];
