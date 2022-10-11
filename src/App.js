@@ -4,6 +4,15 @@ import { useState} from 'react';
 function App() {
   const [postgresql, setPostgresql] = useState([]);
   const [inputValue, setInputValue] = useState([]);
+
+  const onReset = () => {
+    setInputValue("");
+  };
+  const onPageReset = () => {
+    const remove = document.getElementById('query_sentence');
+    remove.innerHTML="";
+  };
+    
   const handleSubmit = (event) => {
     event.preventDefault();
     setPostgresql((current) => {
@@ -64,9 +73,10 @@ function App() {
         },]; 
 
       }
-      // PERSCENT_RANK & RPAD & ROW_NUMBER & ntile
+      // PERSCENT_RANK & RPAD & ROW_NUMBER & ntile & RANK
       if((/PERCENT_RANK */i.test(inputValue) === true || /RPAD */i.test(inputValue) === true 
-      || /ROW_NUMBER */i.test(inputValue) == true || /ntile */i.test(inputValue) == true))
+      || /ROW_NUMBER */i.test(inputValue) == true || /ntile */i.test(inputValue) == true 
+      || /RANK */i.test(inputValue) == true))
       {
         var perRQuery = inputValue.split('ORACLE')[0];
         var perRQuery1 = inputValue.split('.')[1];
@@ -142,19 +152,24 @@ function App() {
 
   return (
     <div>
+      <p id="title">Query Converter</p>
       <form id="oracle-query" onSubmit={handleSubmit}>
-        <input type="text" value ={inputValue}
+        <input type="text" 
+        
+        value ={inputValue}
           onChange={(event) => {
             setInputValue(event.target.value);
         }} />
         <button type="submit">변환</button>
+        <button onClick={onReset}>초기화</button>
       </form>
       
-      <ol>{postgresql.map((item) => (
+      <ol id="query_sentence">{postgresql.map((item) => (
         <div>
-          <span>{item.value}</span>
+          {item.value}
         </div>
       ))}</ol>
+      <button onClick={onPageReset}>비우기</button>
     </div>
   );
 }
