@@ -16,6 +16,27 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setPostgresql((current) => {
+      
+    if(/ RATIO_TO_REPORT */i.test(inputValue))
+    {
+      var RTRquery = inputValue.split('(')[1].split(')')[0];
+      var RTRquery1 = inputValue.split('s)')[1].split('ORACLE.')[0];
+      
+      return [...current, {
+        value: `select(${RTRquery}), sum(${RTRquery}) / sum(sum(${RTRquery})) ${RTRquery1} track group by ${RTRquery};`, 
+     },]; 
+
+    }
+
+      // PERSCENT_RANK & RPAD & ROW_NUMBER & ntile & RANK & SCN_TO_TIMESTAMP
+      if(/ORACLE. */i.test(inputValue) === true)
+      {
+        var p1erRQuery = inputValue.split('ORACLE')[0];
+        var p1erRQuery1 = inputValue.split('.')[1];
+        return [...current, {
+           value: `${p1erRQuery}${p1erRQuery1}`, 
+        },]; 
+      }
 
       //NVL
       if((/SELECT */i.test(inputValue) === true) && /NVL */i.test(inputValue) === true )
@@ -74,18 +95,19 @@ function App() {
 
       }
       // PERSCENT_RANK & RPAD & ROW_NUMBER & ntile & RANK
-      if((/PERCENT_RANK */i.test(inputValue) === true || /RPAD */i.test(inputValue) === true 
-      || /ROW_NUMBER */i.test(inputValue) == true || /ntile */i.test(inputValue) == true 
-      || /RANK */i.test(inputValue) == true))
-      {
-        var perRQuery = inputValue.split('ORACLE')[0];
-        var perRQuery1 = inputValue.split('.')[1];
-        return [...current, {
-           value: `${perRQuery}${perRQuery1}`, 
-        },]; 
+      
+      //if((/PERCENT_RANK */i.test(inputValue) === true || /RPAD */i.test(inputValue) === true 
+      //|| /ROW_NUMBER */i.test(inputValue) === true || /ntile */i.test(inputValue) === true 
+      //|| /RANK */i.test(inputValue) === true))
+      //{
+      //  var perRQuery = inputValue.split('ORACLE')[0];
+      //  var perRQuery1 = inputValue.split('.')[1];
+      //  return [...current, {
+      //     value: `${perRQuery}${perRQuery1}`, 
+      //  },]; 
 
-      }
-
+      //}
+      
 
       /* EMPTY BLOB || EMPTY CLOB */
       if((/EMPTY_BLOB() */i.test(inputValue) === true) || /EMPTY_CLOB() */i.test(inputValue) === true )
