@@ -26,14 +26,16 @@ app.use(bodyParser.json());
 app.post("/text", (req, res) => {//데이터 받는 곳
   const text1 = req.body.inText;
   console.log(text1);
+
   pg.query(text1, (err, result) => {
     if(err){
       console.log('error ', err);
     }else{
 
-      const sendText = result.rows[0];
+      var sendText = result.rows[0];
+
       console.log(sendText);
-      res.send(sendText);
+      res.send("전송완료!");
     }
 
   })
