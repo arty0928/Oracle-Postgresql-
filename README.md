@@ -1,4 +1,4 @@
-# TO applying tailwindcss
+# To applying tailwindcss
 
 ### $ npm install -D tailwindcss@latest
 ### $ npm install -D postcss@latest 
