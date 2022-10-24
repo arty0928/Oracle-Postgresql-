@@ -29,9 +29,9 @@ function App() {
     }
 
       // PERSCENT_RANK & RPAD & ROW_NUMBER & ntile & RANK & SCN_TO_TIMESTAMP
-      if(/ORACLE. */i.test(inputValue) === true)
+      if(/TEAM12. */i.test(inputValue) === true)
       {
-        var p1erRQuery = inputValue.split('ORACLE')[0];
+        var p1erRQuery = inputValue.split('TEAM12')[0];
         var p1erRQuery1 = inputValue.split('.')[1];
         return [...current, {
            value: `${p1erRQuery}${p1erRQuery1}`, 
