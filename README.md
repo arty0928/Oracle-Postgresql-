@@ -1,3 +1,10 @@
+# To applying tailwindcss
+
+### $ npm install -D tailwindcss@latest
+### $ npm install -D postcss@latest 
+### $ npm install -D autoprefixer@latest
+### $ npm install -D postcss-loader
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
