@@ -1,43 +1,52 @@
 import './App.css';
-import React, { useState } from "react";
-
-const root = document.getElementById("root");
+import { useState } from 'react';
 
 function App() {
-  const [inputText, setInputText] = useState("");
+  const [postgresql, setPostgresql] = useState([]);
+  const [inputValue, setInputValue] = useState([]);
+  const onPageReset = () => {
+    const remove = document.getElementById('query_sentence');
+    remove.innerHTML="";
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setPostgresql((current) => { 
+      var qStr = inputValue;
+      // FROMDUAL 변환작업 
+      qStr = qStr.replace(/FROM\s+DUAL/igs, "");
 
-  const onChange = (event) => {
-    setInputText(event.target.value);
+      // 함수이름 변환작업
+      // qStr = qStr.작업 코드 작성하기;
+
+      return [...current, {
+        value: `${qStr}`, 
+      },];
+
+    });
+
+    setInputValue("");
+    
   };
-  const onReset = () => {
-    setInputText("");
-  };
-  
+
   return (
-    <div>
-        <p>
-          query converter
-        </p>
-
-      <div>
-        <form onSubmit={onReset}>
-          <label htmlFor="oracle-query">oracle-query</label>
-          <input
-            defaultValue={inputText}
-            id="oracle-query"
-            type="text"
-            onChange={onChange}
-          />
-          <button type="submit">변환</button>
-        </form>
-
-        <div className="postgres-query">
-          <span>postgres-query</span>
-          <div>
-          {inputText.indexOf('abc') !== -1 && inputText.replace('abc', 'def')}
-          </div>
+    <div id="container">
+      <p id="title">Query Converter</p>
+      <form id="oracle-query" onSubmit={handleSubmit}>
+        <input type="text" 
+        
+        value ={inputValue}
+          onChange={(event) => {
+            setInputValue(event.target.value);
+        }} />
+        <button id="input_button" type="submit">변환</button>
+      </form>
+      
+      <ol id="query_sentence">{postgresql.map((item) => (
+        <div>
+          {item.value}
         </div>
-      </div>
+      ))}</ol>
+      <button id='page-reset' onClick={onPageReset}>비우기</button>
     </div>
   );
 }
