@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Oracle-Postgresql-/static/css/main.96536bc0.css",
+    "main.js": "/Oracle-Postgresql-/static/js/main.e7ec5074.js",
+    "index.html": "/Oracle-Postgresql-/index.html",
+    "main.96536bc0.css.map": "/Oracle-Postgresql-/static/css/main.96536bc0.css.map",
+    "main.e7ec5074.js.map": "/Oracle-Postgresql-/static/js/main.e7ec5074.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.96536bc0.css",
+    "static/js/main.e7ec5074.js"
+  ]
+}
