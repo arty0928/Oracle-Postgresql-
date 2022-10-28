@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/Oracle-Postgresql-/precache-manifest.3ea465518b2b199c8c97a61ddb22ca0f.js"
+  "/Oracle-Postgresql-/index.html/precache-manifest.53380f4c922b4fb76ea06f2dc5bfd6b5.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/Oracle-Postgresql-/index.html", {
+workbox.routing.registerNavigationRoute("/Oracle-Postgresql-/index.html/index.html", {
   
   blacklist: [/^\/_/,/\/[^/]+\.[^/]+$/],
 });
