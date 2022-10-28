@@ -1,13 +1,13 @@
 {
-  "files": {
-    "main.css": "/Oracle-Postgresql-/static/css/main.96536bc0.css",
-    "main.js": "/Oracle-Postgresql-/static/js/main.e7ec5074.js",
-    "index.html": "/Oracle-Postgresql-/index.html",
-    "main.96536bc0.css.map": "/Oracle-Postgresql-/static/css/main.96536bc0.css.map",
-    "main.e7ec5074.js.map": "/Oracle-Postgresql-/static/js/main.e7ec5074.js.map"
-  },
-  "entrypoints": [
-    "static/css/main.96536bc0.css",
-    "static/js/main.e7ec5074.js"
-  ]
+  "main.css": "/Oracle-Postgresql-/static/css/main.f19a41ad.chunk.css",
+  "main.js": "/Oracle-Postgresql-/static/js/main.48906a90.chunk.js",
+  "main.js.map": "/Oracle-Postgresql-/static/js/main.48906a90.chunk.js.map",
+  "static/js/1.c9ee8257.chunk.js": "/Oracle-Postgresql-/static/js/1.c9ee8257.chunk.js",
+  "static/js/1.c9ee8257.chunk.js.map": "/Oracle-Postgresql-/static/js/1.c9ee8257.chunk.js.map",
+  "runtime~main.js": "/Oracle-Postgresql-/static/js/runtime~main.d56734a2.js",
+  "runtime~main.js.map": "/Oracle-Postgresql-/static/js/runtime~main.d56734a2.js.map",
+  "static/css/main.f19a41ad.chunk.css.map": "/Oracle-Postgresql-/static/css/main.f19a41ad.chunk.css.map",
+  "index.html": "/Oracle-Postgresql-/index.html",
+  "precache-manifest.3ea465518b2b199c8c97a61ddb22ca0f.js": "/Oracle-Postgresql-/precache-manifest.3ea465518b2b199c8c97a61ddb22ca0f.js",
+  "service-worker.js": "/Oracle-Postgresql-/service-worker.js"
 }
