@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/Oracle-Postgresql-/index.html/precache-manifest.53380f4c922b4fb76ea06f2dc5bfd6b5.js"
+  "/Oracle-Postgresql-/index.html/precache-manifest.ddb848813958cd2d7ec99491813f7cf1.js"
 );
 
 workbox.clientsClaim();
