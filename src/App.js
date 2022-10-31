@@ -17,7 +17,7 @@ function App() {
 
       // 함수이름 변환작업
       // qStr = qStr.작업 코드;
-      qStr = qStr.replace(/\bRATIO_TO_REPORT/igs, "sum(milliseconds) / sum(sum");
+      qStr = qStr.replace(/\bRATIO_TO_REPORT/igs, "sum(milliseconds) / sum( sum");
       qStr = qStr.replace(/\bOVER/igs, ") OVER");
       qStr = qStr.replace(/\bTEAM12.TRACK/igs, "track group by milliseconds"); 
 
@@ -44,7 +44,9 @@ function App() {
         }} />
         <button id="input_button" type="submit">변환</button>
       </form>
+
       
+
       <ol id="query_sentence">{postgresql.map((item) => (
         <div>
           {item.value}
