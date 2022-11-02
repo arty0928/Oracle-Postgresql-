@@ -1,4 +1,7 @@
-.input-button {
-  background-color: white;
+#print-value {
+  text-align: left;
+  white-space:pre-line;
 }
-
+#final {
+  white-space:pre-line;
+}
