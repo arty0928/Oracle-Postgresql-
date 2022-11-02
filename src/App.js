@@ -1,53 +1,255 @@
-import './App.css';
-import { useState } from 'react';
+import React from 'react';
+import "./App.css";
+import { useState } from "react";
+import "../src/App.css";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+//import openModal from "./modal";
+
+function openModal (){
+
+  // this.timer = setTimeout(() => alert('Hey ??'), 1000);
+  setTimeout(() => setTimeoutModal(), 1000);
+    // {
+    // modalCl.add('-translate-y-full')
+    // setTimeout(() => {
+    //     modalCl.add('opacity-0')
+    //     modalCl.add('scale-150')
+    // }, 100);
+    // setTimeout(() => overlayCl.classList.add('hidden'), 300);
+    // }
+}
+
+function setTimeoutModal(){
+  const modal_overlay = document.querySelector('#modal_overlay');
+  const modal = document.querySelector('#modal');
+
+  const modalCl = modal.classList
+  const overlayCl = modal_overlay
+
+  modalCl.add('-translate-y-full')
+  
+       modalCl.add('opacity-0')
+       modalCl.add('scale-150')
+   setTimeout(() => overlayCl.classList.add('hidden'), 300);
+
+}
+
+function closeModal (){
+
+  const modal_overlay = document.querySelector('#modal_overlay');
+  const modal = document.querySelector('#modal');
+
+  const modalCl = modal.classList
+  const overlayCl = modal_overlay
+
+  overlayCl.classList.remove('hidden')
+  setTimeout(() => {
+      modalCl.remove('opacity-0')
+      modalCl.remove('-translate-y-full')
+      modalCl.remove('scale-150')
+      }, 100);
+      openModal();
+}
+
 
 function App() {
-  const [postgresql, setPostgresql] = useState([]);
   const [inputValue, setInputValue] = useState([]);
-  const onPageReset = () => {
-    const remove = document.getElementById('query_sentence');
-    remove.innerHTML="";
-  };
+  const [valueOut, setValueOut] = useState([]);
+  //const [changingF, setChangingF] = useState([]);
+  //const [changingQ, setChangingQ] = useState([]);
+  const queryKey = [];
+
+  const refreshPage = () => {
+    window.location.reload();
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    setPostgresql((current) => { 
-      var qStr = inputValue;
-      // FROMDUAL 변환작업 
-      qStr = qStr.replace(/FROM\s+DUAL/igs, "");
 
-      // 함수이름 변환작업
-      // qStr = qStr.작업 코드 작성하기;
+    const sentences = inputValue.split(";");
+    sentences.forEach((sentence) => {
+      for (var i = 0; i < sentences.length - 1; i++) {
+        queryKey.push("queryKey" + i);
+        valueOut[i] = { key: "queryKey" + i, name: "queryNumber" };
+        valueOut[i].input = sentences[i] + ";"; //입력한 문자를 넣음
 
-      return [...current, {
-        value: `${qStr}`, 
-      },];
-
+        valueOut[i].first = "sentences[i].쿼리함수를 변환하는 함수";
+        var secondSentence = sentences[i].replace(/FROM\s+DUAL/gis, "");
+        valueOut[i].second = secondSentence + ";";
+        valueOut[i].third = "sentences[i].검증결과를 출력하는 함수";
+      }
     });
 
     setInputValue("");
-    
+    return valueOut;
   };
 
-  return (
-    <div id="container">
-      <p id="title">Query Converter</p>
-      <form id="oracle-query" onSubmit={handleSubmit}>
-        <input type="text" 
-        
-        value ={inputValue}
-          onChange={(event) => {
-            setInputValue(event.target.value);
-        }} />
-        <button id="input_button" type="submit">변환</button>
-      </form>
+  return (  
+    <div class="container mx-auto">
+
+      <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md space-y-8">
+          <div>
+            {/* <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company"> */}
+            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+              Query Converter
+            </h2>
+            <div className="mt-2 text-center text-sm text-gray-600">
+              <div className="font-medium text-indigo-500 hover:text-indigo-400">
+                please input oracle query to translate
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 space-y-6" id="oracle-query">
+            <form
+              className="-space-y-px rounded-md bg-gray-50 border"
+              onSubmit={handleSubmit}
+            >
+              <div>
+                <label className="sr-only" id="oracle-query">
+                  input oracle query
+                </label>
+                <textarea
+                  id="input-box"
+                  type="text"
+                  rows="2"
+                  required
+                  className="
+                relative block w-full appearance-none rounded-none rounded-t-md
+                px-3 py-2 text-gray-900 placeholder-gray-500 border-b
+                focus:z-10 focus:outline-none 
+                sm:text-sm"
+                  placeholder="input oracle query"
+                  value={inputValue}
+                  onChange={(event) => {
+                    setInputValue(event.target.value);
+                  }}
+                />
+              </div>
+
+              <div className=" px-0 py-0 sm:flex sm:flex-row sm:px-0">
+                <button
+                  type="submit"
+                  id="page-reset"
+                  onClick={refreshPage}
+                  className="mt-0 inline-flex w-full justify-center 
+                sm:bg-white px-4 py-2 text-base font-medium text-gray-700 
+                hover:bg-gray-200 focus:outline-none focus:bg-white
+                sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:rounded-none sm:ml-auto sm:bg-white"
+                >
+                  Refresh
+                </button>
+                <button
+                  type="submit"
+                  id="input_button"
+                  className="bg-indigo-500 inline-flex w-full justify-center rounded-b-md
+                sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
+                px-4 py-2 text-base font-medium text-white 
+                hover:bg-indigo-700 sm:w-auto sm:text-sm"
+                >
+                  Translate
+                </button>
+              </div>
+            </form>
+          </div>
+
+{/* <div id="modal_overlay" class=" flex flex-col justify-center items-center">
+	<div id="modal" class="md:w-3/5 sm:w-full rounded-lg shadow-lg bg-white my-3">
+        <div class="flex w-full border-b border-gray-100 px-5 py-4">
+      		<div>
+              <i class="fas fa-exclamation-circle text-blue-500"></i>
+              <span class="ml-12 font-bold text-gray-700 text-xl">Information</span>
+          	</div>
+          <div>
+              <button onClick= {openModal} ><i class="fa fa-times-circle text-red-500 hover:text-red-600 transition duration-150"></i></button>
+          	</div>
+      	</div>
       
-      <ol id="query_sentence">{postgresql.map((item) => (
-        <div>
-          {item.value}
-        </div>
-      ))}</ol>
-      <button id='page-reset' onClick={onPageReset}>비우기</button>
+      	<div class=" text-center font-semibold font-indigo-600 px-10 py-5 text-gray-600">
+          copy가 완료되었습니다.
+      	</div>
+	</div>
+</div> */}
+
+          <dl>
+            <div id="query_sentence">
+              {valueOut.map((item) => (
+                <div key={queryKey} name={item.name} className="mt-10 mb-5">
+                  {/* <div className="bg-gray-100 px-4 py-5">
+                <dt key={queryKey} className="text-sm font-medium text-indigo-600">{item.value}</dt>
+              </div>   */}
+                  {/* <span className="font-medium">{item.input}</span> */}
+
+                  <div className="rounded-t-md bg-gray-100 px-4 py-5 sm:grid">
+                    <dt className="text-center text-md font-bold text-indigo-500">{item.input}</dt>
+                  </div>
+
+                  <div className="rounded-t-md bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt className="text-sm font-medium text-gray-500">First</dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                      {item.first}
+                    </dd>
+                  </div>
+
+                  <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt className="text-sm font-medium text-gray-500">
+                      Second
+                    </dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                      {item.second}
+                    </dd>
+                  </div>
+
+                  <div className="rounded-b-md bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt
+                      className="text-sm font-medium text-indigo-500"
+                      id="final-query"
+                    >
+                      Final
+                    </dt>
+                    <CopyToClipboard text={item.third}>
+                      <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                        <p >
+                          <button onClick= {closeModal} class="animate-pulse underline underline-offset-4 decoration-sky-500 decoration-2 hover:text-sky-500">{item.third}</button>
+                        </p>
+                      </dd>
+                    </CopyToClipboard>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </dl>
+
+<div id="modal_overlay" class="min-w-screen h-screen animated fadeIn faster  fixed">
+    <div id="modal" class=" place-content-center mx-auto mt-0 flex bg-blue-100 rounded-lg p-4 mb-4 text-sm text-blue-700" role="alert">
+            <svg  class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+            <div>
+              <span class="font-medium">copied success!</span> 
+              <button onClick= {openModal} ><i class="fa fa-times-circle text-red-500 hover:text-red-600 transition duration-150"></i></button>         
+            </div>
     </div>
+</div>
+    
+
+              
+      <div id="modal_overlay" class=" min-w-screen h-screen animated fadeIn faster  fixed  left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover">
+          <div  id="modal" class="absolute bg-black opacity-80 inset-0 z-0"></div>
+            <div  class="w-full  max-w-lg p-5 relative mx-auto my-auto rounded-xl shadow-lg  bg-white ">
+              {/* <!--content--> */}
+                <div>
+                    <span class="font-medium">copied success!</span> 
+                  {/* <!--footer--> */}
+                    <div class="p-3  mt-2 text-center space-x-4 md:block">
+                        <button onclick={openModal} class="mb-0 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600">OK</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+          
+      </div> 
+    </div>
+    
+  </div>
   );
 }
 
