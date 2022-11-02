@@ -3,6 +3,54 @@ import "./App.css";
 import { useState } from "react";
 import "../src/App.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+//import openModal from "./modal";
+
+function openModal (){
+
+  // this.timer = setTimeout(() => alert('Hey ??'), 1000);
+  setTimeout(() => setTimeoutModal(), 1000);
+    // {
+    // modalCl.add('-translate-y-full')
+    // setTimeout(() => {
+    //     modalCl.add('opacity-0')
+    //     modalCl.add('scale-150')
+    // }, 100);
+    // setTimeout(() => overlayCl.classList.add('hidden'), 300);
+    // }
+}
+
+function setTimeoutModal(){
+  const modal_overlay = document.querySelector('#modal_overlay');
+  const modal = document.querySelector('#modal');
+
+  const modalCl = modal.classList
+  const overlayCl = modal_overlay
+
+  modalCl.add('-translate-y-full')
+  
+       modalCl.add('opacity-0')
+       modalCl.add('scale-150')
+   setTimeout(() => overlayCl.classList.add('hidden'), 300);
+
+}
+
+function closeModal (){
+
+  const modal_overlay = document.querySelector('#modal_overlay');
+  const modal = document.querySelector('#modal');
+
+  const modalCl = modal.classList
+  const overlayCl = modal_overlay
+
+  overlayCl.classList.remove('hidden')
+  setTimeout(() => {
+      modalCl.remove('opacity-0')
+      modalCl.remove('-translate-y-full')
+      modalCl.remove('scale-150')
+      }, 100);
+      openModal();
+}
+
 
 function App() {
   const [inputValue, setInputValue] = useState([]);
@@ -13,7 +61,7 @@ function App() {
 
   const refreshPage = () => {
     window.location.reload();
-  };
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -36,8 +84,9 @@ function App() {
     return valueOut;
   };
 
-  return (
-    <div class="container">
+  return (  
+    <div class="container mx-auto">
+
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
@@ -104,6 +153,24 @@ function App() {
             </form>
           </div>
 
+{/* <div id="modal_overlay" class=" flex flex-col justify-center items-center">
+	<div id="modal" class="md:w-3/5 sm:w-full rounded-lg shadow-lg bg-white my-3">
+        <div class="flex w-full border-b border-gray-100 px-5 py-4">
+      		<div>
+              <i class="fas fa-exclamation-circle text-blue-500"></i>
+              <span class="ml-12 font-bold text-gray-700 text-xl">Information</span>
+          	</div>
+          <div>
+              <button onClick= {openModal} ><i class="fa fa-times-circle text-red-500 hover:text-red-600 transition duration-150"></i></button>
+          	</div>
+      	</div>
+      
+      	<div class=" text-center font-semibold font-indigo-600 px-10 py-5 text-gray-600">
+          copy가 완료되었습니다.
+      	</div>
+	</div>
+</div> */}
+
           <dl>
             <div id="query_sentence">
               {valueOut.map((item) => (
@@ -111,7 +178,12 @@ function App() {
                   {/* <div className="bg-gray-100 px-4 py-5">
                 <dt key={queryKey} className="text-sm font-medium text-indigo-600">{item.value}</dt>
               </div>   */}
-                  <span className="font-medium">{item.input}</span>
+                  {/* <span className="font-medium">{item.input}</span> */}
+
+                  <div className="rounded-t-md bg-gray-100 px-4 py-5 sm:grid">
+                    <dt className="text-center text-md font-bold text-indigo-500">{item.input}</dt>
+                  </div>
+
                   <div className="rounded-t-md bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt className="text-sm font-medium text-gray-500">First</dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
@@ -137,9 +209,9 @@ function App() {
                     </dt>
                     <CopyToClipboard text={item.third}>
                       <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        <div class="show-button">
-                          <button>{item.third}</button>
-                        </div>
+                        <p >
+                          <button onClick= {closeModal} class="animate-pulse underline underline-offset-4 decoration-sky-500 decoration-2 hover:text-sky-500">{item.third}</button>
+                        </p>
                       </dd>
                     </CopyToClipboard>
                   </div>
@@ -147,9 +219,37 @@ function App() {
               ))}
             </div>
           </dl>
-        </div>
-      </div>
+
+<div id="modal_overlay" class="min-w-screen h-screen animated fadeIn faster  fixed">
+    <div id="modal" class=" place-content-center mx-auto mt-0 flex bg-blue-100 rounded-lg p-4 mb-4 text-sm text-blue-700" role="alert">
+            <svg  class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+            <div>
+              <span class="font-medium">copied success!</span> 
+              <button onClick= {openModal} ><i class="fa fa-times-circle text-red-500 hover:text-red-600 transition duration-150"></i></button>         
+            </div>
     </div>
+</div>
+    
+
+              
+      <div id="modal_overlay" class=" min-w-screen h-screen animated fadeIn faster  fixed  left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover">
+          <div  id="modal" class="absolute bg-black opacity-80 inset-0 z-0"></div>
+            <div  class="w-full  max-w-lg p-5 relative mx-auto my-auto rounded-xl shadow-lg  bg-white ">
+              {/* <!--content--> */}
+                <div>
+                    <span class="font-medium">copied success!</span> 
+                  {/* <!--footer--> */}
+                    <div class="p-3  mt-2 text-center space-x-4 md:block">
+                        <button onclick={openModal} class="mb-0 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600">OK</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+          
+      </div> 
+    </div>
+    
+  </div>
   );
 }
 
