@@ -5,6 +5,7 @@ import "../src/App.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ora2pg from "./Handlers/queryHandler";
 import oraFunc2pgFunc from "./Handlers/functionHandler";
+import printMessage from "./Handlers/functionArray";
 
 function App() {
   const [inputValue, setInputValue] = useState([]);
@@ -12,6 +13,7 @@ function App() {
   const [functionChanged, setFunctionChanged] = useState([]);
   const [queryChanged, setQueryChanged] = useState([]);
   const [printInputQuery, setPrintInputQuery] = useState([]);
+  const [errorMessage, setErrorMessage] = useState([]);
 
   const queryKey = [];
 
@@ -19,6 +21,7 @@ function App() {
     setInputValue("");
     setValueOut("");
     setPrintInputQuery("");
+    setErrorMessage([]);
     setFunctionChanged([]);
     setQueryChanged([]);
   };
@@ -27,6 +30,9 @@ function App() {
     event.preventDefault();
     setPrintInputQuery(inputValue);
     let qStr = inputValue;
+    // 에러 출력 
+    let error = printMessage(qStr);
+    setErrorMessage(error.errorMessage);
     //쿼리 문법 변환작업
     let queryResult = ora2pg(qStr);
     qStr = queryResult.string;
@@ -36,7 +42,6 @@ function App() {
     qStr = functionResult.string;
     setFunctionChanged(functionResult.changedList);
     setValueOut(qStr);
-
   };
 
   return (
@@ -130,8 +135,11 @@ function App() {
                       Functions
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-4 sm:mt-0">
-                    {functionChanged.map((ele) => {
+                    {functionChanged && functionChanged.map((ele) => {
                       return <span key={ele}>{ele + " "}</span>
+                    })}
+                    {errorMessage && errorMessage.map((ele) => {
+                      return <div key={ele}>{ele + " "}</div>
                     })}
                     </dd>
                   </div>
