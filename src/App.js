@@ -3,6 +3,7 @@ import "./App.css";
 import { useState } from "react";
 import "../src/App.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { Link } from "react-router-dom"
 
 function closeModal (){
   setTimeout(() => setTimeoutModal(), 1000);
@@ -115,27 +116,46 @@ function App() {
               </div>
 
               <div className=" px-0 py-0 sm:flex sm:flex-row sm:px-0">
-                <button
-                  type="submit"
-                  id="page-reset"
-                  onClick={refreshPage}
-                  className="mt-0 inline-flex w-full justify-center 
-                sm:bg-white px-4 py-2 text-base font-medium text-gray-700 
-                hover:bg-gray-200 focus:outline-none focus:bg-white
-                sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:rounded-none sm:ml-auto sm:bg-white"
-                >
-                  Refresh
-                </button>
-                <button
-                  type="submit"
-                  id="input_button"
-                  className="bg-indigo-500 inline-flex w-full justify-center rounded-b-md
-                sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
-                px-4 py-2 text-base font-medium text-white 
-                hover:bg-indigo-700 sm:w-auto sm:text-sm"
-                >
-                  Translate
-                </button>
+                  <a href = "./Precations.js">
+                  <button
+                      type="submit"
+                      id="Precautions"
+                      onClick={refreshPage}
+                      className="bg-rose-700 inline-flex w-full justify-center rounded-b-md
+                    sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
+                    px-4 py-2 text-base font-medium text-white 
+                    hover:bg-rose-800 sm:w-auto sm:text-sm"
+                    >
+                      Translate
+                    </button>
+                  </a>
+                    
+              
+                <div>
+                  <button
+                    type="submit"
+                    id="page-reset"
+                    onClick={refreshPage}
+                    className="mt-0 inline-flex w-full justify-center 
+                  sm:bg-white px-4 py-2 text-base font-medium text-gray-700 
+                  hover:bg-gray-200 focus:outline-none focus:bg-white
+                  sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:rounded-none sm:ml-auto sm:bg-white"
+                  >
+                    Refresh
+                  </button>
+                  <button
+                    type="submit"
+                    id="input_button"
+                    className="bg-indigo-500 inline-flex w-full justify-center rounded-b-md
+                  sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
+                  px-4 py-2 text-base font-medium text-white 
+                  hover:bg-indigo-700 sm:w-auto sm:text-sm"
+                  >
+                    Translate
+                  </button>
+                </div>
+
+                
               </div>
             </form>
           </div>
