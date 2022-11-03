@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import "./App.css";
 import { useState } from "react";
 import "../src/App.css";
@@ -6,6 +6,40 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import ora2pg from "./Handlers/queryHandler";
 import oraFunc2pgFunc from "./Handlers/functionHandler";
 import printMessage from "./Handlers/functionArray";
+
+function closeModal() {
+  setTimeout(() => setTimeoutModal(), 1000);
+}
+
+function setTimeoutModal() {
+  const modal_overlay = document.querySelector("#modal_overlay");
+  const modal = document.querySelector("#modal");
+
+  const modalCl = modal.classList;
+  const overlayCl = modal_overlay;
+
+  modalCl.add("-translate-y-full");
+
+  modalCl.add("opacity-0");
+  modalCl.add("scale-150");
+  setTimeout(() => overlayCl.classList.add("hidden"), 300);
+}
+
+function openModal() {
+  const modal_overlay = document.querySelector("#modal_overlay");
+  const modal = document.querySelector("#modal");
+
+  const modalCl = modal.classList;
+  const overlayCl = modal_overlay;
+
+  overlayCl.classList.remove("hidden");
+  setTimeout(() => {
+    modalCl.remove("opacity-0");
+    modalCl.remove("-translate-y-full");
+    modalCl.remove("scale-150");
+  }, 100);
+  closeModal();
+}
 
 function App() {
   const [inputValue, setInputValue] = useState([]);
@@ -30,7 +64,7 @@ function App() {
     event.preventDefault();
     setPrintInputQuery(inputValue);
     let qStr = inputValue;
-    // 에러 출력 
+    // 에러 출력
     let error = printMessage(qStr);
     setErrorMessage(error.errorMessage);
     //쿼리 문법 변환작업
@@ -114,54 +148,75 @@ function App() {
 
           <dl>
             <div id="query_sentence">
-                <div className="mt-10 mb-5">
-                  {/* <div className="bg-gray-100 px-4 py-5">
+              <div className="mt-10 mb-5">
+                {/* <div className="bg-gray-100 px-4 py-5">
                 <dt key={queryKey} className="text-sm font-medium text-indigo-600">{item.value}</dt>
               </div>   */}
-                  <span id="print-value" className="font-medium">{printInputQuery}</span>
-                  <button></button>
-                  <div className="rounded-t-md bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-5 sm:gap-4 sm:px-6">
-                    <dt className="text-sm font-medium text-gray-500">Querys</dt>
-                    
-                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-4 sm:mt-0">
-                    {queryChanged.map((ele) => { 
-                      return <span key={ele}>{ele + " "}</span>
-                    })}
-                    </dd>
-                  </div>
+                <span id="print-value" className="font-medium">
+                  {printInputQuery}
+                </span>
+                <button></button>
+                <div className="rounded-t-md bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-5 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Querys</dt>
 
-                  <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-5 sm:gap-4 sm:px-6">
-                    <dt className="text-sm font-medium text-gray-500">
-                      Functions
-                    </dt>
-                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-4 sm:mt-0">
-                    {functionChanged && functionChanged.map((ele) => {
-                      return <span key={ele}>{ele + " "}</span>
+                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-4 sm:mt-0">
+                    {queryChanged.map((ele) => {
+                      return <span key={ele}>{ele + " "}</span>;
                     })}
-                    {errorMessage && errorMessage.map((ele) => {
-                      return <div key={ele}>{ele + " "}</div>
-                    })}
-                    </dd>
-                  </div>
-
-                  <div className="rounded-b-md bg-gray-50 px-4 py-5  sm:gap-4 sm:px-6">
-                    <dt
-                      className="text-sm font-medium text-indigo-500 sm:pb-2"
-                      id="final-query"
-                    >
-                      Final
-                    </dt>
-                    <CopyToClipboard>
-                      <dd className="mt-1 text-sm text-gray-900 sm:col-span-4 sm:mt-0">
-                        <div>
-                          <button id="final" className="text-start" key={valueOut}><span>{valueOut}</span></button>
-                        </div>
-                      </dd>
-                    </CopyToClipboard>
-                  </div>
+                  </dd>
                 </div>
+
+                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-5 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Functions
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-4 sm:mt-0">
+                    {functionChanged &&
+                      functionChanged.map((ele) => {
+                        return <span key={ele}>{ele + " "}</span>;
+                      })}
+                    {errorMessage &&
+                      errorMessage.map((ele) => {
+                        return <div key={ele}>{ele + " "}</div>;
+                      })}
+                  </dd>
+                </div>
+
+                <div className="rounded-b-md bg-gray-50 px-4 py-5  sm:gap-4 sm:px-6">
+                  <dt
+                    className="text-sm font-medium text-indigo-500 sm:pb-2"
+                    id="final-query"
+                  >
+                    Final
+                  </dt>
+                  <CopyToClipboard>
+                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-4 sm:mt-0">
+                      <div>
+                        <button
+                          id="final"
+                          onClick={openModal}
+                          className="animate-pulse decoration-sky-500 decoration-2 hover:text-blue-500 text-start"
+                          key={valueOut}
+                        >
+                          <span>{valueOut}</span>
+                        </button>
+                      </div>
+                    </dd>
+                  </CopyToClipboard>
+                </div>
+              </div>
             </div>
           </dl>
+          <div id="modal_overlay" className="hidden fixed right-1/3 left-1/3 top-2/4">
+            <div id="modal" className="place-content-center mx-auto mt-0 flex bg-blue-100 rounded-lg p-4 mb-4 text-sm text-blue-700" role="alert">
+              <svg id="madal-icon" className="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path>
+              </svg>
+              <div>
+                <span className="text-md font-medium">copied success!</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
