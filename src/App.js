@@ -3,6 +3,7 @@ import "./App.css";
 import { useState } from "react";
 import "../src/App.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import Precautions from "./Precautions";
 import { Link } from "react-router-dom"
 
 function closeModal (){
@@ -129,9 +130,8 @@ function App() {
                       Translate
                     </button>
                   </a>
-                    
-              
-                <div>
+
+                
                   <button
                     type="submit"
                     id="page-reset"
@@ -143,6 +143,7 @@ function App() {
                   >
                     Refresh
                   </button>
+
                   <button
                     type="submit"
                     id="input_button"
@@ -153,7 +154,7 @@ function App() {
                   >
                     Translate
                   </button>
-                </div>
+                
 
                 
               </div>
