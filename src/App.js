@@ -18,12 +18,13 @@ function App() {
   const queryKey = [];
 
   const refreshPage = () => {
-    setInputValue("");
-    setValueOut("");
-    setPrintInputQuery("");
-    setErrorMessage([]);
-    setFunctionChanged([]);
-    setQueryChanged([]);
+    window.location.reload();
+    // setInputValue("");
+    // setValueOut("");
+    // setPrintInputQuery("");
+    // setErrorMessage([]);
+    // setFunctionChanged([]);
+    // setQueryChanged([]);
   };
 
   const handleSubmit = (event) => {
