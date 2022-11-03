@@ -18,20 +18,19 @@ function App() {
   const queryKey = [];
 
   const refreshPage = () => {
-    window.location.reload();
-    // setInputValue("");
-    // setValueOut("");
-    // setPrintInputQuery("");
-    // setErrorMessage([]);
-    // setFunctionChanged([]);
-    // setQueryChanged([]);
+    setInputValue("");
+    setValueOut("");
+    setPrintInputQuery("");
+    setErrorMessage([]);
+    setFunctionChanged([]);
+    setQueryChanged([]);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setPrintInputQuery(inputValue);
     let qStr = inputValue;
-    // 에러 출력 코드가 뭔가바뀌었다.
+    // 에러 출력 
     let error = printMessage(qStr);
     setErrorMessage(error.errorMessage);
     //쿼리 문법 변환작업
