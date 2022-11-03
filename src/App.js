@@ -4,7 +4,10 @@ import { useState } from "react";
 import "../src/App.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Precautions from "./Precautions";
-import { Link } from "react-router-dom"
+// import { useHistory } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
+
 
 function closeModal (){
   setTimeout(() => setTimeoutModal(), 1000);
@@ -73,6 +76,12 @@ function App() {
     return valueOut;
   };
 
+  // const navigate = useNavigate(); 
+
+  // const PrecationsPage = () => {
+  //   navigate('/Precautions', { replace: true });
+  // }
+
   return (  
     <div class="container mx-auto">
 
@@ -121,13 +130,13 @@ function App() {
                   <button
                       type="submit"
                       id="Precautions"
-                      onClick={refreshPage}
+                      // onClick={PrecationsPage}
                       className="bg-rose-700 inline-flex w-full justify-center rounded-b-md
                     sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
                     px-4 py-2 text-base font-medium text-white 
                     hover:bg-rose-800 sm:w-auto sm:text-sm"
                     >
-                      Translate
+                      Precations
                     </button>
                   </a>
 
@@ -137,7 +146,7 @@ function App() {
                     id="page-reset"
                     onClick={refreshPage}
                     className="mt-0 inline-flex w-full justify-center 
-                  sm:bg-white px-4 py-2 text-base font-medium text-gray-700 
+                  sm:bg-white px-4 py-2 text-base font-bold text-gray-700 
                   hover:bg-gray-200 focus:outline-none focus:bg-white
                   sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:rounded-none sm:ml-auto sm:bg-white"
                   >
