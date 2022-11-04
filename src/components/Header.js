@@ -6,7 +6,7 @@ export default function Header() {
         Query Converter
       </h2>
       <div className="mt-2 text-center text-sm text-gray-600">
-        <div className="text-lg font-medium text-indigo-500 hover:text-indigo-400">
+        <div className="text-lg font-medium text-indigo-500">
           please input oracle query to translate
         </div>
       </div>
