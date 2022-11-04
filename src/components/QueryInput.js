@@ -18,12 +18,13 @@ export default function QueryInput() {
   const setErrorMessage = useSetRecoilState(errorMessageAtom);
 
   const refreshPage = () => {
-    setInputValue("");
-    setValueOut("");
-    setPrintInputQuery("");
-    setErrorMessage([]);
-    setFunctionChanged([]);
-    setQueryChanged([]);
+    window.location.reload();
+    // setInputValue("");
+    // setValueOut("");
+    // setPrintInputQuery("");
+    // setErrorMessage([]);
+    // setFunctionChanged([]);
+    // setQueryChanged([]);
   };
   const handleSubmit = (event) => {
     event.preventDefault();
