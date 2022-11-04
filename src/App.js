@@ -120,6 +120,19 @@ function App() {
 
               <div className=" px-0 py-0 sm:flex sm:flex-row sm:px-0">
                 <button
+                    type="submit"
+                    id="Precautions"
+                    // onClick={PrecationsPage}
+                    className="bg-white inline-flex w-full justify-center 
+                    sm:rounded-bl-md rounded-none focus:bg-white
+                    px-4 py-2 text-base font-medium text-gray-700 
+                    hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
+                  >
+                    <a href = "./Precations.js">
+                      Precations
+                    </a>
+                  </button>
+                <button
                   type="submit"
                   id="page-reset"
                   onClick={refreshPage}
