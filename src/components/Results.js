@@ -44,7 +44,7 @@ export default function Results() {
                   })}
                 {errorMessage &&
                   errorMessage.map((ele) => {
-                    return <div key={ele}>{ele + " "}</div>;
+                    return <div key={ele} className="text-red-500 font-bold">{ele + " "}</div>;
                   })}
               </dd>
             </div>
