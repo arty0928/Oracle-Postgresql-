@@ -8,6 +8,7 @@ import functionChangedAtom from "../recoil/atoms/functionChangedAtom";
 import queryChangedAtom from "../recoil/atoms/queryChangedAtom";
 import printInputQueryAtom from "../recoil/atoms/printInputQueryAtom";
 import errorMessageAtom from "../recoil/atoms/errorMessageAtom";
+
 export default function QueryInput() {
   const [inputValue, setInputValue] = useState([]);
   const setValueOut = useSetRecoilState(valueOutAtom);
@@ -41,7 +42,9 @@ export default function QueryInput() {
     setFunctionChanged(functionResult.changedList);
     setValueOut(qStr);
   };
+  
   return (
+    
     <div className="mt-8 space-y-6" id="oracle-query">
       <form
         className="-space-y-px rounded-md bg-gray-50 border"
