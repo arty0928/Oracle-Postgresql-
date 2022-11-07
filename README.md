@@ -6,6 +6,18 @@
 ### $ npm install -D postcss-loader
 https://goldfishdiary.tistory.com/97
 
+# To applying React-router
+npm add react-router-dom@6
+
+# To applying Heroicon
+npm install heroicons-react
+
+npm install @heroicons/react
+
+import {iconName} from "@heroicons/react/24/outline";
+
+example): import { BeakerIcon } from '@heroicons/react/24/outline'
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
