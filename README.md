@@ -7,6 +7,8 @@
 https://goldfishdiary.tistory.com/97
 
 # To applying Heroicon
+npm install heroicons-react
+
 npm install @heroicons/react
 
 import {iconName} from "@heroicons/react/24/outline";
