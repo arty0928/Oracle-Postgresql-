@@ -6,7 +6,7 @@
 ### $ npm install -D postcss-loader
 https://goldfishdiary.tistory.com/97
 
-#To applying React-router
+# To applying React-router
 npm add react-router-dom@6
 
 # To applying Heroicon
