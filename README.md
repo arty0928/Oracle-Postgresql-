@@ -10,7 +10,8 @@ https://goldfishdiary.tistory.com/97
 npm install @heroicons/react
 
 import {iconName} from "@heroicons/react/24/outline";
-example: import { BeakerIcon } from '@heroicons/react/24/outline'
+
+example): import { BeakerIcon } from '@heroicons/react/24/outline'
 
 # Getting Started with Create React App
 
