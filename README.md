@@ -7,6 +7,7 @@
 https://goldfishdiary.tistory.com/97
 
 # To applying Heroicon
+npm install @heroicons/react
 import {iconName} from "@heroicons/react/24/outline";
 
 # Getting Started with Create React App
