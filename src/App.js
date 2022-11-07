@@ -3,7 +3,11 @@ import "./App.css";
 import { useState } from "react";
 import "../src/App.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { Link } from "react-router-dom"
+
+import {
+  SearchIcon,
+  TrashIcon
+} from "@heroicons/react/outline";
 
 function closeModal (){
   setTimeout(() => setTimeoutModal(), 1000);
@@ -116,23 +120,43 @@ function App() {
               </div>
 
               <div className=" px-0 py-0 sm:flex sm:flex-row sm:px-0">
-                  <a href = "./Precations.js">
-                  <button
-                      type="submit"
-                      id="Precautions"
-                      onClick={refreshPage}
-                      className="bg-rose-700 inline-flex w-full justify-center rounded-b-md
-                    sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
-                    px-4 py-2 text-base font-medium text-white 
-                    hover:bg-rose-800 sm:w-auto sm:text-sm"
-                    >
-                      Translate
-                    </button>
-                  </a>
+
+                  
+                  {/* pc화면에서 보이는 아이콘 */}
+                  <div className = "relative hidden lg:inline-grid">
+                      <button
+                          type="submit"
+                          id="Precautions"
+                          onClick={refreshPage}
+                          className="bg-rose-700 inline-flex w-full justify-center rounded-b-md
+                        sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
+                        px-4 py-2 text-base font-medium text-white 
+                        hover:bg-rose-800 sm:w-auto sm:text-sm"
+                        >
+                          Precautions
+                        </button>  
+                  </div>
+
+                  {/* 작은화면에서 보이는 아이콘 */}
+                  <div className = "relative w-10 h-10 lg:hidden flex-shrink-0">
+                      <button
+                          type="submit"
+                          id="Precautions"
+                          onClick={refreshPage}
+                          className="bg-rose-700 inline-flex w-full justify-center rounded-b-md
+                        sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
+                        px-4 py-2 text-base font-medium text-white 
+                        hover:bg-rose-800 sm:w-auto sm:text-sm"
+                        >
+                          P
+                        </button>
+                      {/* </a> */}
+                  </div>
+                  
                     
               
-                <div>
-                  <button
+                
+                  <div
                     type="submit"
                     id="page-reset"
                     onClick={refreshPage}
@@ -142,7 +166,7 @@ function App() {
                   sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:rounded-none sm:ml-auto sm:bg-white"
                   >
                     Refresh
-                  </button>
+                  </div>
                   <button
                     type="submit"
                     id="input_button"
@@ -153,7 +177,7 @@ function App() {
                   >
                     Translate
                   </button>
-                </div>
+                
 
                 
               </div>
@@ -205,15 +229,15 @@ function App() {
             </div>
           </dl>
 
-    <div id="modal_overlay" className='hidden fixed right-1/3 left-1/3 top-2/4' >
-        <div id="modal" class=" place-content-center mx-auto mt-0 flex bg-blue-100 rounded-lg p-4 mb-4 text-sm text-blue-700" role="alert">
-            <svg  class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-            <div>
-              <span class="text-md font-medium">copied success!</span> 
-              
-            </div>
-        </div>
-    </div>
+      <div id="modal_overlay" className='hidden fixed right-1/3 left-1/3 top-2/4' >
+          <div id="modal" class=" place-content-center mx-auto mt-0 flex bg-blue-100 rounded-lg p-4 mb-4 text-sm text-blue-700" role="alert">
+              <svg  class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+              <div>
+                <span class="text-md font-medium">copied success!</span> 
+                
+              </div>
+          </div>
+      </div>
           
       </div> 
     </div>
