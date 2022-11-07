@@ -56,7 +56,7 @@ export default function Results() {
               >
                 Final
               </dt>
-              <CopyToClipboard>
+              <CopyToClipboard text={valueOut}>
                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-4 sm:mt-0">
                   <div>
                     <button

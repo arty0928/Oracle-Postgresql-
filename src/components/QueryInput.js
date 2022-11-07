@@ -9,6 +9,9 @@ import queryChangedAtom from "../recoil/atoms/queryChangedAtom";
 import printInputQueryAtom from "../recoil/atoms/printInputQueryAtom";
 import errorMessageAtom from "../recoil/atoms/errorMessageAtom";
 
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { ArrowRight } from "@heroicons/react/24/outline";
+
 export default function QueryInput() {
   const [inputValue, setInputValue] = useState([]);
   const setValueOut = useSetRecoilState(valueOutAtom);
@@ -43,9 +46,9 @@ export default function QueryInput() {
     setFunctionChanged(functionResult.changedList);
     setValueOut(qStr);
   };
-  
+
   return (
-    
+
     <div className="mt-8 space-y-6" id="oracle-query">
       <form
         className="-space-y-px rounded-md bg-gray-50 border"
@@ -73,40 +76,63 @@ export default function QueryInput() {
           />
         </div>
         <div className=" px-0 py-0 sm:flex sm:flex-row sm:px-0">
-        <button
-          type="submit"
-          id="Precautions"
-          // onClick={PrecationsPage}
-          className="bg-white inline-flex w-full justify-center 
-          sm:rounded-bl-md rounded-none focus:bg-white
-          px-4 py-2 text-base font-medium text-gray-700 
-          hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
-        >
-          <a href = "./Precations.js">
-            Precations
-          </a>
-        </button>
-          <button
-            type="submit"
-            id="page-reset"
-            onClick={refreshPage}
-            className="mt-0 inline-flex w-full justify-center 
-        sm:bg-white px-4 py-2 text-base font-medium text-gray-700 
-        hover:bg-gray-200 focus:outline-none focus:bg-white
-        sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:rounded-none sm:ml-auto sm:bg-white"
-          >
-            Refresh
-          </button>
+
+          <div>
+            <div className="relative hidden sm:inline-grid">
+              <button
+                type="submit"
+                id="Precautions"
+                onClick={refreshPage}
+                className="bg-white inline-flex w-full justify-center 
+                      sm:rounded-bl-md rounded-none focus:bg-white
+                      px-4 py-2 text-base font-bold text-gray-700 
+                      hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
+              >
+                Precautions
+              </button>
+            </div>
+
+            <div className="relative w-14 h-20 sm:hidden flex-shrink-0">
+              <TrashIcon
+                type="submit"
+                id="Precautions"
+                onClick={refreshPage}
+                className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
+                    px-4 py-2 text-base font-bold text-gray-700 
+                    hover:bg-gray-200 sm:w-auto sm:text-sm"
+              >
+
+              </TrashIcon>
+            </div>
+          </div>
+
+          <div>
+            <div className="relative hidden sm:inline-grid">
+              <button
+                type="submit"
+                id="page-reset"
+                onClick={refreshPage}
+                className="mt-0 inline-flex w-full justify-center 
+                  sm:bg-white px-4 py-2 text-base font-bold text-gray-700 
+                  hover:bg-gray-200 focus:outline-none focus:bg-white
+                  sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:rounded-none sm:ml-auto sm:bg-white"
+              >
+                Refresh
+              </button>
+            </div>
+          </div>
+
           <button
             type="submit"
             id="input_button"
             className="bg-indigo-500 inline-flex w-full justify-center rounded-b-md
-        sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
-        px-4 py-2 text-base font-medium text-white 
-        hover:bg-indigo-700 sm:w-auto sm:text-sm"
+                  sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
+                  px-4 py-2 text-base font-medium text-white 
+                  hover:bg-indigo-700 sm:w-auto sm:text-sm"
           >
             Translate
           </button>
+
         </div>
       </form>
     </div>
