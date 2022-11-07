@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import "../src/App.css";
 import Header from "./components/Header";
 import Modal from "./components/Modal";
 import Results from "./components/Results";
