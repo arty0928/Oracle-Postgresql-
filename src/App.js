@@ -3,6 +3,7 @@ import "./App.css";
 import { useState } from "react";
 import "../src/App.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import {TrashIcon} from "@heroicons/react/24/outline";
 
 function closeModal (){
   setTimeout(() => setTimeoutModal(), 1000);
@@ -121,22 +122,39 @@ function App() {
               </div>
 
               <div className=" px-0 py-0 sm:flex sm:flex-row sm:px-0">
-                  <a href = "./Precations.js">
-                  <button
-                      type="submit"
-                      id="Precautions"
-                      onClick={refreshPage}
-                      className="bg-rose-700 inline-flex w-full justify-center rounded-b-md
-                    sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
-                    px-4 py-2 text-base font-medium text-white 
-                    hover:bg-rose-800 sm:w-auto sm:text-sm"
-                    >
-                      Translate
-                    </button>
-                  </a>
-                    
-              
-                <div>
+
+                 <div>
+                      <div className= "relative hidden lg:inline-grid">
+                          <button
+                              type="submit"
+                              id="Precautions"
+                              onClick={refreshPage}
+                              className="bg-rose-700 inline-flex w-full justify-center rounded-b-md
+                            sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
+                            px-4 py-2 text-base font-medium text-white 
+                            hover:bg-rose-800 sm:w-auto sm:text-sm"
+                            >
+                              Precautions
+                            </button>
+
+                        </div>
+
+                        <div className= "relative w-14 h-20 lg:hidden flex-shrink-0">
+                          <TrashIcon
+                              type="submit"
+                              id="Precautions"
+                              onClick={refreshPage}
+                              className="bg-rose-700 inline-flex w-full justify-center rounded-b-md
+                            sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
+                            px-4 py-2 text-base font-medium text-white 
+                            hover:bg-rose-800 sm:w-auto sm:text-sm"
+                            >
+                              P
+                            </TrashIcon>
+
+                        </div>
+                  </div> 
+                
                   <button
                     type="submit"
                     id="page-reset"
@@ -158,7 +176,7 @@ function App() {
                   >
                     Translate
                   </button>
-                </div>
+                
 
                 
               </div>
