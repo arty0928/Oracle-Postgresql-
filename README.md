@@ -4,6 +4,10 @@
 ### $ npm install -D postcss@latest 
 ### $ npm install -D autoprefixer@latest
 ### $ npm install -D postcss-loader
+
+# To applying Heroicon
+import {iconName} from "@heroicons/react/24/outline";
+
 https://goldfishdiary.tistory.com/97
 
 # Getting Started with Create React App
