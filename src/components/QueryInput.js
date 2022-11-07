@@ -92,7 +92,7 @@ export default function QueryInput() {
               </button>
             </div>
 
-            <div className="relative w-14 h-20 sm:hidden flex-shrink-0">
+            <div className="relative w-14 sm:hidden">
               <TrashIcon
                 type="submit"
                 id="Precautions"
@@ -101,24 +101,34 @@ export default function QueryInput() {
                     px-4 py-2 text-base font-bold text-gray-700 
                     hover:bg-gray-200 sm:w-auto sm:text-sm"
               >
-
               </TrashIcon>
             </div>
           </div>
 
-          <div>
-            <div className="relative hidden sm:inline-grid">
+          <div className="ml-auto">
+            <div className="relative hidden sm:inline-grid inline-flex">
               <button
                 type="submit"
                 id="page-reset"
                 onClick={refreshPage}
-                className="mt-0 inline-flex w-full justify-center 
+                className="mt-0 inline-flex w-full justify-center
                   sm:bg-white px-4 py-2 text-base font-bold text-gray-700 
                   hover:bg-gray-200 focus:outline-none focus:bg-white
                   sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:rounded-none sm:ml-auto sm:bg-white"
               >
                 Refresh
               </button>
+            </div>
+            <div className="relative w-14 sm:hidden inline-flex">
+              <TrashIcon
+                type="submit"
+                id="Precautions"
+                onClick={refreshPage}
+                className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
+                    px-4 py-2 text-base font-bold text-gray-700 
+                    hover:bg-gray-200 sm:w-auto sm:text-sm"
+              >
+              </TrashIcon>
             </div>
           </div>
 
