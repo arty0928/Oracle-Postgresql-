@@ -10,7 +10,8 @@ import printInputQueryAtom from "../recoil/atoms/printInputQueryAtom";
 import errorMessageAtom from "../recoil/atoms/errorMessageAtom";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { ArrowRight } from "@heroicons/react/24/outline";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export default function QueryInput() {
   const [inputValue, setInputValue] = useState([]);
@@ -75,7 +76,7 @@ export default function QueryInput() {
             }}
           />
         </div>
-        <div className=" px-0 py-0 sm:flex sm:flex-row sm:px-0">
+        <div className=" px-0 py-0 flex sflex-row sm:px-0">
 
           <div>
             <div className="relative hidden sm:inline-grid">
@@ -84,7 +85,7 @@ export default function QueryInput() {
                 id="Precautions"
                 onClick={refreshPage}
                 className="bg-white inline-flex w-full justify-center 
-                      sm:rounded-bl-md rounded-none focus:bg-white
+                      focus:bg-white
                       px-4 py-2 text-base font-bold text-gray-700 
                       hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
               >
@@ -93,20 +94,20 @@ export default function QueryInput() {
             </div>
 
             <div className="relative w-14 sm:hidden">
-              <TrashIcon
+              <ExclamationTriangleIcon
                 type="submit"
                 id="Precautions"
                 onClick={refreshPage}
                 className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
-                    px-4 py-2 text-base font-bold text-gray-700 
+                    px-4 py-2 text-base font-bold text-yellow-700 
                     hover:bg-gray-200 sm:w-auto sm:text-sm"
               >
-              </TrashIcon>
+              </ExclamationTriangleIcon>
             </div>
           </div>
 
-          <div className="ml-auto">
-            <div className="relative hidden sm:inline-grid inline-flex">
+          <div className="ml-auto h-8">
+            <div className="relative hidden sm:inline-grid">
               <button
                 type="submit"
                 id="page-reset"
@@ -114,7 +115,7 @@ export default function QueryInput() {
                 className="mt-0 inline-flex w-full justify-center
                   sm:bg-white px-4 py-2 text-base font-bold text-gray-700 
                   hover:bg-gray-200 focus:outline-none focus:bg-white
-                  sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:rounded-none sm:ml-auto sm:bg-white"
+                  sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:ml-auto sm:bg-white"
               >
                 Refresh
               </button>
@@ -124,7 +125,7 @@ export default function QueryInput() {
                 type="submit"
                 id="Precautions"
                 onClick={refreshPage}
-                className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
+                className="bg-white-700 inline-flex w-full justify-center
                     px-4 py-2 text-base font-bold text-gray-700 
                     hover:bg-gray-200 sm:w-auto sm:text-sm"
               >
@@ -132,16 +133,32 @@ export default function QueryInput() {
             </div>
           </div>
 
-          <button
-            type="submit"
-            id="input_button"
-            className="bg-indigo-500 inline-flex w-full justify-center rounded-b-md
-                  sm:rounded-none sm:rounded-br-md focus:bg-indigo-500
-                  px-4 py-2 text-base font-medium text-white 
-                  hover:bg-indigo-700 sm:w-auto sm:text-sm"
-          >
-            Translate
-          </button>
+
+          <div className="h-8">
+            <div className="relative hidden sm:inline-grid">
+              <button
+                type="submit"
+                id="input_button"
+                className="bg-indigo-500 inline-flex w-full justify-center rounded-br-md
+              focus:bg-indigo-500
+              px-4 py-2 text-base font-medium text-white 
+              hover:bg-indigo-700 sm:w-auto sm:text-sm"
+              >
+                Translate
+              </button>
+            </div>
+            <div className="relative w-14 sm:hidden inline-flex">
+              <ArrowRightIcon
+                type="submit"
+                id="Precautions"
+                onClick={refreshPage}
+                className="bg-indigo-500 inline-flex w-full justify-center
+                    px-4 py-2 text-base font-bold text-white rounded-br-md
+                    hover:bg-indigo-700 sm:w-auto sm:text-sm"
+              >
+              </ArrowRightIcon>
+            </div>
+          </div>
 
         </div>
       </form>
