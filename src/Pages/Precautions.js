@@ -12,18 +12,21 @@ function Precautions() {
 
 
 
-                        <h1 class="sm:text-3xl text-2xl font-medium text-center title-font text-gray-900 mb-4">
+                        <h1 class="mt-6 text-center sm:text-4xl sm:font-bold tracking-tight text-gray-900
+                         text-3xl font-bold text-center title-font text-gray-900 mb-4">
                             Frequently Asked Question
                         </h1>
-                        <p class="text-base leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto">
+                        <p class="
+                        text-base leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto">
                             The most common questions about how our business works and what
                             can do for you.
-
+                            <br></br>
                             <button onClick=
                                 {() => {
                                     navigate("/");
                                 }
-                                } className="mt-6 text-center text-xl font-bold tracking-tight text-indigo-600">
+                                } className="
+                                mt-6 text-center text-xl font-bold tracking-tight text-indigo-600">
                                 Back to Query Converter
                             </button>
 
