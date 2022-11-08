@@ -1,21 +1,23 @@
-import React from "react";
-import "./App.css";
-import Header from "./components/Header";
-import Modal from "./components/Modal";
-import Results from "./components/Results";
-import QueryInput from "./components/QueryInput";
+import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Home from "./Pages/Home";
+import Precautions from "./Pages/Precautions";
+
 function App() {
   return (
-    <div>
-      <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-lg space-y-8">
-          <Header></Header>
-          <QueryInput></QueryInput>
-          <Results></Results>
-          <Modal></Modal>
-        </div>
-      </div>
-    </div>
+    <Router>
+
+      {/* <nav>
+            <Link to = "/"> Home </Link>
+            <Link to = "/Precautions"> Precautions </Link>
+        </nav> */}
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Precautions" element={<Precautions />} />
+      </Routes>
+
+    </Router>
   );
 }
 

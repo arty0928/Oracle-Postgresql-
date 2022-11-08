@@ -8,12 +8,14 @@ import functionChangedAtom from "../recoil/atoms/functionChangedAtom";
 import queryChangedAtom from "../recoil/atoms/queryChangedAtom";
 import printInputQueryAtom from "../recoil/atoms/printInputQueryAtom";
 import errorMessageAtom from "../recoil/atoms/errorMessageAtom";
+import { useNavigate } from "react-router-dom";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export default function QueryInput() {
+  let navigate = useNavigate();
   const [inputValue, setInputValue] = useState([]);
   const setValueOut = useSetRecoilState(valueOutAtom);
   const setFunctionChanged = useSetRecoilState(functionChangedAtom);
@@ -83,7 +85,9 @@ export default function QueryInput() {
               <button
                 type="submit"
                 id="Precautions"
-                onClick={refreshPage}
+                onClick={() => {
+                  navigate("/Precautions");
+                }}
                 className="bg-white inline-flex w-full justify-center 
                       focus:bg-white rounded-bl-md
                       px-4 py-2 text-base font-bold text-gray-700 
@@ -97,7 +101,9 @@ export default function QueryInput() {
               <ExclamationTriangleIcon
                 type="submit"
                 id="Precautions"
-                onClick={refreshPage}
+                onClick={() => {
+                  navigate("/Precautions");
+                }}
                 className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
                     px-4 py-2 text-base font-bold text-yellow-700 
                     hover:bg-gray-200 sm:w-auto sm:text-sm"
