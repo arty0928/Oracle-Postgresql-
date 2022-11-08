@@ -92,7 +92,12 @@ export default function ora2pg(Qstr) {
     return Qstr;
   };
   Qstr = block_comment_terminator(Qstr);
-
+  //Adds AS for EDB Postgres Advanced Server reserved keyword CASE when used in CASE Expressions
+  Qstr = Qstr.replace(/CASE.*?END\s+CASE/gis, (match) => {
+    changedList.push(match);
+    match = match.replace(/END\s+CASE/gis, "END AS CASE");
+    return match;
+  });
   //replace some generated_identity_cached syntax.
   const generated_identity_cached = (Qstr) => {
     if (
@@ -232,7 +237,7 @@ export default function ora2pg(Qstr) {
     return "CLOB";
   });
 
-  //Removes the WITH READ ONLY clause from the CREATE VIEW in the source DDL
+  //Removes the WITH READ ONLY clause from the CREATE VIEW in the source DDL
   if (Qstr.match(/CREATE\s+.*\s+VIEW/gis)) {
     Qstr = Qstr.replace(/WITH\s+READ\s+ONLY/gis, (match) => {
       changedList.push(match);
@@ -307,6 +312,8 @@ export default function ora2pg(Qstr) {
     return match;
   });
 
+  //Translates Oracle's ALTER TABLE statement for adding NOT NULL constraint to compatible syntax
+
   //if query includes DDL with TRIGGER...REFERENCING...
   if (Qstr.match(/TRIGGER.*REFERENCING/gis)) {
     //replace OLD AS [alias to be matched] to old
@@ -329,7 +336,7 @@ export default function ora2pg(Qstr) {
     return "INDEX";
   });
 
-  //Removes NLS_CALENDAR=GREGORIAN option from the table DDL
+  //Removes NLS_CALENDAR=GREGORIAN option from the table DDL
   Qstr = Qstr.replace(/,\s+'NLS_CALENDAR=(\w+)'/gis, (match) => {
     changedList.push(match);
     return "";
@@ -422,7 +429,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Sets the precision of TIMESTAMP data type columns to a maximum of 6
+  //Sets the precision of TIMESTAMP data type columns to a maximum of 6
   Qstr = Qstr.replace(/TIMESTAMP(?:\s+)?\(\s+(\d)\s+\)/gis, (match, group1) => {
     if (Number(group1) > 6) {
       match = match.replace(/\d/, (match) => {
@@ -433,15 +440,15 @@ export default function ora2pg(Qstr) {
     return match;
   });
 
-  //Removes PARTITION from the create sequence DDL statement.
+  //Removes PARTITION from the create sequence DDL statement.
 
-  //Transforms OLDCHAR2 data type to VARCHAR
+  //Transforms OLDCHAR2 data type to VARCHAR
   Qstr = Qstr.replace(/(?<=\(\s+.*)OLDCHAR2(?=.*\))/gis, (match) => {
     changedList.push(match);
     return "VARCHAR";
   });
 
-  //Transforms the keyword PARALLEL_ENABLE to PARALLEL SAFE for FUNCTION and PACKAGE BODY
+  //Transforms the keyword PARALLEL_ENABLE to PARALLEL SAFE for FUNCTION and PACKAGE BODY
   Qstr = Qstr.replace(
     /(?<=CREATE\s+((?:OR\s+REPLACE\s+))?(((?:NON)?EDITIONABLE\s+))?(FUNCTION.*|PACKAGE\s+BODY.*))PARALLEL_ENABLE/gis,
     (match) => {
@@ -450,7 +457,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Removes unsupported logging/nologging options from CREATE INDEX statement.
+  //Removes unsupported logging/nologging options from CREATE INDEX statement.
   Qstr = Qstr.replace(
     /(?<=CREATE(?:\s+UNIQUE|\s+BITMAP|\s+MULTIVALUE)?\s+INDEX.*)(NO)?LOGGING/gis,
     (match) => {
@@ -458,7 +465,7 @@ export default function ora2pg(Qstr) {
       return "";
     }
   );
-  //Removes unsupported compress/nocompress options from CREATE INDEX statement.
+  //Removes unsupported compress/nocompress options from CREATE INDEX statement.
   Qstr = Qstr.replace(
     /(?<=CREATE(?:\s+UNIQUE|\s+BITMAP|\s+MULTIVALUE)?\s+INDEX.*)(NO)?COMPRESS+((?:\s+\d+)|(?:\s+ADVANCED\s+LOW)|(?:\s+ADVANCED\s+HIGH))?/gis,
     (match) => {
@@ -466,7 +473,7 @@ export default function ora2pg(Qstr) {
       return "";
     }
   );
-  //Removes SCALE from the create sequence DDL statement.
+  //Removes SCALE from the create sequence DDL statement.
   Qstr = Qstr.replace(
     /(?<=CREATE\s+SEQUENCE.*)SCALE\s+(NO)?EXTEND/gis,
     (match) => {
@@ -475,7 +482,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Removes REVERSE clause from index DDL statement.
+  //Removes REVERSE clause from index DDL statement.
   Qstr = Qstr.replace(
     /(?<=CREATE\s+(?:UNIQUE\s+|BITMAP\s+)?INDEX\s+.*ON.*)REVERSE/gis,
     (match) => {
@@ -484,7 +491,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Removes size specification from integer types in SPL objects.
+  //Removes size specification from integer types in SPL objects.
   Qstr = Qstr.replace(
     /(?<=(?:CREATE|ALTER)(?: OR REPLACE)? PACKAGE.*)(?:(?:(INTEGER)(?: )?\((?: )?\d+(?: )?\))|(?:(INT)(?: )?\((?: )?\d+(?: )?\))|(?:(SAMLLINT)(?: )?\((?: )?\d+(?: )?\)))/gis,
     (match, $1) => {
@@ -493,7 +500,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Converts PIPELINED clause in pipelined functions to SETOF RECORD.
+  //Converts PIPELINED clause in pipelined functions to SETOF RECORD.
   Qstr = Qstr.replace(
     /(?<=(?:CREATE|ALTER)\s+(?:OR REPLACE\s+)?(?:(?:NON)?EDITIONABLE)?FUNCTION.*RETURN.*)PIPELINED/gis,
     (match) => {
@@ -502,19 +509,19 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Converts PIPE ROW statement in pipelined functions to RETURN NEXT.
+  //Converts PIPE ROW statement in pipelined functions to RETURN NEXT.
   Qstr = Qstr.replace(/PIPE\s+ROW/gis, (match) => {
     changedList.push(match);
     return "RETURN NEXT";
   });
 
-  //Removes SHARING=METADATA clause from the source DDL.
+  //Removes SHARING=METADATA clause from the source DDL.
   Qstr = Qstr.replace(/SHARING=(?:METADATA|NONE)/gis, (match) => {
     changedList.push(match);
     return "";
   });
 
-  //Removes Supplemental logging clause from the table DDL
+  //Removes Supplemental logging clause from the table DDL
   Qstr = Qstr.replace(
     /SUPPLEMENTAL LOG (?:(?:GROUP.*\(.*\)\s+(?:ALWAYS)?)|(?:DATA.*\(.*\)\s+COLUMNS))/gis,
     (match) => {
@@ -523,7 +530,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Removes DEFERRABLE clause from CHECK and NOT NULL constraints in table DDL.
+  //Removes DEFERRABLE clause from CHECK and NOT NULL constraints in table DDL.
   Qstr = Qstr.replace(
     /(?:DEFERRABLE)?(?:(?:INITIALLY DEFERRED)|(?:INITIALLY IMMEDIATE)?)(?:(?:ENABLE VALIDATE)|(?:ENABLE NOVALIDATE)|(?:DISABLE VALIDATE)|(?:DISABLE NOVALIDATE))?/gis,
     (match) => {
@@ -532,13 +539,13 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Removes NO INMEMORY clause from the source DDL
+  //Removes NO INMEMORY clause from the source DDL
   Qstr = Qstr.replace(/NO\s+INMEMORY/gis, (match) => {
     changedList.push(match);
     return "";
   });
 
-  //Removes RELY from the PRIMARY KEY CONSTRAINT clause in CREATE TABLE statement
+  //Removes RELY from the PRIMARY KEY CONSTRAINT clause in CREATE TABLE statement
   Qstr = Qstr.replace(/PRIMARY KEY.*(RELY)/gis, (match) => {
     match = match.replace(/RELY/gis, (matching) => {
       changedList.push(matching);
@@ -547,7 +554,7 @@ export default function ora2pg(Qstr) {
     return match;
   });
 
-  //Removes RELY from REFERENCES clause of the ALTER TABLE ADD FOREIGN KEY statement
+  //Removes RELY from REFERENCES clause of the ALTER TABLE ADD FOREIGN KEY statement
   Qstr = Qstr.replace(
     /(?<=ALTER TABLE.*CONSTRAINT.*REFERENCES.*)RELY.*;/gis,
     (match) => {
@@ -556,13 +563,13 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Removes DEFAULT COLLATION clause from the source DDL for tables and views
+  //Removes DEFAULT COLLATION clause from the source DDL for tables and views
   Qstr = Qstr.replace(/DEFAULT COLLATION USING_NLS_COMP/gis, (match) => {
     changedList.push(match);
     return "";
   });
 
-  //Removes "CONSTRAINT constraint_name NOT NULL DISABLE" clause from the source DDL for tables.
+  //Removes "CONSTRAINT constraint_name NOT NULL DISABLE" clause from the source DDL for tables.
   Qstr = Qstr.replace(
     /CONSTRAINT+(?:.*)?\s(not\snull)+\sdisable+\s/gis,
     (match) => {
@@ -571,9 +578,9 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Removes "NOT NULL DISABLE" clause from the source DDL for tables.
+  //Removes "NOT NULL DISABLE" clause from the source DDL for tables.
 
-  //Removes "CONSTRAINT constraint_name CHECK|UNIQUE|PRIMARY KEY parameters DISABLE" clause from the source DDL for tables.
+  //Removes "CONSTRAINT constraint_name CHECK|UNIQUE|PRIMARY KEY parameters DISABLE" clause from the source DDL for tables.
   Qstr = Qstr.replace(
     /(?<=CREATE.*TABLE\s+.*\(.*)(CONSTRAINT.*(UNIQUE|PRIMARY KEY|CHECK( )?\(.*\))\s+DISABLE)/gis,
     (match) => {
@@ -582,9 +589,16 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Removes "CHECK|UNIQUE|PRIMARY KEY parameters DISABLE" clause from the source DDL for tables.
-
-  //Removes USING INDEX REVERSE clause from CREATE TABLE statement.
+  //Removes "CHECK|UNIQUE|PRIMARY KEY parameters DISABLE" clause from the source DDL for tables.
+  Qstr = Qstr.replace(
+    /(?<=CREATE.*?TABLE.*?)(?:CHECK|UNIQUE|PRIMARY\s+KEY).*?DISABLE/gis,
+    (match) => {
+      changedList.push(match);
+      match = match.replace(/(?:CHECK|UNIQUE|PRIMARY\s+KEY).*?DISABLE/gis, "");
+      return match;
+    }
+  );
+  //Removes USING INDEX REVERSE clause from CREATE TABLE statement.
   Qstr = Qstr.replace(
     /(?<=CREATE\s+(?:(?:(?:GLOBAL\s+|PRIVATE\s+)TEMPORARY\s+)|(?:SHARED\s+)|(?:DUPLICATED\s+)|(?:(?:IMMUTABLE\s+)?BLOCKCHAIN\s+))?TABLE.*\(.*)USING\s+INDEX\s+REVERSE/gis,
     (match) => {
@@ -593,28 +607,35 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Converts SIMPLE_INTEGER data type to INTEGER type
+  //Converts SIMPLE_INTEGER data type to INTEGER type
   Qstr = Qstr.replace(/SIMPLE_INTEGER/gs, (match) => {
     changedList.push(match);
     return "INTEGER";
   });
-  //Converts SIMPLE_INTEGER data type to INTEGER type
+  //Converts SIMPLE_INTEGER data type to INTEGER type
   Qstr = Qstr.replace(/NATURAL/gs, (match) => {
     changedList.push(match);
     return "INTEGER";
   });
 
-  //Removes NOT NULL clause from VARRAY collection type declaration within PL/SQL object.
+  //Removes NOT NULL clause from VARRAY collection type declaration within PL/SQL object.
 
-  //Removes NOT NULL clause from nested table type declaration within PL/SQL object.
+  //Removes NOT NULL clause from nested table type declaration within PL/SQL object.
 
-  //Removes NOT NULL clause from index-by table type declaration within PL/SQL object.
+  //Removes NOT NULL clause from index-by table type declaration within PL/SQL object.
+  Qstr = Qstr.replace(
+    /TYPE.*?IS\s*TABLE\s*OF\s*.*?(NOT\s*NULL)/gis,
+    (match, $1) => {
+      changedList.push(match);
+      match = match.replace(/NOT\s*NULL/gis, "");
+      return match;
+    }
+  );
+  //Converts ARRAY to VARRAY collection type declaration within PL/SQL object
 
-  //Converts ARRAY to VARRAY collection type declaration within PL/SQL object
+  //Removes STORE IN (tablespace) clause from PARTITIONED TABLE that has a PARTITION BY HASH or PARTITION BY RANGE syntax
 
-  //Removes STORE IN (tablespace) clause from PARTITIONED TABLE that has a PARTITION BY HASH or PARTITION BY RANGE syntax
-
-  //Replaces VIRTUAL keyword with STORED in TABLE definition
+  //Replaces VIRTUAL keyword with STORED in TABLE definition
 
   //Removes empty spaces from operators i.e. < =, > =, ! = or < >
   Qstr = Qstr.replace(
@@ -625,7 +646,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Removes schema-name from the name of INDEX in CREATE INDEX definition
+  //Removes schema-name from the name of INDEX in CREATE INDEX definition
   Qstr = Qstr.replace(
     /(?<=CREATE\s+(?:UNIQUE\s+|BITMAP\s+|MULTIVALUE\s+)INDEX)(.*)\..*(?=ON)/gis,
     (match) => {
@@ -700,11 +721,11 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  //Removes the CACHE keyword from CREATE TABLE statements to make them compatible with EDB Postgres Advanced Server.
+  //Removes the CACHE keyword from CREATE TABLE statements to make them compatible with EDB Postgres Advanced Server.
 
-  //Removes ALTER TRIGGER <triggerName> ENABLE statement or Transforms ALTER TRIGGER <triggerName> DISABLE statements to EDB Postgres Advanced Server compatible syntax
+  //Removes ALTER TRIGGER <triggerName> ENABLE statement or Transforms ALTER TRIGGER <triggerName> DISABLE statements to EDB Postgres Advanced Server compatible syntax
 
-  //Removes NAME clause and associated label name from SET TRANSACTION statements inside PL/SQL block.
+  //Removes NAME clause and associated label name from SET TRANSACTION statements inside PL/SQL block.
 
   //final formatting
   Qstr = final_formatting(Qstr);
