@@ -46,7 +46,7 @@ export default function oraFunc2pgFunc(Qstr) {
   });
 
   //NLS_INITCAP function to INITCAP
-  Qstr = Qstr.replace(/\bINITCAP\s*\(/gis, (match) => {
+  Qstr = Qstr.replace(/\bNLS_INITCAP\s*\(/gis, (match) => {
     changedList.push(match);
     return "INITCAP(";
   });
@@ -69,23 +69,61 @@ export default function oraFunc2pgFunc(Qstr) {
     return "XMLAGG(";
   });
 
-  //empty blob and empty clob
+  //EMPTY_BLOB and EMPTY_CLOB function to
+  Qstr = Qstr.replace(/\bEMPTY_BLOB+\(+(\s)*\)+|EMPTY_CLOB+\(+(\s)*\)+/gis, (match) => {
+    changedList.push(match);
+    return "\"\"";
+  });
 
-  //rawtohex to encode
+  //RAWTOHEX function to ENCODE
+  Qstr = Qstr.replace(/RAWTOHEX\s*\((.*)\)/gis, (match, $1) => {
+    changedList.push(match);
+    return `encode(${$1}, 'hex')`;
+  });
 
-  //rawtonhex to encode
+  //RAWTONHEX function to ENCODE
+  Qstr = Qstr.replace(/RAWTONHEX\s*\((.*)\)/gis, (match, $1) => {
+    changedList.push(match);
+    return `encode(${$1}, 'hex')`;
+  });
 
-  //to_nchar(number)
+  //TO_NCHAR(number) function to ::text
+  Qstr = Qstr.replace(/\bTO_NCHAR\s*\((.*)\)/gis, (match, $1) => {
+    changedList.push(match, $1);
+    return `${$1}::text`;
+  })
 
-  //to_clob()
+  //TO_CLOB() function to ::text
+  Qstr = Qstr.replace(/\bTO_CLOB\s*\((.*)\)/gis, (match, $1) => {
+    changedList.push(match, $1);
+    return `${$1}::text`;
+  })
 
-  //NLS_SORT
+  //NLS_SORT function to - 변환생략
 
-  //RATIO_TO_REPORT
+  //RATIO_TO_REPORT function to SUM
+  Qstr = Qstr.replace(/\bRATIO_TO_REPORT\s*\(\s*([^\(]+)\s*\)+&(\bTEAM12.TRACK)/gis,(match, $1) =>{
+    changedList.push(match, $1);
+    return `sum(${$1}) / sum(sum(${$1}))`;
+  });
 
-  //NUMTOYMINTERVAL
+  //NUMTOYMINTERVAL function to NOW()
+  Qstr = Qstr.replace(/\b(?:NUMTOYMINTERVAL)\s*\(\s*([^,]+)\s*,\s*\'([^\)]+)(\')\s*\)+/gis,(match, $1, $2) =>{
+    changedList.push(match, $1, $2);
+    return `interval '${$1} ${$2}'`;
+  });
 
-  //trunc(date)
+  //TZ_OFFSET
+  Qstr = Qstr.replace(/\bTZ_OFFSET\((.*)\)/gis,(match, $1) =>{
+    changedList.push(match, $1);
+    return `utc_offset FROM pg_catalog.pg_timezone_names WHERE name = ${$1}`;
+  });
+
+  //trunc(date) function to -변환생략
+  Qstr = Qstr.replace(/\bTRUNC\s*(.*)/gis,(match, $1) =>{
+    changedList.push(match, $1);
+    return `date_trunc ${$1}`;
+  });
 
   //decode function to case ..when..then..else..end
   Qstr = Qstr.replace(/\bDECODE\s*\((.*?)\s*\)/gis, (match, $1) => {
@@ -117,6 +155,7 @@ export default function oraFunc2pgFunc(Qstr) {
 
     return str;
   });
+
   //CURRENT_DATE to (CURRENT_DATE + CURRENT_TIME)::timestamp
   Qstr = Qstr.replace(/\bCURRENT_DATE/gis, (match) => {
     changedList.push(match);
@@ -125,9 +164,62 @@ export default function oraFunc2pgFunc(Qstr) {
 
   //NEXT_DAY
 
-  //NANVL
+  const day = Qstr.match(/NEXT_DAY\((.*?),(.*?)\)/is);
+    let day_num = 0;
+    const day_sun = ["'일요일' ","'일' ","'SUNDAY' ","'SUN' ","1 "];
+    const day_mon = ["'월요일' ","'월' ","'MONDAY' ","'MON' ","2 "];
+    const day_tue = ["'화요일' ","'화' ","'TUEDAY' ","'TUE' ","3 "];
+    const day_wed = ["'수요일' ","'수' ","'WEDNESDAY' ","'WED' ","4 "];
+    const day_thu = ["'목요일' ","'목' ","'THURSDAY' ","'THUR' ","5 "];
+    const day_fri = ["'금요일' ","'금' ","'FRIDAY' ","'FRI' ","6 "];
+    const day_sat = ["'토요일' ","'토' ","'SATURDAY' ","'SAT' ","7 "];
+  //요구받은 요일을 정의하는 단계
+
+  if(Qstr.match(/NEXT_DAY\((.*?),(.*?)\)/gis)){
+    if (day_sun.includes(day[2])){
+      day_num = 1;
+    }else if (day_mon.includes(day[2])){
+      day_num = 2;
+    }else if (day_tue.includes(day[2])){
+      day_num = 3;
+    }else if (day_wed.includes(day[2])){
+      day_num = 4;
+    }else if (day_thu.includes(day[2])){
+      day_num = 5;
+    }else if (day_fri.includes(day[2])){
+      day_num = 6;
+    }else if (day_sat.includes(day[2])){
+      day_num = 7;
+    }else {day_num = "잘못된 요일입니다"};}
+
+    Qstr = Qstr.replace(/NEXT_DAY\((.*?),(.*?)\)/gis,`case\nwhen extract(dow from current_date) < ${day_num}-1\nthen now()::timestamp + CAST(${day_num}-1-extract(dow from current_date) ||' days' AS Interval)\nwhen extract(dow from current_date) > ${day_num}-1\nthen now()::timestamp + CAST(${day_num}+6-extract(dow from current_date) ||' days' AS Interval)\nend`)
+
+
+
+   //NANVL
+  if(Qstr.match(/NANVL\(+(.*?)\,(.*?)\)+/gis)){
+    const QQstr = Qstr;
+    const create_func_nanvl = "\
+    create function nanvl(p_to_test numeric, p_default numeric)\n\
+        returns numeric as\n\
+        $$\n\
+        select case when p_to_test = 'NaN' then p_default\n\
+        else p_to_test\n\
+        end;\n\
+        $$\n\
+        language sql;\n\n\
+    "
+//함수를 생성하고 Qstr을 그대로 불러온다
+  Qstr= create_func_nanvl + QQstr;
+}
+
+      
 
   //MONTHS_BETWEEN
+  Qstr = Qstr.replace(/\b(?:MONTHS_BETWEEN)\s*(\s*([^,]+)\s*,\s*([^\)]+)\s*)+\)/gis, (match, $1, $2, $3, $4) => {
+    changedList.push(match, $1, $2, $3, $4);
+    return `EXTRACT(YEAR FROM age(${$1} ${$2} ${$3} ${$4}))*12`;
+  });
 
   //MEDIAN function to PERCENTILE_CONT
   Qstr = Qstr.replace(
@@ -140,7 +232,7 @@ export default function oraFunc2pgFunc(Qstr) {
 
   //ITERATION_NUMBER function
 
-  //SYS_CONNECT_BY_PATH
+  //SYS_CONNECT_BY_PATH - 변환생략
 
   //TO_YMINTERVAL function
   Qstr = Qstr.replace(
@@ -156,13 +248,16 @@ export default function oraFunc2pgFunc(Qstr) {
     match = match.replace(/TO_TIMESTAMP_TZ\s*\(/gis, "TO_TIMESTAMP(");
     return `${match} ::timestamp AT TIME ZONE '15:0' `;
   });
+
   //TO_TIMESTAMP function
   Qstr = Qstr.replace(/\bTO_TIMESTAMP\s*\(.*?\)/gis, (match) => {
     changedList.push(match);
     return `${match}::timestamp `;
   });
+
   //SESSIONTIMEZONE function
   Qstr = Qstr.replace(/\bSESSIONTIMEZONE/gis, "current_setting('timezone')");
+
   //NUMTODSINTERVAL function
   Qstr = Qstr.replace(
     /\bNUMTODSINTERVAL\s*\(\s*(\d{1,10})\s*,\s*'\s*(DAY|HOUR|MINUTE|SECOND)\s*'\s*\)/gis,
@@ -171,6 +266,7 @@ export default function oraFunc2pgFunc(Qstr) {
       return `interval '${$1} ${$2}'`;
     }
   );
+
   //TO_NUMBER function
   Qstr = Qstr.replace(/\bTO_NUMBER\s*\(.*?\)/gis, (match) => {
     changedList.push(match);
@@ -186,7 +282,7 @@ export default function oraFunc2pgFunc(Qstr) {
     $1 = $1.replace(/TIMESTAMP/gis, "");
     return `${$1} at time zone 'UTC' `;
   });
-  //TO_LOB function to ...
+  //TO_LOB function to ... - 변환생략
 
   //TO_DSINTERVAL function to ...
   Qstr = Qstr.replace(
@@ -196,6 +292,7 @@ export default function oraFunc2pgFunc(Qstr) {
       return `${$1}::interval`;
     }
   );
+
   //LNNVL function to ...
 
   //BIN_TO_NUM function to ...
@@ -225,6 +322,7 @@ export default function oraFunc2pgFunc(Qstr) {
       return `POSITION(${$2} IN ${$1})`;
     }
   );
+
   //BITAND function to ...
   Qstr = Qstr.replace(
     /\bBITAND\s*\((\s*.*?\s*),(\s*.*?\s*)\)/gis,
@@ -233,6 +331,7 @@ export default function oraFunc2pgFunc(Qstr) {
       return `${$1} & ${$2}`;
     }
   );
+
   //FROM_TZ function to...
   Qstr = Qstr.replace(
     /FROM_TZ\s*\(\s*\S*\s*'(.*?)'\s*,\s*'(.*?)'\s*\)/gis,
@@ -241,6 +340,7 @@ export default function oraFunc2pgFunc(Qstr) {
       return `TIMESTAMP WITH TIME ZONE '${$1} ${$2}'`;
     }
   );
+
   //ADD_MONTHS function to
   Qstr = Qstr.replace(
     /ADD_MONTHS\s*\((\s*.*?\s*),(\s*.*?\s*)\)/gis,
@@ -250,7 +350,7 @@ export default function oraFunc2pgFunc(Qstr) {
     }
   );
 
-  Qstr = Qstr.replace(/ *;/igs, ";\n");
+  Qstr = Qstr.replace(/ *;/igs, ";\n")
   changedList = [...new Set(changedList)];
   return { string: Qstr, changedList };
 
