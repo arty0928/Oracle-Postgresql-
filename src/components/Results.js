@@ -18,9 +18,6 @@ export default function Results() {
       <dl>
         <div id="query_sentence">
           <div className="mt-10 mb-5">
-            {/* <div className="bg-gray-100 px-4 py-5">
-            <dt key={queryKey} className="text-sm font-medium text-indigo-600">{item.value}</dt>
-          </div>   */}
             <span id="print-value" className="font-medium">
               {printInputQuery}
             </span>
