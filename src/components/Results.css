@@ -1,0 +1,7 @@
+#print-value {
+  text-align: left;
+  white-space: pre-wrap;
+}
+#final {
+  white-space: pre-line;
+}

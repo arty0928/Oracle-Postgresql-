@@ -2,20 +2,31 @@
   "name": "oracle",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://arty0928.github.io/Oracle-Postgresql-",
   "dependencies": {
+    "@heroicons/react": "^2.0.13",
+    "@tailwindcss/postcss7-compat": "^2.2.17",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "gh-pages": "^4.0.0",
+    "heroicons-react": "^1.4.1",
     "react": "^18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
+    "recoil": "^0.7.6",
+    "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -36,8 +47,8 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.12",
-    "postcss": "^8.4.18",
+    "autoprefixer": "^9.8.8",
+    "postcss": "^7.0.39",
     "postcss-loader": "^7.0.1",
     "tailwindcss": "^3.2.1"
   }
