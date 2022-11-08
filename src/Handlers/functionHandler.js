@@ -250,7 +250,7 @@ export default function oraFunc2pgFunc(Qstr) {
     }
   );
 
-  Qstr = Qstr.replace(/ *;/igs, ";\n")
+  Qstr = Qstr.replace(/ *;/igs, ";\n");
   changedList = [...new Set(changedList)];
   return { string: Qstr, changedList };
 
