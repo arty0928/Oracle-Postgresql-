@@ -1,3 +1,4 @@
+import './QueryInput.css';
 import { useState } from "react";
 import ora2pg from "../Handlers/queryHandler";
 import printMessage from "../Handlers/functionArray";

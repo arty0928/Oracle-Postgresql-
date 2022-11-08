@@ -1,3 +1,4 @@
+import './Results.css';
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useRecoilValue } from "recoil";
 import errorMessageAtom from "../recoil/atoms/errorMessageAtom";

@@ -1,3 +1,5 @@
+import './Modal.css';
+
 export default function Modal() {
   return (
     <div id="modal_overlay" className="hidden fixed right-1/3 left-1/3 top-2/4">
