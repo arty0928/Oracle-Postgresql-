@@ -79,7 +79,7 @@ export default function QueryInput() {
             }}
           />
         </div>
-        <div className=" px-0 py-0 flex sflex-row sm:px-0">
+        <div className=" px-0 py-0 flex sflex-row sm:pt-px">
 
           <div>
             <div className="relative hidden sm:inline-grid">
