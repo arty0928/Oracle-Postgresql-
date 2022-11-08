@@ -23,7 +23,7 @@ function Precautions() {
                             <br></br>
                             <button onClick=
                                 {() => {
-                                    navigate("/");
+                                    navigate("/Oracle-Postgresql-");
                                 }
                                 } className="
                                 mt-6 text-center text-xl font-bold tracking-tight text-indigo-600">

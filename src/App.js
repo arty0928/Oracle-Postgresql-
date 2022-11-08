@@ -13,7 +13,7 @@ function App() {
         </nav> */}
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/Oracle-Postgresql-" element={<Home />} />
         <Route path="/Precautions" element={<Precautions />} />
       </Routes>
 
