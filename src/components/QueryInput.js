@@ -85,7 +85,7 @@ export default function QueryInput() {
                 id="Precautions"
                 onClick={refreshPage}
                 className="bg-white inline-flex w-full justify-center 
-                      focus:bg-white
+                      focus:bg-white rounded-bl-md
                       px-4 py-2 text-base font-bold text-gray-700 
                       hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
               >
@@ -114,7 +114,7 @@ export default function QueryInput() {
                 onClick={refreshPage}
                 className="mt-0 inline-flex w-full justify-center
                   sm:bg-white px-4 py-2 text-base font-bold text-gray-700 
-                  hover:bg-gray-200 focus:outline-none focus:bg-white
+                  hover:bg-gray-200 focus:outline-none focus:bg-white 
                   sm:mt-0 sm:ml-0 sm:w-auto sm:text-sm sm:ml-auto sm:bg-white"
               >
                 Refresh
