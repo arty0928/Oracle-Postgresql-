@@ -9,6 +9,7 @@ import functionChangedAtom from "../recoil/atoms/functionChangedAtom";
 import queryChangedAtom from "../recoil/atoms/queryChangedAtom";
 import printInputQueryAtom from "../recoil/atoms/printInputQueryAtom";
 import errorMessageAtom from "../recoil/atoms/errorMessageAtom";
+import errorQueryMessageAtom from "../recoil/atoms/errorQueryMessageAtom";
 import { useNavigate } from "react-router-dom";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
@@ -23,6 +24,7 @@ export default function QueryInput() {
   const setQueryChanged = useSetRecoilState(queryChangedAtom);
   const setPrintInputQuery = useSetRecoilState(printInputQueryAtom);
   const setErrorMessage = useSetRecoilState(errorMessageAtom);
+  const setErrorQueryMessage = useSetRecoilState(errorQueryMessageAtom);
 
   const refreshPage = () => {
     window.location.reload();
@@ -40,6 +42,7 @@ export default function QueryInput() {
     // 에러 출력
     let error = printMessage(qStr);
     setErrorMessage(error.errorMessage);
+    setErrorQueryMessage(error.errorQueryMessage);
     //쿼리 문법 변환작업
     let queryResult = ora2pg(qStr);
     qStr = queryResult.string;
