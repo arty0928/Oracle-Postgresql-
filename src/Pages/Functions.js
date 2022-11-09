@@ -1,23 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Precautions.css";
 
-function Precautions() {
+function Functions() {
     let navigate = useNavigate();
     return (
         // <!-- component -->
         <div>
-            <section className="text-gray-700">
-                <div className="container px-5 py-24 mx-auto">
-                    <div className="text-center mb-20">
+            <section class="text-gray-700">
+                <div class="container px-5 py-24 mx-auto">
+                    <div class="text-center mb-20">
 
 
 
-                        <h1 className="mt-6 text-center sm:text-4xl sm:font-bold tracking-tight text-gray-900
-                         text-3xl font-bold text-center title-font text-gray-900 mb-4">
-                            Frequently Asked Question
+                        <h1 class="mt-6 text-center sm:text-4xl sm:font-bold tracking-tight text-gray-900
+                         text-3xl font-bold text-center title-font text-red-800 mb-4">
+                            Exception Functions
                         </h1>
-                        <p className="
+                        <p class="
                         text-base leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto">
                             The most common questions about how our business works and what
                             can do for you.
@@ -33,10 +32,10 @@ function Precautions() {
 
                         </p>
                     </div>
-                    <div className="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
-                        <div className="w-full lg:w-1/2 px-4 py-2">
-                            <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                                <summary className="font-semibold">
+                    <div class="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
+                        <div class="w-full lg:w-1/2 px-4 py-2">
+                            <details class="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                                <summary class="font-semibold">
                                     How Long is this site live?
                                 </summary>
 
@@ -47,8 +46,8 @@ function Precautions() {
                                 </span>
                             </details>
 
-                            <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                                <summary className="font-semibold">
+                            <details class="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                                <summary class="font-semibold">
                                     How Long is this site live?
                                 </summary>
 
@@ -60,8 +59,8 @@ function Precautions() {
                             </details>
 
 
-                            <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                                <summary className="font-semibold">
+                            <details class="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                                <summary class="font-semibold">
                                     How Long is this site live?
                                 </summary>
 
@@ -75,10 +74,10 @@ function Precautions() {
 
                         </div>
 
-                        <div className="w-full lg:w-1/2 px-4 py-2">
+                        <div class="w-full lg:w-1/2 px-4 py-2">
 
-                            <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                                <summary className="font-semibold">
+                            <details class="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                                <summary class="font-semibold">
                                     How Long is this site live?
                                 </summary>
 
@@ -89,8 +88,8 @@ function Precautions() {
                                 </span>
                             </details>
 
-                            <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                                <summary className="font-semibold">
+                            <details class="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                                <summary class="font-semibold">
                                     How Long is this site live?
                                 </summary>
 
@@ -102,8 +101,8 @@ function Precautions() {
                             </details>
 
 
-                            <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                                <summary className="font-semibold">
+                            <details class="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                                <summary class="font-semibold">
                                     How Long is this site live?
                                 </summary>
 
@@ -123,4 +122,4 @@ function Precautions() {
     );
 }
 
-export default Precautions;
+export default Functions;
