@@ -13,7 +13,7 @@ function Functions() {
 
 
                         <h1 class="mt-6 text-center sm:text-4xl sm:font-bold tracking-tight text-gray-900
-                         text-3xl font-bold text-center title-font text-red-800 mb-4">
+                         text-3xl font-bold text-center title-font text-gray-900 mb-4">
                             Exception Functions
                         </h1>
                         <p class="
@@ -23,11 +23,11 @@ function Functions() {
                             <br></br>
                             <button onClick=
                                 {() => {
-                                    navigate("/Oracle-Postgresql-");
+                                    navigate("/Precautions");
                                 }
                                 } className="
                                 mt-6 text-center text-xl font-bold tracking-tight text-indigo-600">
-                                Back to Query Converter
+                                Back to Precautions
                             </button>
 
                         </p>

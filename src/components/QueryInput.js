@@ -12,7 +12,7 @@ import errorMessageAtom from "../recoil/atoms/errorMessageAtom";
 import errorQueryMessageAtom from "../recoil/atoms/errorQueryMessageAtom";
 import { useNavigate } from "react-router-dom";
 
-import { TrashIcon,ArrowRightIcon,ExclamationTriangleIcon,ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, ArrowRightIcon, ExclamationTriangleIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 
 export default function QueryInput() {
@@ -84,38 +84,38 @@ export default function QueryInput() {
         <div className=" px-0 py-0 flex sflex-row sm:pt-px">
 
           <div>
-                <div className="relative hidden sm:inline-grid">
-                  <button
-                    type="submit"
-                    id="Precautions"
-                    onClick={() => {
-                      navigate("/Precautions");
-                    }}
-                    className="bg-white inline-flex w-full justify-center 
+            <div className="relative hidden sm:inline-grid">
+              <button
+                type="submit"
+                id="Precautions"
+                onClick={() => {
+                  navigate("/Precautions");
+                }}
+                className="bg-white inline-flex w-full justify-center 
                           focus:bg-white rounded-bl-md
-                          px-4 py-2 text-base font-bold text-red-700 
+                          px-4 py-2 text-base font-bold text-gray-700 
                           hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
-                  >
-                    Precautions
-                  </button>
-                </div>
-            
-                <div className="relative w-14 sm:hidden">
-                  <ExclamationTriangleIcon
-                    type="submit"
-                    id="Precautions"
-                    onClick={() => {
-                      navigate("/Precautions");
-                    }}
-                    className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
+              >
+                Precautions
+              </button>
+            </div>
+
+            <div className="relative w-14 sm:hidden">
+              <ExclamationTriangleIcon
+                type="submit"
+                id="Precautions"
+                onClick={() => {
+                  navigate("/Precautions");
+                }}
+                className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
                         px-4 py-2 text-base font-bold text-yellow-700 
                         hover:bg-gray-200 sm:w-auto sm:text-sm"
-                  >
-                  </ExclamationTriangleIcon>
-                </div>
+              >
+              </ExclamationTriangleIcon>
+            </div>
           </div>
 
-          <div>
+          {/* <div>
                 <div className="relative hidden sm:inline-grid">
                   <button
                     type="submit"
@@ -145,7 +145,7 @@ export default function QueryInput() {
                   >
                   </ExclamationCircleIcon>
                 </div>
-          </div>
+          </div> */}
 
           <div className="ml-auto h-8">
             <div className="relative hidden sm:inline-grid">
