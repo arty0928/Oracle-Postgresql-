@@ -11,9 +11,8 @@ import printInputQueryAtom from "../recoil/atoms/printInputQueryAtom";
 import errorMessageAtom from "../recoil/atoms/errorMessageAtom";
 import { useNavigate } from "react-router-dom";
 
-import { TrashIcon } from "@heroicons/react/24/outline";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { TrashIcon,ArrowRightIcon,ExclamationTriangleIcon,ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
 
 export default function QueryInput() {
   let navigate = useNavigate();
@@ -82,35 +81,67 @@ export default function QueryInput() {
         <div className=" px-0 py-0 flex sflex-row sm:pt-px">
 
           <div>
-            <div className="relative hidden sm:inline-grid">
-              <button
-                type="submit"
-                id="Precautions"
-                onClick={() => {
-                  navigate("/Precautions");
-                }}
-                className="bg-white inline-flex w-full justify-center 
-                      focus:bg-white rounded-bl-md
-                      px-4 py-2 text-base font-bold text-gray-700 
-                      hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
-              >
-                Precautions
-              </button>
-            </div>
+                <div className="relative hidden sm:inline-grid">
+                  <button
+                    type="submit"
+                    id="Precautions"
+                    onClick={() => {
+                      navigate("/Precautions");
+                    }}
+                    className="bg-white inline-flex w-full justify-center 
+                          focus:bg-white rounded-bl-md
+                          px-4 py-2 text-base font-bold text-red-700 
+                          hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
+                  >
+                    Precautions
+                  </button>
+                </div>
+            
+                <div className="relative w-14 sm:hidden">
+                  <ExclamationTriangleIcon
+                    type="submit"
+                    id="Precautions"
+                    onClick={() => {
+                      navigate("/Precautions");
+                    }}
+                    className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
+                        px-4 py-2 text-base font-bold text-yellow-700 
+                        hover:bg-gray-200 sm:w-auto sm:text-sm"
+                  >
+                  </ExclamationTriangleIcon>
+                </div>
+          </div>
 
-            <div className="relative w-14 sm:hidden">
-              <ExclamationTriangleIcon
-                type="submit"
-                id="Precautions"
-                onClick={() => {
-                  navigate("/Precautions");
-                }}
-                className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
-                    px-4 py-2 text-base font-bold text-yellow-700 
-                    hover:bg-gray-200 sm:w-auto sm:text-sm"
-              >
-              </ExclamationTriangleIcon>
-            </div>
+          <div>
+                <div className="relative hidden sm:inline-grid">
+                  <button
+                    type="submit"
+                    id="Precautions"
+                    onClick={() => {
+                      navigate("/Functions");
+                    }}
+                    className="bg-white inline-flex w-full justify-center 
+                          focus:bg-white rounded-bl-md
+                          px-4 py-2 text-base font-bold text-gray-700 
+                          hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
+                  >
+                    Functions
+                  </button>
+                </div>
+            
+                <div className="relative w-14 sm:hidden">
+                  <ExclamationCircleIcon
+                    type="submit"
+                    id="Precautions"
+                    onClick={() => {
+                      navigate("/Functions");
+                    }}
+                    className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
+                        px-4 py-2 text-base font-bold text-yellow-700 
+                        hover:bg-gray-200 sm:w-auto sm:text-sm"
+                  >
+                  </ExclamationCircleIcon>
+                </div>
           </div>
 
           <div className="ml-auto h-8">
