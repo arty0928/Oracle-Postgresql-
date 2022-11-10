@@ -462,7 +462,7 @@ export default function ora2pg(Qstr) {
   //   return match;
   // });
   if (Qstr.match(/\(\s+.*?BFILE.*?\)/gis)) {
-    match = match.replace(/\(\s+.*?BFILE.*?\)/gi, (matching) => {
+    let match = match.replace(/\(\s+.*?BFILE.*?\)/gi, (matching) => {
       changedList.push(matching);
       matching = matching.replace(/BFILE/gi, "TEXT");
       return matching;

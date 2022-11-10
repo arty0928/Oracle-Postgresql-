@@ -9,11 +9,11 @@ import functionChangedAtom from "../recoil/atoms/functionChangedAtom";
 import queryChangedAtom from "../recoil/atoms/queryChangedAtom";
 import printInputQueryAtom from "../recoil/atoms/printInputQueryAtom";
 import errorMessageAtom from "../recoil/atoms/errorMessageAtom";
+import errorQueryMessageAtom from "../recoil/atoms/errorQueryMessageAtom";
 import { useNavigate } from "react-router-dom";
 
-import { TrashIcon } from "@heroicons/react/24/outline";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, ArrowRightIcon, ExclamationTriangleIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
 
 export default function QueryInput() {
   let navigate = useNavigate();
@@ -23,6 +23,7 @@ export default function QueryInput() {
   const setQueryChanged = useSetRecoilState(queryChangedAtom);
   const setPrintInputQuery = useSetRecoilState(printInputQueryAtom);
   const setErrorMessage = useSetRecoilState(errorMessageAtom);
+  const setErrorQueryMessage = useSetRecoilState(errorQueryMessageAtom);
 
   const refreshPage = () => {
     window.location.reload();
@@ -40,6 +41,7 @@ export default function QueryInput() {
     // 에러 출력
     let error = printMessage(qStr);
     setErrorMessage(error.errorMessage);
+    setErrorQueryMessage(error.errorQueryMessage);
     //쿼리 문법 변환작업
     let queryResult = ora2pg(qStr);
     qStr = queryResult.string;
@@ -90,9 +92,9 @@ export default function QueryInput() {
                   navigate("/Precautions");
                 }}
                 className="bg-white inline-flex w-full justify-center 
-                      focus:bg-white rounded-bl-md
-                      px-4 py-2 text-base font-bold text-gray-700 
-                      hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
+                          focus:bg-white rounded-bl-md
+                          px-4 py-2 text-base font-bold text-gray-700 
+                          hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
               >
                 Precautions
               </button>
@@ -106,12 +108,44 @@ export default function QueryInput() {
                   navigate("/Precautions");
                 }}
                 className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
-                    px-4 py-2 text-base font-bold text-yellow-700 
-                    hover:bg-gray-200 sm:w-auto sm:text-sm"
+                        px-4 py-2 text-base font-bold text-yellow-700 
+                        hover:bg-gray-200 sm:w-auto sm:text-sm"
               >
               </ExclamationTriangleIcon>
             </div>
           </div>
+
+          {/* <div>
+                <div className="relative hidden sm:inline-grid">
+                  <button
+                    type="submit"
+                    id="Precautions"
+                    onClick={() => {
+                      navigate("/Functions");
+                    }}
+                    className="bg-white inline-flex w-full justify-center 
+                          focus:bg-white rounded-bl-md
+                          px-4 py-2 text-base font-bold text-gray-700 
+                          hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
+                  >
+                    Functions
+                  </button>
+                </div>
+            
+                <div className="relative w-14 sm:hidden">
+                  <ExclamationCircleIcon
+                    type="submit"
+                    id="Precautions"
+                    onClick={() => {
+                      navigate("/Functions");
+                    }}
+                    className="bg-white-700 inline-flex w-full justify-center rounded-bl-md
+                        px-4 py-2 text-base font-bold text-yellow-700 
+                        hover:bg-gray-200 sm:w-auto sm:text-sm"
+                  >
+                  </ExclamationCircleIcon>
+                </div>
+          </div> */}
 
           <div className="ml-auto h-8">
             <div className="relative hidden sm:inline-grid">
