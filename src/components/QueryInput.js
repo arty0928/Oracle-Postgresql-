@@ -189,15 +189,13 @@ export default function QueryInput() {
               </button>
             </div>
             <div className="relative w-14 sm:hidden inline-flex">
-              <ArrowRightIcon
-                type="submit"
+              <button><ArrowRightIcon
                 id="Precautions"
-                onClick={refreshPage}
                 className="bg-indigo-500 inline-flex w-full justify-center
                     px-4 py-2 text-base font-bold text-white rounded-br-md
                     hover:bg-indigo-700 sm:w-auto sm:text-sm"
               >
-              </ArrowRightIcon>
+              </ArrowRightIcon></button>
             </div>
           </div>
 
