@@ -47,14 +47,27 @@ export default function ora2pg(Qstr) {
   );
 
   //replace return to return :new ;
-  Qstr = Qstr.replace(
-    /(?<=CREATE\s+(?:OR\s+REPLACE\s+)?(?:EDITIONABLE|NONEDITIONABLE)?TRIGGER.*)RETURN/gis,
-    (match) => {
-      changedList.push(match);
-      return "RETURN : new";
-    }
-  );
-
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE\s+(?:OR\s+REPLACE\s+)?(?:EDITIONABLE|NONEDITIONABLE)?TRIGGER.*)RETURN/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     return "RETURN : new";
+  //   }
+  // );
+  // regex positive lookbehind not supported on safari => changing positive lookbehind phrase to if statements
+  if (
+    Qstr.match(
+      /CREATE\s+(?:OR\s+REPLACE\s+)?(?:EDITIONABLE|NONEDITIONABLE)?TRIGGER.*?RETURN/gis
+    )
+  ) {
+    Qstr = Qstr.replace(
+      /CREATE\s+(?:OR\s+REPLACE\s+)?(?:EDITIONABLE|NONEDITIONABLE)?TRIGGER.*?RETURN/gis,
+      (match) => {
+        changedList.push(match);
+        return "RETURN : new";
+      }
+    );
+  }
   //get rid of label name from end clause.
   const end_label_name = (Qstr) => {
     const regex = new RegExp(/\<\<(.+)\>\>/, "igs");
@@ -315,19 +328,36 @@ export default function ora2pg(Qstr) {
   //Translates Oracle's ALTER TABLE statement for adding NOT NULL constraint to compatible syntax
 
   //if query includes DDL with TRIGGER...REFERENCING...
-  if (Qstr.match(/TRIGGER.*REFERENCING/gis)) {
+  if (Qstr.match(/TRIGGER.*?REFERENCING/gis)) {
     //replace OLD AS [alias to be matched] to old
-    Qstr = Qstr.replace(/(?<=OLD\s+AS)(\s+\w+)(?=\s+)/gis, (match) => {
-      changedList.push(match);
-      match = " old";
-      return match;
-    });
+    // Qstr = Qstr.replace(/(?<=OLD\s+AS)(\s+\w+)(?=\s+)/gis, (match) => {
+    //   changedList.push(match);
+    //   match = " old";
+    //   return match;
+    // });
+
+    if (Qstr.match(/OLD\s+AS\s+\w+/gi)) {
+      Qstr = Qstr.replace(/OLD\s+AS\s+\w+/gi, (match) => {
+        changedList.push(match);
+        match = " old";
+        return match;
+      });
+    }
+
     //replace NEW AS [alias to be matched] to new
-    Qstr = Qstr.replace(/(?<=NEW\s+AS)(\s+\w+)(?=\s+)/gis, (match) => {
-      changedList.push(match);
-      match = " new";
-      return match;
-    });
+    // Qstr = Qstr.replace(/(?<=NEW\s+AS)(\s+\w+)(?=\s+)/gis, (match) => {
+    //   changedList.push(match);
+    //   match = " new";
+    //   return match;
+    // });
+
+    if (Qstr.match(/NEW\s+AS\s+\w+/gi)) {
+      Qstr = Qstr.replace(/NEW\s+AS\s+\w+/gi, (match) => {
+        changedList.push(match);
+        match = " new";
+        return match;
+      });
+    }
   }
 
   //replace BITMAP INDEX to INDEX
@@ -355,8 +385,18 @@ export default function ora2pg(Qstr) {
   );
 
   //removes NULL from attributes of user defined types.
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE\s+(?:OR\s+REPLACE\s+)?TYPE.*?)\(.*\)/gis,
+  //   (match) => {
+  //     match = match.replace(/NULL/gis, (matching) => {
+  //       changedList.push(matching);
+  //       return "";
+  //     });
+  //     return match;
+  //   }
+  // );
   Qstr = Qstr.replace(
-    /(?<=CREATE\s+(?:OR\s+REPLACE\s+)?TYPE.*)\(.*\)/gis,
+    /CREATE\s+(?:OR\s+REPLACE\s+)?TYPE.*?\(.*?\)/gis,
     (match) => {
       match = match.replace(/NULL/gis, (matching) => {
         changedList.push(matching);
@@ -367,17 +407,23 @@ export default function ora2pg(Qstr) {
   );
 
   //transforms BINARY_FLOAT to REAL
-  Qstr = Qstr.replace(/(?<=\(\s+.*)BINARY_FLOAT(?=.*\))/gis, (match) => {
+  // Qstr = Qstr.replace(/(?<=\(\s+.*?)BINARY_FLOAT(?=.*?\))/gis, (match) => {
+  //   changedList.push(match);
+  //   return "REAL";
+  // });
+  Qstr = Qstr.replace(/BINARY_FLOAT/gis, (match) => {
     changedList.push(match);
     return "REAL";
   });
-
   //transforms BINARY_DOUBLE to DOUBLE PRECISION
-  Qstr = Qstr.replace(/(?<=\(\s+.*)BINARY_DOUBLE(?=.*\))/gis, (match) => {
+  // Qstr = Qstr.replace(/(?<=\(\s+.*)BINARY_DOUBLE(?=.*\))/gis, (match) => {
+  //   changedList.push(match);
+  //   return "DOUBLE PRECISION";
+  // });
+  Qstr = Qstr.replace(/BINARY_DOUBLE/gis, (match) => {
     changedList.push(match);
-    return "DOUBLE PRECISION";
+    return "DOUBLE_PRECISION";
   });
-
   //transforms TIMESTAMP WITH LOCAL TIME ZONE to TIMESTAMP WITH TIME ZONE by removing LOCAL keyword.
   Qstr = Qstr.replace(
     /TIMESTAMP\s+(\(.*\)\s+)?WITH\s+LOCAL\s+TIME\s+ZONE/gis,
@@ -394,38 +440,57 @@ export default function ora2pg(Qstr) {
   Qstr = Qstr.replace(
     /INTERVAL\s+DAY\s+(\(\s+\d*\s+\))?\s+TO\s+SECOND\s+(\(\s+\d*\s+\))?/gis,
     (match) => {
-      match = match.replace(/(?<=DAY\s+)\(\s+\d\s+\)/gis, (matching) => {
-        changedList.push(matching);
-        return "";
-      });
-      return match;
+      // match = match.replace(/(?<=DAY\s+)\(\s+\d\s+\)/gis, (matching) => {
+      //   changedList.push(matching);
+      //   return "";
+      // });
+      if (match.match(/DAY\s+\(\s*\d\s*\)/gi)) {
+        match = match.replace(/DAY\s+\(\s*\d\s*\)/gi, (matching) => {
+          changedList.push(matching);
+          return " DAY ";
+        });
+      }
     }
   );
 
   //transforms BFILE datatype to TEXT
-  Qstr = Qstr.replace(/(?<=\(\s+.*)BFILE(?=.*\))/gis, (match) => {
-    match = match.replace(/BFILE/gis, (matching) => {
+  // Qstr = Qstr.replace(/(?<=\(\s+.*)BFILE(?=.*?\))/gis, (match) => {
+  //   match = match.replace(/BFILE/gis, (matching) => {
+  //     changedList.push(matching);
+  //     return "TEXT";
+  //   });
+  //   return match;
+  // });
+  if (Qstr.match(/\(\s+.*?BFILE.*?\)/gis)) {
+    match = match.replace(/\(\s+.*?BFILE.*?\)/gi, (matching) => {
       changedList.push(matching);
-      return "TEXT";
+      matching = matching.replace(/BFILE/gi, "TEXT");
+      return matching;
     });
-    return match;
-  });
+  }
 
   ////PARTITION 뒤에 오는 'TIMESTAMP'라는 단어를 소거함... 조건을 이렇게 줘도 괜찮을지 모르겠네요
-  Qstr = Qstr.replace(/(?<=PARTITION+(?:.*))\bTIMESTAMP+/gis, (match) => {
-    changedList.push(match);
-    return "";
-  });
+  // Qstr = Qstr.replace(/(?<=PARTITION+(?:.*))\bTIMESTAMP+/gis, (match) => {
+  //   changedList.push(match);
+  //   return "";
+  // });
 
   //removes YEAR precision from INTERVAL type in table definition.
   Qstr = Qstr.replace(
     /INTERVAL\s+YEAR\s+(\(\s+\d*\s+\))?\s+TO\s+MONTH/gis,
     (match) => {
-      match = match.replace(/(?<=YEAR\s+)\(\s+\d\s+\)/gis, (matching) => {
-        changedList.push(matching);
-        return "";
-      });
-      return match;
+      // match = match.replace(/(?<=YEAR\s+)\(\s+\d\s+\)/gis, (matching) => {
+      //   changedList.push(matching);
+      //   return "";
+      // });
+      // return match;
+      if (match.match(/YEAR\s+\(\s+\d\s+\)/gi)) {
+        match = match.replace(/YEAR\s+\(\s+\d\s+\)/gi, (matching) => {
+          changedList.push(matching);
+          return "YEAR";
+        });
+        return match;
+      }
     }
   );
 
@@ -443,69 +508,135 @@ export default function ora2pg(Qstr) {
   //Removes PARTITION from the create sequence DDL statement.
 
   //Transforms OLDCHAR2 data type to VARCHAR
-  Qstr = Qstr.replace(/(?<=\(\s+.*)OLDCHAR2(?=.*\))/gis, (match) => {
+  // Qstr = Qstr.replace(/(?<=\(\s+.*)OLDCHAR2(?=.*\))/gis, (match) => {
+  //   changedList.push(match);
+  //   return "VARCHAR";
+  // });
+  Qstr = Qstr.replace(/OLDCHAR2/gi, (match) => {
     changedList.push(match);
     return "VARCHAR";
   });
-
   //Transforms the keyword PARALLEL_ENABLE to PARALLEL SAFE for FUNCTION and PACKAGE BODY
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE\s+((?:OR\s+REPLACE\s+))?(((?:NON)?EDITIONABLE\s+))?(FUNCTION.*|PACKAGE\s+BODY.*))PARALLEL_ENABLE/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     return "PARALLEL SAFE";
+  //   }
+  // );
   Qstr = Qstr.replace(
-    /(?<=CREATE\s+((?:OR\s+REPLACE\s+))?(((?:NON)?EDITIONABLE\s+))?(FUNCTION.*|PACKAGE\s+BODY.*))PARALLEL_ENABLE/gis,
+    /CREATE\s+((?:OR\s+REPLACE\s+))?(((?:NON)?EDITIONABLE\s+))?(FUNCTION.*?|PACKAGE\s+BODY.*?)PARALLEL_ENABLE/gis,
     (match) => {
       changedList.push(match);
-      return "PARALLEL SAFE";
+      match = match.replace(/PARALLEL_ENABLE/gi, "PARALLEL SAFE");
+      return match;
     }
   );
 
   //Removes unsupported logging/nologging options from CREATE INDEX statement.
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE(?:\s+UNIQUE|\s+BITMAP|\s+MULTIVALUE)?\s+INDEX.*)(NO)?LOGGING/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     return "";
+  //   }
+  // );
   Qstr = Qstr.replace(
-    /(?<=CREATE(?:\s+UNIQUE|\s+BITMAP|\s+MULTIVALUE)?\s+INDEX.*)(NO)?LOGGING/gis,
+    /CREATE(?:\s+UNIQUE|\s+BITMAP|\s+MULTIVALUE)?\s+INDEX.*(NO)?LOGGING/gis,
     (match) => {
       changedList.push(match);
-      return "";
+      match = match.replace(/(NO)?LOGGING/gi, "");
+      return match;
     }
   );
   //Removes unsupported compress/nocompress options from CREATE INDEX statement.
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE(?:\s+UNIQUE|\s+BITMAP|\s+MULTIVALUE)?\s+INDEX.*)(NO)?COMPRESS+((?:\s+\d+)|(?:\s+ADVANCED\s+LOW)|(?:\s+ADVANCED\s+HIGH))?/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     return "";
+  //   }
+  // );
   Qstr = Qstr.replace(
-    /(?<=CREATE(?:\s+UNIQUE|\s+BITMAP|\s+MULTIVALUE)?\s+INDEX.*)(NO)?COMPRESS+((?:\s+\d+)|(?:\s+ADVANCED\s+LOW)|(?:\s+ADVANCED\s+HIGH))?/gis,
+    /CREATE(?:\s+UNIQUE|\s+BITMAP|\s+MULTIVALUE)?\s+INDEX.*?(NO)?COMPRESS+((?:\s+\d+)|(?:\s+ADVANCED\s+LOW)|(?:\s+ADVANCED\s+HIGH))?/gis,
     (match) => {
       changedList.push(match);
-      return "";
-    }
-  );
-  //Removes SCALE from the create sequence DDL statement.
-  Qstr = Qstr.replace(
-    /(?<=CREATE\s+SEQUENCE.*)SCALE\s+(NO)?EXTEND/gis,
-    (match) => {
-      changedList.push(match);
-      return "";
+      match = match.replace(
+        /(NO)?COMPRESS+((?:\s+\d+)|(?:\s+ADVANCED\s+LOW)|(?:\s+ADVANCED\s+HIGH))?/gi,
+        ""
+      );
+      return match;
     }
   );
 
+  //Removes SCALE from the create sequence DDL statement.
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE\s+SEQUENCE.*)SCALE\s+(NO)?EXTEND/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     return "";
+  //   }
+  // );
+
+  Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*?SCALE\s+(NO)?EXTEND/gis, (match) => {
+    changedList.push(match);
+    match = match.replace(/(NO)?EXTEND/gi, "");
+    return match;
+  });
+
   //Removes REVERSE clause from index DDL statement.
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE\s+(?:UNIQUE\s+|BITMAP\s+)?INDEX\s+.*ON.*)REVERSE/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     return "";
+  //   }
+  // );
+
   Qstr = Qstr.replace(
-    /(?<=CREATE\s+(?:UNIQUE\s+|BITMAP\s+)?INDEX\s+.*ON.*)REVERSE/gis,
+    /CREATE\s+(?:UNIQUE\s+|BITMAP\s+)?INDEX\s+.*?ON.*?REVERSE/gis,
     (match) => {
       changedList.push(match);
-      return "";
+      match = match.replace(/REVERSE/gi, "");
+      return match;
     }
   );
 
   //Removes size specification from integer types in SPL objects.
+  // Qstr = Qstr.replace(
+  //   /(?<=(?:CREATE|ALTER)(?: OR REPLACE)? PACKAGE.*)(?:(?:(INTEGER)(?: )?\((?: )?\d+(?: )?\))|(?:(INT)(?: )?\((?: )?\d+(?: )?\))|(?:(SAMLLINT)(?: )?\((?: )?\d+(?: )?\)))/gis,
+  //   (match, $1) => {
+  //     changedList.push(match);
+  //     return $1;
+  //   }
+  // );
+
   Qstr = Qstr.replace(
-    /(?<=(?:CREATE|ALTER)(?: OR REPLACE)? PACKAGE.*)(?:(?:(INTEGER)(?: )?\((?: )?\d+(?: )?\))|(?:(INT)(?: )?\((?: )?\d+(?: )?\))|(?:(SAMLLINT)(?: )?\((?: )?\d+(?: )?\)))/gis,
-    (match, $1) => {
+    /(?:CREATE|ALTER)(?: OR REPLACE)? PACKAGE.*(?:(?:(INTEGER)(?: )?\((?: )?\d+(?: )?\))|(?:(INT)(?: )?\((?: )?\d+(?: )?\))|(?:(SMALLINT)(?: )?\((?: )?\d+(?: )?\)))/gi,
+    (match) => {
       changedList.push(match);
-      return $1;
+      match = match.replace(/INTEGER\s*\(.*?\s*\)/gi, "INTEGER");
+      match = match.replace(/INT\s*\(.*?\s*\)/gi, "INT");
+      match = match.replace(/SMALLINT\s*\(.*?\s*\)/gi, "SMALLINT");
+      return match;
     }
   );
 
   //Converts PIPELINED clause in pipelined functions to SETOF RECORD.
+  // Qstr = Qstr.replace(
+  //   /(?<=(?:CREATE|ALTER)\s+(?:OR REPLACE\s+)?(?:(?:NON)?EDITIONABLE)?FUNCTION.*RETURN.*)PIPELINED/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     return "SETOF RECORD";
+  //   }
+  // );
+
   Qstr = Qstr.replace(
-    /(?<=(?:CREATE|ALTER)\s+(?:OR REPLACE\s+)?(?:(?:NON)?EDITIONABLE)?FUNCTION.*RETURN.*)PIPELINED/gis,
+    /(?:CREATE|ALTER)\s+(?:OR REPLACE\s+)?(?:(?:NON)?EDITIONABLE)?FUNCTION.*?RETURN.*?PIPELINED/gis,
     (match) => {
       changedList.push(match);
-      return "SETOF RECORD";
+      match = match.replace(/PIPELINED/gi, "SETOF RECORD");
+      return match;
     }
   );
 
@@ -555,14 +686,21 @@ export default function ora2pg(Qstr) {
   });
 
   //Removes RELY from REFERENCES clause of the ALTER TABLE ADD FOREIGN KEY statement
+  // Qstr = Qstr.replace(
+  //   /(?<=ALTER TABLE.*CONSTRAINT.*REFERENCES.*)RELY.*;/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     return "";
+  //   }
+  // );
   Qstr = Qstr.replace(
-    /(?<=ALTER TABLE.*CONSTRAINT.*REFERENCES.*)RELY.*;/gis,
+    /ALTER TABLE.*?CONSTRAINT.*?REFERENCES.*?RELY.*?;/gis,
     (match) => {
       changedList.push(match);
-      return "";
+      match = match.replace(/RELY.*?;/gi, "");
+      return match;
     }
   );
-
   //Removes DEFAULT COLLATION clause from the source DDL for tables and views
   Qstr = Qstr.replace(/DEFAULT COLLATION USING_NLS_COMP/gis, (match) => {
     changedList.push(match);
@@ -582,28 +720,50 @@ export default function ora2pg(Qstr) {
 
   //Removes "CONSTRAINT constraint_name CHECK|UNIQUE|PRIMARY KEY parameters DISABLE" clause from the source DDL for tables.
   Qstr = Qstr.replace(
-    /(?<=CREATE.*TABLE\s+.*\(.*)(CONSTRAINT.*(UNIQUE|PRIMARY KEY|CHECK( )?\(.*\))\s+DISABLE)/gis,
+    /CREATE.*?TABLE\s+.*?\(.*?(CONSTRAINT.*?(UNIQUE|PRIMARY KEY|CHECK(.*?)?\(.*?\))\s+DISABLE)/gis,
     (match) => {
       changedList.push(match);
-      return "";
+      match = match.replace(
+        /CONSTRAINT.*?(UNIQUE|PRIMARY KEY|CHECK(.*?)?\(.*?\))\s+DISABLE/gi,
+        ""
+      );
+      return match;
     }
   );
 
   //Removes "CHECK|UNIQUE|PRIMARY KEY parameters DISABLE" clause from the source DDL for tables.
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE.*?TABLE.*?)(?:CHECK|UNIQUE|PRIMARY\s+KEY).*?DISABLE/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     match = match.replace(/(?:CHECK|UNIQUE|PRIMARY\s+KEY).*?DISABLE/gis, "");
+  //     return match;
+  //   }
+  // );
   Qstr = Qstr.replace(
-    /(?<=CREATE.*?TABLE.*?)(?:CHECK|UNIQUE|PRIMARY\s+KEY).*?DISABLE/gis,
+    /CREATE.*?TABLE.*?(?:CHECK|UNIQUE|PRIMARY\s+KEY).*?DISABLE/gis,
     (match) => {
       changedList.push(match);
-      match = match.replace(/(?:CHECK|UNIQUE|PRIMARY\s+KEY).*?DISABLE/gis, "");
+      match = match.replace(/(?:CHECK|UNIQUE|PRIMARY\s+KEY).*?DISABLE/gi, "");
       return match;
     }
   );
+
   //Removes USING INDEX REVERSE clause from CREATE TABLE statement.
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE\s+(?:(?:(?:GLOBAL\s+|PRIVATE\s+)TEMPORARY\s+)|(?:SHARED\s+)|(?:DUPLICATED\s+)|(?:(?:IMMUTABLE\s+)?BLOCKCHAIN\s+))?TABLE.*\(.*)USING\s+INDEX\s+REVERSE/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     return "";
+  //   }
+  // );
+
   Qstr = Qstr.replace(
-    /(?<=CREATE\s+(?:(?:(?:GLOBAL\s+|PRIVATE\s+)TEMPORARY\s+)|(?:SHARED\s+)|(?:DUPLICATED\s+)|(?:(?:IMMUTABLE\s+)?BLOCKCHAIN\s+))?TABLE.*\(.*)USING\s+INDEX\s+REVERSE/gis,
+    /CREATE\s+(?:(?:(?:GLOBAL\s+|PRIVATE\s+)TEMPORARY\s+)|(?:SHARED\s+)|(?:DUPLICATED\s+)|(?:(?:IMMUTABLE\s+)?BLOCKCHAIN\s+))?TABLE.*?\(.*?USING\s+INDEX\s+REVERSE/gis,
     (match) => {
       changedList.push(match);
-      return "";
+      match = match.replace(/USING\s*INDEX\s*REVERSE/, "");
+      return match;
     }
   );
 
@@ -638,26 +798,48 @@ export default function ora2pg(Qstr) {
   //Replaces VIRTUAL keyword with STORED in TABLE definition
 
   //Removes empty spaces from operators i.e. < =, > =, ! = or < >
+  // Qstr = Qstr.replace(
+  //   /((?<=<)\s+(?==)|((?<=>)\s+(?==))|((?<=!)\s+(?==))|((?<=<)\s+(?=>)))/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     return "";
+  //   }
+  // );
+
+  Qstr = Qstr.replace(/<\s+=/gis, (match) => {
+    changedList.push(match);
+    return "<=";
+  });
+
+  Qstr = Qstr.replace(/>\s+=/gis, (match) => {
+    changedList.push(match);
+    return ">=";
+  });
+  Qstr = Qstr.replace(/!\s+=/gis, (match) => {
+    changedList.push(match);
+    return "!=";
+  });
+  Qstr = Qstr.replace(/<\s+>/gis, (match) => {
+    changedList.push(match);
+    return "<>";
+  });
+  //Removes schema-name from the name of INDEX in CREATE INDEX definition
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE\s+(?:UNIQUE\s+|BITMAP\s+|MULTIVALUE\s+)INDEX)(.*)\..*(?=ON)/gis,
+  //   (match) => {
+  //     match = match.replace(/.*?(?=\.)./gis, (matching) => {
+  //       changedList.push(matching);
+  //       return "";
+  //     });
+  //     return match;
+  //   }
+  // );
+
   Qstr = Qstr.replace(
-    /((?<=<)\s+(?==)|((?<=>)\s+(?==))|((?<=!)\s+(?==))|((?<=<)\s+(?=>)))/gis,
+    /CREATE\s+(?:UNIQUE\s+|BITMAP\s+|MULTIVALUE\s+)INDEX(.*?)\..*?(?=ON)/gis,
     (match) => {
       changedList.push(match);
-      return "";
-    }
-  );
-
-  //Removes schema-name from the name of INDEX in CREATE INDEX definition
-  Qstr = Qstr.replace(
-    /(?<=CREATE\s+(?:UNIQUE\s+|BITMAP\s+|MULTIVALUE\s+)INDEX)(.*)\..*(?=ON)/gis,
-    (match) => {
-      match = match.replace(/.*(?=\.)/gis, (matching) => {
-        changedList.push(matching);
-        return "";
-      });
-      match = match.replace(/\./gis, (matching) => {
-        changedList.push(matching);
-        return " ";
-      });
+      match = match.replace(/\s+\S*?(?=\.)./gi, " ");
       return match;
     }
   );
