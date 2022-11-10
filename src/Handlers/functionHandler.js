@@ -172,12 +172,16 @@ export default function oraFunc2pgFunc(Qstr) {
     }
   );
   //TO_NUMBER function
+  // Qstr = Qstr.replace(/\bTO_NUMBER\s*\(.*?\)/gis, (match) => {
+  //   changedList.push(match);
+  //   let arr = match.match(/(?<=')(\S*)(?=')/gi);
+  //   return `TO_NUMBER( ${arr[0]}, ${arr[1]} )`;
+  // });
+
   Qstr = Qstr.replace(/\bTO_NUMBER\s*\(.*?\)/gis, (match) => {
-    changedList.push(match);
-    let arr = match.match(/(?<=')(\S*)(?=')/gi);
+    let arr = match.match(/'\s*?(\S*?)\s*?'/gi);
     return `TO_NUMBER( ${arr[0]}, ${arr[1]} )`;
   });
-
   //REVERSE function to ...
 
   //SYS_EXTRACT_UTC function to ...
@@ -250,8 +254,7 @@ export default function oraFunc2pgFunc(Qstr) {
     }
   );
 
-  Qstr = Qstr.replace(/ *;/igs, ";\n");
+  Qstr = Qstr.replace(/ *;/gis, ";\n");
   changedList = [...new Set(changedList)];
   return { string: Qstr, changedList };
-
 }
