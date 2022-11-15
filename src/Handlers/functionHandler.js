@@ -363,6 +363,29 @@ export default function oraFunc2pgFunc(Qstr) {
     }
   );
 
+  //SOUNDEX
+  Qstr = Qstr.replace(/.*\s*SOUNDEX\s*\(+(.*?)\)+\s*.*/gis, (match) => {
+    changedList.push(match);
+    return `CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;\n ${match}`
+  });
+
+  //STANDARD_HASH
+  Qstr = Qstr.replace(/\s*standard_hash\s*\((.*?)\)\s*/gis, (match, $1) => {
+    changedList.push(match, $1);
+    return ` encode(digest(${$1},'sha1'),'hex')`
+  });
+
+  //SYS_GUID
+  Qstr = Qstr.trim();
+  Qstr = Qstr.replace(/.*\s*SYS_GUID\s*\((.*?)\)\s*.*/gis, (match, $1) => {
+    changedList.push(match, $1);
+    return `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";\n ${match}`
+  });
+  Qstr = Qstr.replace(/\s*SYS_GUID\s*\((.*?)\)\s*/gis, (match) => {
+    changedList.push(match);
+    return `uuid_generate_v1()`
+  });
+
   Qstr = Qstr.replace(/ *;/igs, ";\n")
   changedList = [...new Set(changedList)];
   return { string: Qstr, changedList };
