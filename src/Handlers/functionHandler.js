@@ -76,6 +76,7 @@ export default function oraFunc2pgFunc(Qstr) {
       return "\"\"";
     });
 
+
   //RAWTOHEX function to ENCODE
   Qstr = Qstr.replace(/RAWTOHEX\s*\((.*)\)/gis, (match, $1) => {
     changedList.push(match);
