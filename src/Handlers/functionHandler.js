@@ -103,11 +103,16 @@ export default function oraFunc2pgFunc(Qstr) {
   //NLS_SORT function to - 변환생략
 
   //RATIO_TO_REPORT function to SUM
-  Qstr = Qstr.replace(/\bRATIO_TO_REPORT\s*\(\s*([^\(]+)\s*\)+&(\bTEAM12.TRACK)/gis,
-    (match, $1) => {
-      changedList.push(match, $1);
-      return `sum(${$1}) / sum(sum(${$1}))`;
+  let columnname = Qstr.match(/RATIO_TO_REPORT\(+(.*?)\)+/is);
+  if (columnname) {
+    Qstr = Qstr.replace(/RATIO_TO_REPORT\(+(.*?)\)+/gis, (_, $1) => {
+      return `sum(${$1})/sum(sum(${$1}))`
     });
+    Qstr = Qstr.replace(/(?<=from(.*?))(?=;)/gis, ` group by ${columnname[1]}`);
+  };
+
+
+
 
   //NUMTOYMINTERVAL function to NOW()
   Qstr = Qstr.replace(/\b(?:NUMTOYMINTERVAL)\s*\(\s*([^,]+)\s*,\s*\'([^\)]+)(\')\s*\)+/gis,
@@ -262,7 +267,7 @@ export default function oraFunc2pgFunc(Qstr) {
   Qstr = Qstr.replace(/\bTO_TIMESTAMP_TZ\s*\(.*?\)/gis, (match) => {
     changedList.push(match);
     match = match.replace(/TO_TIMESTAMP_TZ\s*\(/gis, "TO_TIMESTAMP(");
-    return `${match} ::timestamp AT TIME ZONE '-9:0' `;
+    return `${match} ::timestamp AT TIME ZONE 'Asia/Seoul' `;
   });
 
   //SESSIONTIMEZONE function
@@ -356,7 +361,7 @@ export default function oraFunc2pgFunc(Qstr) {
     /FROM_TZ\s*\(\s*\S*\s*'(.*?)'\s*,\s*'(.*?)'\s*\)/gis,
     (match, $1, $2) => {
       changedList.push(match);
-      return `TIMESTAMP WITH TIME ZONE '${$1} ${$2}'`;
+      return `TIMESTAMP '${$1}' AT TIME ZONE '${$2}'`;
     }
   );
 
