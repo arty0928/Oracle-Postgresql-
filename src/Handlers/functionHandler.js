@@ -123,10 +123,10 @@ export default function oraFunc2pgFunc(Qstr) {
   });
 
   //trunc(date) function to -변환생략
-  Qstr = Qstr.replace(/\bTRUNC\s*(.*)/gis, (match, $1) => {
-    changedList.push(match, $1);
-    return `date_trunc ${$1}`;
-  });
+  // Qstr = Qstr.replace(/\bTRUNC\s*(.*)/gis, (match, $1) => {
+  //   changedList.push(match, $1);
+  //   return `date_trunc ${$1}`;
+  // });
 
   //decode function to case ..when..then..else..end
   Qstr = Qstr.replace(/\bDECODE\s*\((.*?)\s*\)/gis, (match, $1) => {
@@ -251,17 +251,18 @@ export default function oraFunc2pgFunc(Qstr) {
       return `INTERVAL '${$1} years ${$2} months' as timestamp`;
     }
   );
-  //TO_TIMESTAMP_TZ function
-  Qstr = Qstr.replace(/\bTO_TIMESTAMP_TZ\s*\(.*?\)/gis, (match) => {
-    changedList.push(match);
-    match = match.replace(/TO_TIMESTAMP_TZ\s*\(/gis, "TO_TIMESTAMP(");
-    return `${match} ::timestamp AT TIME ZONE '15:0' `;
-  });
 
   //TO_TIMESTAMP function
   Qstr = Qstr.replace(/\bTO_TIMESTAMP\s*\(.*?\)/gis, (match) => {
     changedList.push(match);
     return `${match}::timestamp `;
+  });
+
+  //TO_TIMESTAMP_TZ function
+  Qstr = Qstr.replace(/\bTO_TIMESTAMP_TZ\s*\(.*?\)/gis, (match) => {
+    changedList.push(match);
+    match = match.replace(/TO_TIMESTAMP_TZ\s*\(/gis, "TO_TIMESTAMP(");
+    return `${match} ::timestamp AT TIME ZONE '-9:0' `;
   });
 
   //SESSIONTIMEZONE function
