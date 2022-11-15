@@ -2,6 +2,7 @@ import './Results.css';
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useRecoilValue } from "recoil";
 import errorMessageAtom from "../recoil/atoms/errorMessageAtom";
+import errorPrecautionsMessageAtom from "../recoil/atoms/errorPrecautionsMessageAtom";
 import errorQueryMessageAtom from "../recoil/atoms/errorQueryMessageAtom";
 import functionChangedAtom from "../recoil/atoms/functionChangedAtom";
 import printInputQueryAtom from "../recoil/atoms/printInputQueryAtom";
@@ -14,6 +15,7 @@ export default function Results() {
   const valueOut = useRecoilValue(valueOutAtom);
   const functionChanged = useRecoilValue(functionChangedAtom);
   const errorMessage = useRecoilValue(errorMessageAtom);
+  const errorPrecautionsMessage = useRecoilValue(errorPrecautionsMessageAtom);
   const errorQueryMessage = useRecoilValue(errorQueryMessageAtom);
 
   return (
@@ -49,6 +51,10 @@ export default function Results() {
                 {errorMessage &&
                   errorMessage.map((ele) => {
                     return <div key={ele} className="text-red-500 font-bold">{ele + " "}</div>;
+                  })}
+                {errorPrecautionsMessage &&
+                  errorPrecautionsMessage.map((ele) => {
+                    return <div key={ele} className="text-gray-700 font-bold">{ele + " "}</div>;
                   })}
               </dd>
             </div>
