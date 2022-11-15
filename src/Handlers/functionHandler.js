@@ -103,13 +103,33 @@ export default function oraFunc2pgFunc(Qstr) {
   //NLS_SORT function to - 변환생략
 
   //RATIO_TO_REPORT function to SUM
-  let columnname = Qstr.match(/RATIO_TO_REPORT\(+(.*?)\)+/is);
-  if (columnname) {
-    Qstr = Qstr.replace(/RATIO_TO_REPORT\(+(.*?)\)+/gis, (_, $1) => {
-      return `sum(${$1})/sum(sum(${$1}))`
-    });
-    Qstr = Qstr.replace(/(?<=from(.*?))(?=;)/gis, ` group by ${columnname[1]}`);
+  const ratio_to_report = (qstr) => {
+    qstr = qstr.replace(
+      /RATIO_TO_REPORT\s*\(\s*(.*?)\s*\).*?FROM(.*?)(GROUP\s+BY\s*.*?\s*?)?;/gis,
+      (match, $1) => {
+        const column = $1;
+        match = match.replace(
+          /RATIO_TO_REPORT\s*\(\s*(.*?)\s*\)/i,
+          (matching, $1) => {
+            changedList.push(matching);
+            return `sum(${$1})/sum(sum(${$1}))`;
+          }
+        );
+        if (!match.match(/GROUP\s*BY/gi)) {
+          match = match.replace(
+            /FROM\s+[a-zA-Z0-9.,\'\"]*\s*/gi,
+            (matching) => {
+              return matching + ` GROUP BY ${column}`;
+            }
+          );
+        }
+
+        return match;
+      }
+    );
+    return qstr;
   };
+  Qstr = ratio_to_report(Qstr);
 
 
 
