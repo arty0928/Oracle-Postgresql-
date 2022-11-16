@@ -395,6 +395,35 @@ export default function oraFunc2pgFunc(Qstr) {
     }
   );
 
+  //SOUNDEX function to
+  const SOUNDEX = Qstr.match(/SOUNDEX\(+(.*?)\)+/gis);
+  if(SOUNDEX){
+    const create_extension_soundex = "CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;\n"
+  Qstr = create_extension_soundex + Qstr;
+  changedList.push(SOUNDEX)
+  };
+
+  //STANDARD_HASH function to
+  const STANDARD_HASH = Qstr.match(/STANDARD_HASH\(+(.*?)\)+/gis);
+  if(STANDARD_HASH){
+    const create_extension_STANDARD_HASH = "CREATE EXTENSION IF NOT EXISTS pgcrypto;\n"
+    Qstr = Qstr.replace(/STANDARD_HASH\(+(.*?)\)+/gis,(_, $1) => {
+      return `encode(digest(${$1},'sha1'),'hex')`;
+    });
+    Qstr = create_extension_STANDARD_HASH + Qstr;
+  changedList.push(STANDARD_HASH)
+  };
+
+  //SYS_GUID function to
+  const SYS_GUID = Qstr.match(/SYS_GUID\(\s*\)/gis);
+  if(SYS_GUID){
+    const create_extension_SYS_GUID = "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";\n"
+    Qstr = Qstr.replace(/sys_guid\(\s*\)/gis,"uuid_generate_v1()");
+    Qstr = create_extension_SYS_GUID + Qstr;
+  changedList.push(SYS_GUID)
+  };
+
+
 
   Qstr = Qstr.replace(/ *;/igs, ";\n")
 
