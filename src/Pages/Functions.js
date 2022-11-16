@@ -201,22 +201,6 @@ function Functions() {
               </details>
 
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">COMPOSE</summary>
-
-                <div className="pl-4">
-                  <p></p>
-                  <p className="p-4 text-pink-700">
-                    select ascii('o'); --111 'o'의 아스키코드<br></br>
-                    select to_hex(ascii('o')); -- 111을 16진수로 바꾼 것 = 6f
-                    <br></br>
-                    select ascii(UNISTR('\0308'));<br></br>
-                    select ascii('ö'); --246 'ö'의 아스키코드<br></br>
-                    select to_hex(ascii('ö')); -- 246을 16진수로 바꾸면 f6
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   ROUND (date)
                 </summary>
