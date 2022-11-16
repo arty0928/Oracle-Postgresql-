@@ -487,20 +487,21 @@ function Functions() {
                 <div className="pl-4">
                   <ul className="ml-5 leading-7">
                     <li>
-                      {" "}
-                      ORACLE 지원 문자셋
                       <a
                         href="https://docs.oracle.com/cd/B28359_01/server.111/b28286/functions027.htm#SQLRF00620"
                         target="blank"
-                      ></a>
+                      >
+                        {" "}
+                        ORACLE 지원 문자셋
+                      </a>
                     </li>
                     <li>
-                      {" "}
-                      PostgreSQL 지원 문자셋
                       <a
                         href="https://www.postgresql.org/docs/current/multibyte.html"
                         target="blank"
-                      ></a>
+                      >
+                        PostgreSQL 지원 문자셋
+                      </a>
                     </li>
                   </ul>
                 </div>
