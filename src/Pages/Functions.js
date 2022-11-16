@@ -620,6 +620,18 @@ function Functions() {
                 </div>
               </details>
 
+              {/* TIMESTAMP/TZ */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  TIMESTAMP/TZ
+                </summary>
+
+                <div className="pl-4">
+                  <p>PostgreSQL에서는 timezone을 3가지 방법으로 표시 할 수 있다. <a className="font-bold text-indigo-500" href="https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-TIMEZONES">(관련 문서)</a> </p>
+                  <br></br><p>POSIX-Style의 Timezone 표기법인 STDoffset, STDoffeset DST 형태의 경우 POSIX-Style에서 UTC로부터 서쪽으로 시간상 얼마나 떨어져 잇는지를 계산한다. 따라서 AT TIME ZONE 'UTC+9'의 경우, 대한민국은 그리니치 천문대 기준으로 대칭적 위치의 시간대에 해당하여 값에 오차가 생긴다.</p>
+                  <p>오차를 없애기 위해서는 UTC 시간의 부호를 바꾸어주거나, AT TIME ZONE 'Asia/Seoul'을 입력해주면 된다.</p>
+                </div>
+              </details>
 
             </div>
             <p
