@@ -61,12 +61,12 @@ function Functions() {
                   <p>
                     postgresql에서는 지원하지 않는 함수. Oracle 의 to_multi_byte
                     함수는
-                  </p>
-                  <p className="font-bold leading-7">
-                    database의 characterset이 함수의 parameter의 single byte
-                    character 와 multi byte character 를 모두 가지고 있을 때
-                    정상적으로 작동함.
-                  </p>
+
+                    <b className="font-bold ">
+                      database의 characterset이 함수의 parameter의 single byte
+                      character 와 multi byte character 를 모두 가지고 있을 때
+                      정상적으로 작동함.
+                    </b></p>
                   <p>
                     (single byte character를 multi byte character로 변환하는
                     함수이기 때문에)<br></br>
@@ -204,14 +204,11 @@ function Functions() {
                   </p>
                   <p className="p-4 text-pink-700">
                     SELECT
-                    <span>
-                      case when substr(time,15,2){"<"}'10' then
-                      concat(substr(time,12,2),':00')
-                    </span>
-                    <span>
-                      when substr(time,15,2) {">"}='10' and substr(time,15,2)
-                      {"<"}'20' then concat(substr(time,12,2),':10'
-                    </span>
+                    <br></br>
+                    &nbsp;&nbsp;case when substr(time,15,2){"<"}'10' then
+                    concat(substr(time,12,2),':00')<br></br>
+                    &nbsp;&nbsp;when substr(time,15,2) {">"}='10' and substr(time,15,2)
+                    {"<"}'20' then concat(substr(time,12,2),':10')<br></br>
                   </p>
                   <p className="font-bold leading-7">
                     case when 조건 절에서 우선 분 단위 값만 추출 해서 10분
@@ -326,39 +323,37 @@ function Functions() {
 
                 <div className="pl-4">
                   <p>postgresql.conf 설정 파일</p>
-                  <p className="font-bold leading-7">
+                  <div className="m-2 p-3 pl-5 font-bold bg-gray-300 rounded-md">
                     {" "}
                     유저 선택 언어로 메세지가 번역되려면 NLS 사용<br></br>
                     다른 지역 지원 기능과는 독립
-                  </p>
+                  </div>
                   <ul className="ml-5 leading-7">
                     <li>
-                      - initdb --locale : 다른 지역(locale)을 사용하고 싶은 경우
-                      <br></br>
-                      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;시스템의
-                      로케일 설정이 불분명한 경우
+                      <b>- initdb --locale :</b>
+                      <span className="block pl-4">다른 지역(locale)을 사용하고 싶은 경우<br></br>
+                        시스템의 로케일 설정이 불분명한 경우</span>
+                    </li>
+                    <li><b>SHOW:</b> <span className="block pl-4">사용 중인 지역 설정을 확인</span></li>
+                    <li>
+                      <b>locale -a :</b> <span className="block pl-4">지역 지원 기능이 정상적으로 동작하지 않는 경우 operating system 이
+                        제공하는 경우에 커멘드를 사용</span>
                     </li>
                     <li>
-                      locale -a : 지역 지원 기능이 정상적으로 동작하지 않는 경우
-                      <br></br>&emsp;&emsp;&emsp;&emsp;&ensp;operating system 이
-                      제공하는 경우에 커멘드를 사용
+                      <b>PostgreSQL JDBC :</b> <span className="block pl-4">MULE_INTERNAL,LATIN6,LATIN8, LATIN10 를 지원하지 않음</span>
+
                     </li>
                     <li>
-                      PostgreSQL JDBC : MULE_INTERNAL,LATIN6,LATIN8, LATIN10 를
-                      지원하지 않음
+                      <b>PostgreSQL character set :</b> <span className="block pl-4">ISO 8859-싱글 바이트 문자,
+                        EUC(확장 Unix 코드), UTF-8, Mule 내부 코드와(멀티 바이트
+                        character set)</span>
                     </li>
                     <li>
-                      PostgreSQL character set : ISO 8859-싱글 바이트 문자
-                      <br></br>
-                      EUC(확장 Unix 코드), UTF-8, Mule 내부 코드와(멀티 바이트
-                      character set)
-                    </li>
-                    <li>
-                      디폴트 character set : PostgreSQL 데이터베이스 클러스터가
-                      초기화되어질 때 결정.
-                      <br></br>데이터베이스를 생성할 때 오버라이드.각각 다른
-                      character set 를 가지는 다수의 데이터베이스를 가질 수
-                      있습니다.
+                      <b>디폴트 character set :</b> <span className="block pl-4">PostgreSQL 데이터베이스 클러스터가
+                        초기화되어질 때 결정.
+                        데이터베이스를 생성할 때 오버라이드.각각 다른
+                        character set 를 가지는 다수의 데이터베이스를 가질 수
+                        있습니다.</span>
                     </li>
                     <li>
                       PostgreSQL 서버-클라이언트 character set 자동적으로 변환
