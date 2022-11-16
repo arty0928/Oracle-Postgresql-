@@ -140,6 +140,57 @@ function Precautions() {
                   </p>
                 </div>
               </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  END LABEL이 START LABEL과 다를 때
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    PostgreSQL은 END LABEL과 START LABEL이 다를 때 오류가
+                    발생합니다. 이 경우 END LABEL을 제거해 주어야 합니다.
+                  </p>
+                  <p className="p-4 text-pink-700">
+                    ex) 아래와 같은 경우 오류 발생
+                  </p>
+                  <p className="p-4 text-pink-700">
+                    CREATE OR REPLACE PACKAGE startlabel is ~ END endlabel ;
+                  </p>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  GLOBAL TEMPORARY TABLE
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    pgtt extension을 설치하면 PostgreSQL에서도 GLOBAL TEMPORARY
+                    TABLE을 원활하게 사용할 수 있습니다.<br></br>PostgreSQL에서
+                    GLOBAL TEMPORARY TABLE을 사용할 때는 스키마 이름을 제거해야
+                    합니다.
+                  </p>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  INDEX에 함수 또는 식이 포함된 경우 괄호 추가
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    PostgreSQL에서는 INDEX에 함수 또는 식이 포함된 괄호를 한 번
+                    더 괄호로 감싸주어야 합니다.
+                  </p>
+                  <p className="p-4 text-pink-700">
+                    ex) CREATE INDEX indexname ON tablename ((meta-{">"}
+                    {">"}’example’));
+                  </p>
+                </div>
+              </details>
             </div>
 
             <div className="w-full lg:w-1/2 px-4 py-2">
@@ -166,37 +217,103 @@ function Precautions() {
 
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
-                  How Long is this site live?
+                  INCLUDING OVERFLOW 삭제
                 </summary>
 
                 <div className="pl-4">
-                  Laboris qui labore cillum culpa in sunt quis sint veniam.
-                  Dolore ex aute deserunt esse ipsum elit aliqua. Aute quis
-                  minim velit nostrud pariatur culpa magna in aute.
+                  <p>
+                    테이블을 정의하는 DDL 쿼리문에서 INCLUDING ~ OVERFLOW 구문을
+                    삭제해야 합니다.
+                  </p>
+                  <p className="p-4 text-pink-700">
+                    <ul className="ml-5 leading-7">
+                      <li>
+                        ORACLE: CREATE TABLE test ( id NUMBER CONSTRAINT
+                        test_pk_id PRIMARY KEY, name VARCHAR2(30))<br></br>
+                        ORGANIZATION INDEX NOCOMPRESS INCLUDING name OVERFLOW
+                        TABLESPACE users;
+                      </li>
+                      <li>
+                        PostgreSQL: CREATE TABLE test ( id NUMERIC CONSTRAINT
+                        test_pk_id PRIMARY KEY, name VARCHAR(30));
+                      </li>
+                    </ul>
+                  </p>
                 </div>
               </details>
 
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
-                  How Long is this site live?
+                  LOB STORE 삭제
                 </summary>
 
                 <div className="pl-4">
-                  Laboris qui labore cillum culpa in sunt quis sint veniam.
-                  Dolore ex aute deserunt esse ipsum elit aliqua. Aute quis
-                  minim velit nostrud pariatur culpa magna in aute.
+                  <p>
+                    PostgreSQL은 LOB 데이터 타입은 물론 LOB STORE 기능을
+                    지원하지 않으므로 LOB STORE 구문이 포함되어 있다면 이를 모두
+                    삭제해야 합니다.
+                  </p>
                 </div>
               </details>
               <div></div>
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
-                  How Long is this site live?
+                  EXTERNAL TABLE 구문 → FOREIGN TABLE 구문
                 </summary>
 
                 <div className="pl-4">
-                  Laboris qui labore cillum culpa in sunt quis sint veniam.
-                  Dolore ex aute deserunt esse ipsum elit aliqua. Aute quis
-                  minim velit nostrud pariatur culpa magna in aute.
+                  <p>
+                    ORACLE의 EXTERNAL TABLE 기능을 PostgreSQL의 FOREIGN TABLE로
+                    대체할 수 있습니다.
+                  </p>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  중첩테이블(NESTED TABLE)
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    {" "}
+                    ORACLE의 중첩테이블을 PostgreSQL에서도 배열을 이용하여
+                    비슷하게 구현할 수는 있지만, 이를 중첩테이블이라 부르지는
+                    않습니다.<br></br>또한 PostgreSQL은 이러한 테이블에서의 NOT
+                    NULL 기능을 지원하지 않으므로 중첩테이블 구문에 NOT NULL이
+                    포함되어 있다면 삭제해야 합니다.
+                  </p>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  ALTER 테이블명 MODIFY (컬럼명) → ALTER 테이블명 ALTER 컬럼명
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    PostgreSQL에서 컬럼을 수정할 때는 ‘ALTER 컬럼명’ 형식의
+                    구문을 사용합니다.
+                  </p>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  GENERATED~IDENTITY 구문
+                </summary>
+
+                <div className="pl-4">
+                  <p className="font-bold leading-7">
+                    PostgreSQL에서 GENERATED~IDENTITY 구문을 사용할 때 주의할
+                    사항은 다음과 같습니다.
+                  </p>
+                  <ol className="ml-5 leading-7">
+                    <li>INT 자료형 → BIGINT 자료형 변환</li>
+                    <li>ORDER 또는 NOORDER 제거</li>
+                  </ol>
+                  <p>GENERATED_IDENTITY_CACHED에서 같이 처리합니다. </p>
                 </div>
               </details>
             </div>
