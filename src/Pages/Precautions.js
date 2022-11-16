@@ -46,7 +46,7 @@ function Precautions() {
           <div className="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
             <div className="w-full lg:w-1/2 px-4 py-2">
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary class="font-semibold leading-7">치환</summary>
+                <summary className="font-semibold leading-7">치환</summary>
 
                 <div className="pl-4">
                   <p className="font-bold leading-7">— 데이터 타입</p>
@@ -255,7 +255,6 @@ function Precautions() {
                   </p>
                 </div>
               </details>
-              <div></div>
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   EXTERNAL TABLE 구문 → FOREIGN TABLE 구문
