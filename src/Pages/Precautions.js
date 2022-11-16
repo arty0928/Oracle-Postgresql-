@@ -46,6 +46,7 @@ function Precautions() {
           </div>
           <div className="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
             <div className="w-full lg:w-1/2 px-4 py-2">
+              {/* 치환 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">치환</summary>
 
@@ -79,6 +80,7 @@ function Precautions() {
                 </div>
               </details>
 
+              {/* 이름에 대문자가 포함될 때 "이름" */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   이름에 대문자가 포함될 때 "이름"
@@ -99,6 +101,7 @@ function Precautions() {
                 </div>
               </details>
 
+              {/* 외부 조인 (OUTER JOIN) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   외부 조인(OUTER JOIN)
@@ -127,6 +130,7 @@ function Precautions() {
                 </div>
               </details>
 
+              {/* CONNECT BY */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   CONNECT BY
@@ -142,6 +146,88 @@ function Precautions() {
                 </div>
               </details>
 
+              {/* ALTER TRIGGER ENABLE/DISABLE */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  ALTER TRIGGER ENABLE/DISABLE
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    ORACLE에서는 트리거의 이름만으로 ENABLE 혹은 DISABLE 설정할
+                    수 있으나, PostgreSQL에서는 해당하는 테이블을 선정해 주어야
+                    합니다.{" "}
+                  </p>
+                  <p className="p-4 text-pink-700">
+                    ex) <br></br>
+                    <b>ORACLE:</b> ALTER TRIGGER
+                    triggername DISABLE;<br></br>
+                    <b>PostgreSQL:</b> ALTER
+                    TABLE tablename DISABLE TRIGGER triggername;
+                  </p>
+                </div>
+              </details>
+
+              {/* INCLUDING OVERFLOW 삭제 */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  INCLUDING OVERFLOW 삭제
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    테이블을 정의하는 DDL 쿼리문에서 INCLUDING ~ OVERFLOW 구문을
+                    삭제해야 합니다.
+                  </p>
+                  <p className="p-4 text-pink-700">
+                    ex) <br></br>
+                    <b>ORACLE:</b> CREATE TABLE test ( id NUMBER CONSTRAINT
+                    test_pk_id PRIMARY KEY, name VARCHAR2(30))
+                    ORGANIZATION INDEX NOCOMPRESS INCLUDING name OVERFLOW
+                    TABLESPACE users;
+                    <br></br>
+                    <b>PostgreSQL:</b> CREATE TABLE test ( id NUMERIC CONSTRAINT
+                    test_pk_id PRIMARY KEY, name VARCHAR(30));
+                  </p>
+                </div>
+              </details>
+
+              {/* LOB STORE 삭제 */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  LOB STORE 삭제
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    PostgreSQL은 LOB 데이터 타입은 물론 LOB STORE 기능을
+                    지원하지 않으므로 LOB STORE 구문이 포함되어 있다면 이를 모두
+                    삭제해야 합니다.
+                  </p>
+                </div>
+              </details>
+
+              {/* END LABEL로 예약어가 사용될 때 “이름” */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  END LABEL로 예약어가 사용될 때 “이름”
+                </summary>
+
+                <div className="pl-4">
+                  <p>PostgreSQL은 END LABEL로 예약어를 사용할 수 없기 때문에 만약 사용되었다면 쌍따옴표(“”)로 감싸 주어야 합니다.  </p>
+                  <p className="p-4 text-pink-700"> ex) <br></br> CREATE OR REPLACE PACKAGE array is ~<br></br>END "array"; </p>
+                </div>
+              </details>
+
+
+            </div>
+
+
+
+            <div className="w-full lg:w-1/2 px-4 py-2">
+
+
+              {/* END LABEL이 START LABEL과 다를 때 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   END LABEL이 START LABEL과 다를 때
@@ -152,15 +238,15 @@ function Precautions() {
                     PostgreSQL은 END LABEL과 START LABEL이 다를 때 오류가
                     발생합니다. 이 경우 END LABEL을 제거해 주어야 합니다.
                   </p>
-                  <p className="p-4 text-pink-700">
-                    ex) 아래와 같은 경우 오류 발생
-                  </p>
-                  <p className="p-4 text-pink-700">
-                    CREATE OR REPLACE PACKAGE startlabel is ~ END endlabel ;
+                  <p className="p-4 text-pink-700 ">
+                    ex) 아래와 같은 경우 오류 발생<br></br>
+                    CREATE OR REPLACE PACKAGE startlabel is ~ <br></br>
+                    END endlabel ;
                   </p>
                 </div>
               </details>
 
+              {/* GLOBAL TEMPORARY TABLE */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   GLOBAL TEMPORARY TABLE
@@ -169,13 +255,14 @@ function Precautions() {
                 <div className="pl-4">
                   <p>
                     pgtt extension을 설치하면 PostgreSQL에서도 GLOBAL TEMPORARY
-                    TABLE을 원활하게 사용할 수 있습니다.<br></br>PostgreSQL에서
+                    TABLE을 원활하게 사용할 수 있습니다. PostgreSQL에서
                     GLOBAL TEMPORARY TABLE을 사용할 때는 스키마 이름을 제거해야
                     합니다.
                   </p>
                 </div>
               </details>
 
+              {/* INDEX에 함수 또는 식이 포함된 경우 괄호 추가 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   INDEX에 함수 또는 식이 포함된 경우 괄호 추가
@@ -192,70 +279,8 @@ function Precautions() {
                   </p>
                 </div>
               </details>
-            </div>
 
-            <div className="w-full lg:w-1/2 px-4 py-2">
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  ALTER TRIGGER ENABLE/DISABLE
-                </summary>
-
-                <div className="pl-4">
-                  <p>
-                    ORACLE에서는 트리거의 이름만으로 ENABLE 혹은 DISABLE 설정할
-                    수 있으나, PostgreSQL에서는 해당하는 테이블을 선정해 주어야
-                    합니다.{" "}
-                  </p>
-                  <p className="p-4 text-pink-700">
-                    ex) <br></br>
-                    <span className="font-semibold">ORACLE:</span> ALTER TRIGGER
-                    triggername DISABLE;<br></br>
-                    <span className="font-semibold">PostgreSQL:</span> ALTER
-                    TABLE tablename DISABLE TRIGGER triggername;
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  INCLUDING OVERFLOW 삭제
-                </summary>
-
-                <div className="pl-4">
-                  <p>
-                    테이블을 정의하는 DDL 쿼리문에서 INCLUDING ~ OVERFLOW 구문을
-                    삭제해야 합니다.
-                  </p>
-                  <p className="p-4 text-pink-700">
-                    <ul className="ml-5 leading-7">
-                      <li>
-                        ORACLE: CREATE TABLE test ( id NUMBER CONSTRAINT
-                        test_pk_id PRIMARY KEY, name VARCHAR2(30))<br></br>
-                        ORGANIZATION INDEX NOCOMPRESS INCLUDING name OVERFLOW
-                        TABLESPACE users;
-                      </li>
-                      <li>
-                        PostgreSQL: CREATE TABLE test ( id NUMERIC CONSTRAINT
-                        test_pk_id PRIMARY KEY, name VARCHAR(30));
-                      </li>
-                    </ul>
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  LOB STORE 삭제
-                </summary>
-
-                <div className="pl-4">
-                  <p>
-                    PostgreSQL은 LOB 데이터 타입은 물론 LOB STORE 기능을
-                    지원하지 않으므로 LOB STORE 구문이 포함되어 있다면 이를 모두
-                    삭제해야 합니다.
-                  </p>
-                </div>
-              </details>
+              {/* EXTERNAL TABLE 구문 → FOREIGN TABLE 구문 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   EXTERNAL TABLE 구문 → FOREIGN TABLE 구문
@@ -269,6 +294,7 @@ function Precautions() {
                 </div>
               </details>
 
+              {/* 중첩테이블(NESTED TABLE) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   중첩테이블(NESTED TABLE)
@@ -286,6 +312,7 @@ function Precautions() {
                 </div>
               </details>
 
+              {/* ALTER 테이블명 MODIFY (컬럼명) → ALTER 테이블명 ALTER 컬럼명 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   ALTER 테이블명 MODIFY (컬럼명) → ALTER 테이블명 ALTER 컬럼명
@@ -299,6 +326,7 @@ function Precautions() {
                 </div>
               </details>
 
+              {/* GENERATED~IDENTITY 구문 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   GENERATED~IDENTITY 구문
@@ -316,7 +344,9 @@ function Precautions() {
                   <p>GENERATED_IDENTITY_CACHED에서 같이 처리합니다. </p>
                 </div>
               </details>
+
             </div>
+
           </div>
         </div>
       </section>
