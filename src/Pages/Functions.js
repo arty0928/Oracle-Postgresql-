@@ -6,17 +6,17 @@ function Functions() {
   return (
     // <!-- component -->
     <div>
-      <section class="text-gray-700">
-        <div class="container px-5 py-24 mx-auto">
-          <div class="text-center mb-20">
+      <section className="text-gray-700">
+        <div className="container px-5 py-24 mx-auto">
+          <div className="text-center mb-20">
             <h1
-              class="mt-6 text-center sm:text-4xl sm:font-bold tracking-tight text-gray-900
+              className="mt-6 text-center sm:text-4xl sm:font-bold tracking-tight text-gray-900
                          text-3xl font-bold text-center title-font text-gray-900 mb-4"
             >
               Exception Functions
             </h1>
             <p
-              class="
+              className="
                         text-base leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto"
             >
               The most common questions about how our business works and what
@@ -33,8 +33,8 @@ function Functions() {
               </button>
             </p>
           </div>
-          <div class="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
-            <div class="w-full lg:w-1/2 px-4 py-2">
+          <div className="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
+            <div className="w-full lg:w-1/2 px-4 py-2">
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TO_NCHAR(datetime), TO_NCHAR(character)
@@ -227,7 +227,7 @@ function Functions() {
             </div>
 
             {/* 오른쪽 토글 */}
-            <div class="w-full lg:w-1/2 px-4 py-2">
+            <div className="w-full lg:w-1/2 px-4 py-2">
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   FIRST/LAST
@@ -464,7 +464,7 @@ function Functions() {
 
                 <div className="pl-4">
                   <p className="p-4 text-pink-700">
-                    UPDATE xdata SET xmlcode='<values>Infosys-Bangalore</values>
+                    UPDATE xdata SET xmlcode=' &lt;values&gt;Infosys-Bangalore&lt;/values&gt;
                     '<br></br>
                     WHERE cast(xpath('//values/text()',xmlcode) AS text[]) = '
                     Infosys';
@@ -479,11 +479,11 @@ function Functions() {
                   </ul>
                   <p className="p-4 text-pink-700">
                     CREATE TABLE xdata( id INT, xmlcode XML);<br></br>
-                    INSERT INTO xdata VALUES (1,'<values>Infosys</values>');
+                    INSERT INTO xdata VALUES (1,'&lt;values&gt;Infosys&lt;values&gt;');
                     <br></br>
-                    INSERT INTO xdata VALUES (2,'<values>Enterprisedb</values>
+                    INSERT INTO xdata VALUES (2,'&lt;values&gt;Enterprisedb&lt;values&gt;
                     ');<br></br>
-                    INSERT INTO xdata VALUES (3,'<values>Wipro</values>');
+                    INSERT INTO xdata VALUES (3,'&lt;values&gt;Wipro&lt;values&gt;');
                   </p>
                 </div>
               </details>
@@ -533,7 +533,7 @@ function Functions() {
               </details>
             </div>
             <p
-              class="mt-3 text-center sm:text-2xl sm:font-bold tracking-tight text-gray-900
+              className="mt-3 text-center sm:text-2xl sm:font-bold tracking-tight text-gray-900
                          text-3xl font-bold text-center title-font text-gray-900 mb-4"
             >
               Functions currently under consideration

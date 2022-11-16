@@ -255,7 +255,6 @@ function Precautions() {
                   </p>
                 </div>
               </details>
-              <div></div>
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   EXTERNAL TABLE 구문 → FOREIGN TABLE 구문
