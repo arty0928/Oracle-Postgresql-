@@ -28,10 +28,11 @@ function Precautions() {
                   navigate("/Oracle-Postgresql-");
                 }}
                 className="
-                                mt-6 text-center text-xl font-bold tracking-tight text-indigo-600 mr-6"
+                                mt-6 text-center text-xl font-bold tracking-tight text-indigo-600 mr-10"
               >
                 Back to Query Converter
               </button>
+              
               <button
                 onClick={() => {
                   navigate("/Functions");
