@@ -401,6 +401,19 @@ function Functions() {
                   </p>
                 </div>
               </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">TZ_OFFSET</summary>
+
+                <div className="pl-4">
+                  <p>
+                    본 사이트의 TZ_OFFSET 변환은 예문 ‘SELECT
+                    TZ_OFFSET('US/Eastern') FROM DUAL;’을 기준으로 작성되어
+                    있습니다.<br></br>여러 행을 SELECT하여 에러가 발생할 경우
+                    다른 행들을 구문의 적절한 위치로 옮겨주어야 합니다.
+                  </p>
+                </div>
+              </details>
             </div>
 
             {/* 오른쪽 토글 */}
