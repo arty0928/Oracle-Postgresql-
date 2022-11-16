@@ -144,7 +144,7 @@ export default function oraFunc2pgFunc(Qstr) {
 
   //TZ_OFFSET
   Qstr = Qstr.replace(/\bTZ_OFFSET\((.*)\)/gis, (match, $1) => {
-    changedList.push(match, $1);
+    changedList.push(match);
     return `utc_offset FROM pg_catalog.pg_timezone_names WHERE name = ${$1}`;
   });
 
@@ -246,7 +246,7 @@ export default function oraFunc2pgFunc(Qstr) {
   Qstr = Qstr.replace(/\b(MONTHS_BETWEEN)\s*((\s*([^,]+)\s*,\s*([^\)]+)\s*)+\))\s*./gis,
     (match, $1, $2) => {
       changedList.push(match, $1, $2);
-      return `EXTRACT(YEAR FROM age${$2})*12`;
+      return `EXTRACT(YEAR FROM age${$2})*12)`;
     });
 
   //MEDIAN function to PERCENTILE_CONT
