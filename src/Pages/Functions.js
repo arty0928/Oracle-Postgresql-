@@ -133,9 +133,14 @@ function Functions() {
                 <summary className="font-semibold leading-7">NEW_TIME</summary>
 
                 <div className="pl-4">
-                  <p>postgresql.conf 에 아래 쿼리 입력 후 재시작</p>
+                  <b>NEW_TIME : ORACLE의 서버 시간대를 변경할 때 사용</b>
                   <p className="p-4 text-pink-700">
-                    ALTER DATABASE 데이터베이스명 SET timezone = 'Asia/Seoul';
+                    POSTGRES : ALTER DATABASE 데이터베이스명 SET timezone =
+                    'Asia/Seoul';
+                  </p>
+                  <p>
+                    postgres 서버의 시간대를 변경할 때 사용<br></br>
+                    postgresql.conf 에 쿼리 입력 후 재시작
                   </p>
                 </div>
               </details>
@@ -146,15 +151,33 @@ function Functions() {
                 </summary>
 
                 <div className="pl-4">
-                  <p className="p-4 text-pink-700">
-                    date_trunc(field, sourcetime_zone ])
+                  <b> date_trunc(Date field, sourcetime_zone)</b>
+                  <p>
+                    date_trunc함수는 첫번째 인자로
+                    [year,month,day,hour,minute,second,millisecond] 와 같이 날짜
+                    키워드가 옵니다. 뒤의 인자는 timestamp 데이터가 옵니다.{" "}
                   </p>
                   <p className="p-4 text-pink-700">
-                    WITH TEMP AS ( SELECT to_timestamp('2018-12-13 22:10:59',
+                    SELECT date_trunc('DAY',TIMESTAMP'2022-11-16 14:41:20');
                     <br></br>
-                    'YYYY-MM-DD HH24:MI:SS') DT , 1234.56 NMB ) SELECT
-                    DT::timestamp <br></br>, date_trunc('day', DT)::timestamp ,
-                    NMB , TRUNC(NMB) FROM temp
+                    SELECT date_trunc('MONTH',TIMESTAMP'2022-11-16 14:41:20');
+                    <br></br>
+                    SELECT date_trunc('YEAR',TIMESTAMP'2022-11-16 14:41:20');
+                  </p>
+                  <br></br>
+                  <b>결과 값</b>
+                  <p className="p-4 text-pink-700">
+                    2022-11-16 00:00:00.000<br></br>
+                    2022-11-01 00:00:00.000<br></br>
+                    2022-01-01 00:00:00.000
+                  </p>
+                  <p>
+                    이 모든 값은 타임스탬프/날짜 필드를 전체 값으로
+                    반올림합니다.<br></br>연도가 date_trunc 함수를 통해 전달되면
+                    연도 다음에 오는 모든 타임스탬프 값은 초기 값으로
+                    반올림됩니다.<br></br>
+                    예를 들어, 월과 일의 값은 01이 됩니다(월과 일은 01부터
+                    시작). 그러나 시, 분, 초 값은 00이 됩니다.
                   </p>
                 </div>
               </details>
@@ -163,7 +186,13 @@ function Functions() {
                 <summary className="font-semibold leading-7">
                   DBTIMEZONE
                 </summary>
-
+                <ul className="ml-5 leading-7">
+                  <li>
+                    current_setting : POSTGRES 9.5 버전부터 작동하며 시스템
+                    어드민이 사용하는 함수로 데이터베이스 설정값을 출력한다.
+                    <br></br>서버의 시간대를 변경하거나 조회할 때 사용.
+                  </li>
+                </ul>
                 <div className="pl-4">
                   <p className="p-4 text-pink-700">
                     SELECT CURRENT_SETTING('TIMEZONE');
@@ -203,11 +232,9 @@ function Functions() {
                     총 10개의 문자열을 가져오면 된다.
                   </p>
                   <p className="p-4 text-pink-700">
-                    SELECT
-                    <span>
-                      case when substr(time,15,2){"<"}'10' then
-                      concat(substr(time,12,2),':00')
-                    </span>
+                    SELECT case when substr(time,15,2){"<"}'10' then
+                    concat(substr(time,12,2),':00')
+                    <br></br>
                     <span>
                       when substr(time,15,2) {">"}='10' and substr(time,15,2)
                       {"<"}'20' then concat(substr(time,12,2),':10'
@@ -222,6 +249,32 @@ function Functions() {
                     <li>의미 : substr(time,15,2) = 분 mm만 추출</li>
                     <li>의미 : substr(time,12,2) = 시간 hh 만 추출</li>
                   </ul>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  LEAST / GREATEST
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    ORACLE의 LESAT와 GREATEST 함수는 NULL값이 있을 시 NULL값을
+                    반환하지만, PostgreSQL은 NULL값을 무시합니다.
+                  </p>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  LPAD / RPAD
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    ORACLE에서는 한글을 2byte, PostgreSQL에서는 1byte로 계산하여
+                    결과 값이 다르게 출력될 수 있습니다.
+                  </p>
                 </div>
               </details>
             </div>
@@ -464,8 +517,8 @@ function Functions() {
 
                 <div className="pl-4">
                   <p className="p-4 text-pink-700">
-                    UPDATE xdata SET xmlcode=' &lt;values&gt;Infosys-Bangalore&lt;/values&gt;
-                    '<br></br>
+                    UPDATE xdata SET xmlcode='
+                    &lt;values&gt;Infosys-Bangalore&lt;/values&gt; '<br></br>
                     WHERE cast(xpath('//values/text()',xmlcode) AS text[]) = '
                     Infosys';
                   </p>
@@ -479,11 +532,13 @@ function Functions() {
                   </ul>
                   <p className="p-4 text-pink-700">
                     CREATE TABLE xdata( id INT, xmlcode XML);<br></br>
-                    INSERT INTO xdata VALUES (1,'&lt;values&gt;Infosys&lt;values&gt;');
+                    INSERT INTO xdata VALUES
+                    (1,'&lt;values&gt;Infosys&lt;values&gt;');
                     <br></br>
-                    INSERT INTO xdata VALUES (2,'&lt;values&gt;Enterprisedb&lt;values&gt;
-                    ');<br></br>
-                    INSERT INTO xdata VALUES (3,'&lt;values&gt;Wipro&lt;values&gt;');
+                    INSERT INTO xdata VALUES
+                    (2,'&lt;values&gt;Enterprisedb&lt;values&gt; ');<br></br>
+                    INSERT INTO xdata VALUES
+                    (3,'&lt;values&gt;Wipro&lt;values&gt;');
                   </p>
                 </div>
               </details>
@@ -528,6 +583,52 @@ function Functions() {
                     않습니다.<br></br>비슷한 data type으로는 long(charater data)
                     는 text(단 text는 1gb limit , long은 2gb limit) , long
                     raw(binary data) 는 bytea로 변환이 가능할 것으로 보입니다
+                  </p>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">SYS_GUID</summary>
+
+                <div className="pl-4">
+                  <p>
+                    ORACLE의 SYS_GUID 함수는 16바이트로 구성된 전역 고유식별자를
+                    생성해줍니다.<br></br>이와 유사한 기능을 하는 POSTGRES의
+                    UUID_GENERATE_V1함수도 UUID를 생성합니다.{" "}
+                  </p>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  TO_CHAR(NUMBER),TO_NCHAR(NUMBER)
+                </summary>
+
+                <div className="pl-4">
+                  <b>TO_NCHAR(NUMBER)</b>
+                  <p>
+                    NCHAR : 고정폭 문자열(1-2바이트)<br></br>
+                    TO_NCHAR(NUMBER) : 숫자 형식 데이터를 nchar형태의 데이터로
+                    변환.
+                  </p>
+                  <br></br>
+                  <p>
+                    POSTGRES에는 nchar type을 지원하지 않아 ORACLE의 TO_NCHAR와
+                    같은 기능 을 하는 함수는 없음.<br></br>nchar type이 1-2
+                    바이트 고정폭 문자열이므로 비슷하게 postgres에서는 문자열의
+                    바이트 수를 구하는 아래 함수를 사용 가능할 것도 같음
+                  </p>
+                  <p className="p-4 text-pink-700">select octet_length(’a’)</p>
+                  <br></br>
+                  <b>TO_CHAR(NUMBER)</b>
+                  <p className="p-4 text-pink-700">
+                    select to_char(1234, 'FM9999');
+                  </p>
+                  <p>
+                    FM: 문자열의 공백제거<br></br>숫자의 최대 길이만큰 9999...
+                    형식을 지정한다.<br></br>(9 : 값이 없으면 표시안함, 0: 값이
+                    없으면 "0"으로 처리)<br></br>정수는 지정한 형식보다 값의
+                    길이가 길면 오류, 소수 지정한 길이보다 길면 반올림
                   </p>
                 </div>
               </details>
