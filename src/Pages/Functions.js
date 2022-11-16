@@ -204,6 +204,7 @@ function Functions() {
                 <summary className="font-semibold leading-7">COMPOSE</summary>
 
                 <div className="pl-4">
+                  <p></p>
                   <p className="p-4 text-pink-700">
                     select ascii('o'); --111 'o'의 아스키코드<br></br>
                     select to_hex(ascii('o')); -- 111을 16진수로 바꾼 것 = 6f
@@ -304,12 +305,14 @@ function Functions() {
                         SELECT 'TOMORROW'::date + ( 4 + 7 - extract ( dow FROM
                         'TOMORROW'::date))::int%7;
                       </p>
+                      <p>의미 : </p>
                     </li>
                     <li>
                       <p className="p-4 text-pink-700">
                         SELECT (date_trunc('MONTH', ('20130312')::timestamp) +
                         INTERVAL '1 MONTH - 1 day')::timestamp
                       </p>
+                      <p>의미 : </p>
                     </li>
                   </ul>
                 </div>
@@ -507,6 +510,7 @@ function Functions() {
                 <summary className="font-semibold leading-7">XMLQUERY</summary>
 
                 <div className="pl-4">
+                  <b>쿼리 입력 방법은 위의 xml 관련 함수 토글 참고</b>
                   <ul className="ml-5 leading-7">
                     <li>
                       {" "}
