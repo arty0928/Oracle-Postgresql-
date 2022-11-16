@@ -200,7 +200,7 @@ function Functions() {
                 </div>
               </details>
 
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+              {/* <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">COMPOSE</summary>
 
                 <div className="pl-4">
@@ -214,7 +214,7 @@ function Functions() {
                     select to_hex(ascii('ö')); -- 246을 16진수로 바꾸면 f6
                   </p>
                 </div>
-              </details>
+              </details> */}
 
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
