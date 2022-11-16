@@ -206,6 +206,24 @@ function Precautions() {
                 </div>
               </details>
 
+              {/* END LABEL로 예약어가 사용될 때 “이름” */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  END LABEL로 예약어가 사용될 때 “이름”
+                </summary>
+
+                <div className="pl-4">
+                  <p>PostgreSQL은 END LABEL로 예약어를 사용할 수 없기 때문에 만약 사용되었다면 쌍따옴표(“”)로 감싸 주어야 합니다.  </p>
+                  <p className="p-4 text-pink-700"> ex) <br></br> CREATE OR REPLACE PACKAGE array is ~<br></br>END "array"; </p>
+                </div>
+              </details>
+
+
+            </div>
+
+
+
+            <div className="w-full lg:w-1/2 px-4 py-2">
 
 
               {/* END LABEL이 START LABEL과 다를 때 */}
@@ -260,13 +278,6 @@ function Precautions() {
                   </p>
                 </div>
               </details>
-
-            </div>
-
-
-
-            <div className="w-full lg:w-1/2 px-4 py-2">
-
 
               {/* EXTERNAL TABLE 구문 → FOREIGN TABLE 구문 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
