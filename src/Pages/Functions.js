@@ -34,11 +34,320 @@ function Functions() {
             </p>
           </div>
           <div className="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
+
+
+            <div className="w-full lg:w-1/2 px-4 py-2">
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  TO_NCHAR(datetime), TO_NCHAR(character)
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    Postgresql의 data type에서는 Oracle의 nchar를 지원하지
+                    않는다.<br></br> nchar에 대응하는 postgresql 의 data
+                    type에는 text, char, varchar가 있으며 ::data_type 으로
+                    변환이 가능하다. 변환시에는 함수의 parameter의 데이터타입이
+                    character 인지 datetime인지 number 인지 알 수 없기 때문에
+                    사용자가 매뉴얼하게 변환을 해주어야 한다.
+                  </p>
+                </div>
+              </details>
+
+              {/* TO_MULTI_BYTE */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  TO_MULTI_BYTE
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    postgresql에서는 지원하지 않는 함수. Oracle 의 to_multi_byte
+                    함수는
+                    <b className="font-bold ">
+                      database의 characterset이 함수의 parameter의 single byte
+                      character 와 multi byte character 를 모두 가지고 있을 때
+                      정상적으로 작동함.
+                    </b>
+                    (single byte character를 multi byte character로 변환하는
+                    함수이기 때문에)<br></br>
+                    postgresql에서 비슷한 기능을 하는 함수는 없지만 convert_to
+                    함수나 octet_length 함수를 사용해서 single byte character
+                    인지 multi byte character 인지 확인은 가능하다.
+                  </p>
+                </div>
+              </details>
+
+              {/* TO_BINARY_FLOAT, TO_BINARY_DOUBLE */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  TO_BINARY_FLOAT, TO_BINARY_DOUBLE
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    Postgresql은 binary_float 데이터형을 지원하지 않음.numeric,
+                    float4, float8, char, varchar, text 로 대체 가능함.
+                  </p>
+                </div>
+              </details>
+
+              {/* REGEXP_SUBSTR */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  REGEXP_SUBSTR / REGEXP_INSTR
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    REGEXP_SUBSTR : 특정 패턴을 찾아 자르는 함수<br></br>
+                    POSTGRESQL 15에서부터 지원
+                  </p>
+                </div>
+              </details>
+
+              {/* NVL2 */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">NVL2</summary>
+
+                <div className="pl-4">
+                  <p>
+                    NVL2 : NULL이 아닌 경우 지정값1 , NULL인 경우 지정값2 출력
+                    <br></br>
+                    NVL을 coalesce 로 변환하므로 사용하면 비슷한 결괏값을 얻을
+                    수 있음
+                  </p>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  REGEXP_INSTR
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    정규 표현 패턴에 대한 문자열 검색<br></br>
+                    POSTGRESQL 15에서부터 지원
+                  </p>
+                </div>
+              </details>
+
+              {/* NEW_TIME */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">NEW_TIME</summary>
+
+                <div className="pl-4">
+                  <b>NEW_TIME : ORACLE의 서버 시간대를 변경할 때 사용</b>
+                  <p className="p-4 text-pink-700">
+                    POSTGRES : ALTER DATABASE 데이터베이스명 SET timezone =
+                    'Asia/Seoul';
+                  </p>
+                  <p>
+                    postgres 서버의 시간대를 변경할 때 사용<br></br>
+                    postgresql.conf 에 쿼리 입력 후 재시작
+                  </p>
+                </div>
+              </details>
+
+              {/* TRUNC (date) */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  TRUNC (date)
+                </summary>
+
+                <div className="pl-4">
+                  <b> date_trunc(Date field, sourcetime_zone)로 변환</b>
+                  <p>
+                    date_trunc함수는 첫번째 인자로
+                    [year, month, day, hour, minute, second, millisecond] 와 같이 날짜
+                    키워드가 옵니다. 뒤의 인자는 timestamp 데이터가 옵니다.{" "}
+                  </p>
+                  <p className="p-4 text-pink-700">
+                    SELECT date_trunc('DAY',TIMESTAMP'2022-11-16 14:41:20');
+                    <br></br>
+                    SELECT date_trunc('MONTH',TIMESTAMP'2022-11-16 14:41:20');
+                    <br></br>
+                    SELECT date_trunc('YEAR',TIMESTAMP'2022-11-16 14:41:20');
+
+                    <br></br>                    <br></br>//결과 값<br></br>
+
+                    2022-11-16 00:00:00.000<br></br>
+                    2022-11-01 00:00:00.000<br></br>
+                    2022-01-01 00:00:00.000
+                  </p>
+                  <p>
+                    이 모든 값은 타임스탬프/날짜 필드를 전체 값으로
+                    반올림합니다.<br></br><br></br>연도가 date_trunc 함수를 통해 전달되면
+                    연도 다음에 오는 모든 타임스탬프 값은 초기 값으로
+                    반올림됩니다.<br></br><br></br>
+                    예를 들어, 월과 일의 값은 01이 됩니다(월과 일은 01부터
+                    시작). 그러나 시, 분, 초 값은 00이 됩니다.
+                  </p>
+                </div>
+              </details>
+
+              {/* DBTIMEZONE */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  DBTIMEZONE
+                </summary>
+                <ul className="ml-5 leading-7">
+                  <li>
+                    current_setting : POSTGRES 9.5 버전부터 작동하며 시스템
+                    어드민이 사용하는 함수로 데이터베이스 설정값을 출력합니다.
+                    <br></br><br></br>서버의 시간대를 변경하거나 조회할 때 사용하므로 DBTIMEZONE을 대체할 수 있습니다.
+                  </li>
+                </ul>
+                <div className="pl-4">
+                  <p className="p-4 text-pink-700">
+                    SELECT CURRENT_SETTING('TIMEZONE');
+                  </p>
+                </div>
+              </details>
+
+              {/* COMPOSE */}
+              {/* <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">COMPOSE</summary>
+
+                <div className="pl-4">
+                  <p></p>
+                  <p className="p-4 text-pink-700">
+                    select ascii('o'); --111 'o'의 아스키코드<br></br>
+                    select to_hex(ascii('o')); -- 111을 16진수로 바꾼 것 = 6f
+                    <br></br>
+                    select ascii(UNISTR('\0308'));<br></br>
+                    select ascii('ö'); --246 'ö'의 아스키코드<br></br>
+                    select to_hex(ascii('ö')); -- 246을 16진수로 바꾸면 f6
+                  </p>
+                </div>
+              </details> */}
+
+              {/* ROUND (date) */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  ROUND (date)
+                </summary>
+
+                <div className="pl-4">
+                  <p>PostgreSQL에 완벽히 대응하는 함수는 없지만 SUBSTR(time,n,n) 함수를 이용해 비슷하게 구현할 수 있습니다.</p>
+                  <p className="p-4 text-pink-700">
+                    select substr(sysdate,1,10) as dt from dual;
+                  </p>
+                  <p>
+                    {" "}
+                    위의 예문으로 예를 들어 yyyy-mm-dd 만 출력하기 위해서는 1번째 문자열 부터 시작해서
+                    총 10개의 문자열을 가져오면 됩니다.
+                  </p>
+                  <p className="p-4 text-pink-700">
+                    SELECT case <br></br>when substr(time,15,2){"<"}'10' then
+                    concat(substr(time,12,2),':00')
+                    <br></br>
+                    <span>
+                      when substr(time,15,2) {">"}='10' and substr(time,15,2)
+                      {"<"}'20' then concat(substr(time,12,2),':10'
+                    </span>
+                  </p>
+                  {/* <p className="font-bold leading-7">
+                    case when 조건 절에서 우선 분 단위 값만 추출 해서 10분
+                    단위로 구분짓고 여기에 해당 value의 hh 값을 가져와 쪼갤
+                    분단위를 붙여주는 작업
+                  </p> */}
+                  <ul className="ml-5 leading-7">
+                    <li>의미 : substr(time,15,2) = 분 mm만 추출</li>
+                    <li>의미 : substr(time,12,2) = 시간 hh 만 추출</li>
+                  </ul>
+                </div>
+              </details>
+
+              {/* LEAST / GREATEST */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  LEAST / GREATEST
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    ORACLE의 LESAT와 GREATEST 함수는 NULL값이 있을 시 NULL값을
+                    반환하지만, PostgreSQL은 NULL값을 무시합니다.
+                  </p>
+                </div>
+              </details>
+
+              {/* LPAD / RPAD */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  LPAD / RPAD
+                </summary>
+
+                <div className="pl-4">
+                  <p>
+                    ORACLE에서는 한글을 2byte, PostgreSQL에서는 1byte로 계산하여
+                    결과 값이 다르게 출력될 수 있습니다.
+                  </p>
+                </div>
+              </details>
+
+              {/* TZ_OFFSET */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">TZ_OFFSET</summary>
+
+                <div className="pl-4">
+                  <p>
+                    본 사이트의 TZ_OFFSET 변환은 예문 ‘SELECT
+                    TZ_OFFSET('US/Eastern') FROM DUAL;’을 기준으로 작성되어
+                    있습니다.<br></br>여러 행을 SELECT하여 에러가 발생할 경우
+                    다른 행들을 구문의 적절한 위치로 옮겨주어야 합니다.
+                  </p>
+                </div>
+              </details>
+
+
+            </div>
+
+
+
+            {/* 오른쪽 토글 */}
             <div className="w-full lg:w-1/2 px-4 py-2">
 
+              {/* FIRST/LAST */}
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">
+                  FIRST/LAST
+                </summary>
 
+                <div className="pl-4">
+                  <p>
+                    postgres에서는 first,last 함수를 제공하지 않아 프로시저
+                    함수를 추가해야만 동일한 기능을 사용할 수 있습니다.
+                  </p>
+                </div>
+              </details>
 
-            <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
+                <summary className="font-semibold leading-7">NEXT_DAY</summary>
+
+                <div className="pl-4">
+                  <ul className="ml-5 leading-7">
+                    <li>
+                      <p className="p-4 text-pink-700">
+                        SELECT 'TOMORROW'::date + ( 4 + 7 - extract ( dow FROM
+                        'TOMORROW'::date))::int%7;
+                      </p>
+                      <p>의미 : </p>
+                    </li>
+                    <li>
+                      <p className="p-4 text-pink-700">
+                        SELECT (date_trunc('MONTH', ('20130312')::timestamp) +
+                        INTERVAL '1 MONTH - 1 day')::timestamp
+                      </p>
+                      <p>의미 : </p>
+                    </li>
+                  </ul>
+                </div>
+              </details>
+
+              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   XML 관련 함수
                 </summary>
@@ -57,11 +366,11 @@ function Functions() {
                   <ol className="ml-5 leading-7">
                     <li>
                       Windows 10 검색 영역→PostgreSQL 데이터베이스 GUI PgAdmin을
-                      시작합니다.{" "}
+                      시작{" "}
                     </li>
                     <li>
                       서버 데이터베이스 암호를 추가→왼쪽 "서버"
-                      옵션→데이터베이스(예: Postgres)를 확장합니다.
+                      옵션→데이터베이스(예: Postgres)를 확장
                     </li>
                     <li>
                       특정 데이터베이스에 대한 쿼리 도구 아이콘을 실행 "XPath"
@@ -73,7 +382,7 @@ function Functions() {
                       CREATE TABLE postgresql 명령을 사용하여 새 테이블을 생성.
                       "ID" 열은 정수 유형이고 "정보" 열은 XML 데이터를 저장하기
                       위한 "XML" 유형입니다. PgAdmin "실행" 버튼을 사용하여 이
-                      쿼리를 실행합니다.
+                      쿼리를 실행
                     </li>
                     <li>
                       쿼리에서 XPath() 함수를 사용하여 XML 데이터를 가져오기
@@ -87,7 +396,7 @@ function Functions() {
                         </li>
                         <li>
                           두 번째 인수는 XML 데이터가 있는 실제 데이터 또는 XML
-                          열
+                          열.
                         </li>
                       </ol>
                     </li>
@@ -173,265 +482,7 @@ function Functions() {
                 </div>
               </details>
 
-
-
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  TO_NCHAR(datetime), TO_NCHAR(character)
-                </summary>
-
-                <div className="pl-4">
-                  <p>
-                    Postgresql의 data type에서는 Oracle의 nchar를 지원하지
-                    않습니다.<br></br><br></br> nchar에 대응하는 postgresql 의 data
-                    type에는 text, char, varchar가 있으며 ::data_type 으로
-                    변환이 가능합니다. 변환시에는 함수의 parameter의 데이터타입이
-                    character 인지 datetime인지 number 인지 알 수 없기 때문에
-                    사용자가 매뉴얼하게 변환을 해주어야 합니다.
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  TO_MULTI_BYTE
-                </summary>
-
-                <div className="pl-4">
-                  <p>
-                    postgresql에서는 지원하지 않는 함수입니다. Oracle 의 to_multi_byte
-                    함수는
-                    <b className="font-bold ">
-                      database의 characterset이 함수의 parameter의 single byte
-                      character 와 multi byte character 를 모두 가지고 있을 때
-                      정상적으로 작동합니다.
-                    </b>
-                  </p>
-                  <p>
-                    (single byte character를 multi byte character로 변환하는
-                    함수이기 때문에)<br></br><br></br>
-                    postgresql에서 비슷한 기능을 하는 함수는 없지만 convert_to
-                    함수나 octet_length 함수를 사용해서 single byte character
-                    인지 multi byte character 인지 확인은 가능합니다.
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  TO_BINARY_FLOAT, TO_BINARY_DOUBLE
-                </summary>
-
-                <div className="pl-4">
-                  <p>
-                    Postgresql은 binary_float 데이터형을 지원하지 않지만 numeric,
-                    float4, float8, char, varchar, text 로 대체 가능합니다.
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  REGEXP_SUBSTR / REGEXP_INSTR
-                </summary>
-
-                <div className="pl-4">
-                  <p>
-                    POSTGRESQL 15에서부터 지원합니다.
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">NVL2</summary>
-
-                <div className="pl-4">
-                  <p>
-                    NVL과 유사하게 coalesce로 변환하면 비슷한 결괏값을 얻을수 있습니다.
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">NEW_TIME</summary>
-
-                <div className="pl-4">
-                  <b>NEW_TIME : ORACLE의 서버 시간대를 변경할 때 사용하는 함수입니다.</b>
-                  <p className="p-4 text-pink-700">
-                    POSTGRES : ALTER DATABASE 데이터베이스명 SET timezone =
-                    'Asia/Seoul';
-                  </p>
-                  <p>
-                    위 쿼리문은 postgres 서버의 시간대를 변경할 때 사용히며 <br></br>
-                    postgresql.conf 에 쿼리 입력 후 재시작하면 됩니다.
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  TRUNC (date)
-                </summary>
-
-                <div className="pl-4">
-                  <b> date_trunc(Date field, sourcetime_zone)로 변환</b>
-                  <p>
-                    date_trunc함수는 첫번째 인자로
-                    [year,month,day,hour,minute,second,millisecond] 와 같이 날짜
-                    키워드가 옵니다. 뒤의 인자는 timestamp 데이터가 옵니다.{" "}
-                  </p>
-                  <p className="p-4 text-pink-700">
-                    SELECT date_trunc('DAY',TIMESTAMP'2022-11-16 14:41:20');
-                    <br></br>
-                    SELECT date_trunc('MONTH',TIMESTAMP'2022-11-16 14:41:20');
-                    <br></br>
-                    SELECT date_trunc('YEAR',TIMESTAMP'2022-11-16 14:41:20');
-                  </p>
-                  <br></br>
-                  <b>결과 값</b>
-                  <p className="p-4 text-pink-700">
-                    2022-11-16 00:00:00.000<br></br>
-                    2022-11-01 00:00:00.000<br></br>
-                    2022-01-01 00:00:00.000
-                  </p>
-                  <p>
-                    이 모든 값은 타임스탬프/날짜 필드를 전체 값으로
-                    반올림합니다.<br></br><br></br>연도가 date_trunc 함수를 통해 전달되면
-                    연도 다음에 오는 모든 타임스탬프 값은 초기 값으로
-                    반올림됩니다.<br></br><br></br>
-                    예를 들어, 월과 일의 값은 01이 됩니다(월과 일은 01부터
-                    시작). 그러나 시, 분, 초 값은 00이 됩니다.
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  DBTIMEZONE
-                </summary>
-                <ul className="ml-5 leading-7">
-                  <li>
-                    current_setting : POSTGRES 9.5 버전부터 작동하며 시스템
-                    어드민이 사용하는 함수로 데이터베이스 설정값을 출력합니다.
-                    <br></br><br></br>서버의 시간대를 변경하거나 조회할 때 사용하므로 DBTIMEZONE을 대체할 수 있습니다.
-                  </li>
-                </ul>
-                <div className="pl-4">
-                  <p className="p-4 text-pink-700">
-                    SELECT CURRENT_SETTING('TIMEZONE');
-                  </p>
-                </div>
-              </details>
-
-              {/* <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">COMPOSE</summary>
-
-                <div className="pl-4">
-                  <p></p>
-                  <p className="p-4 text-pink-700">
-                    select ascii('o'); --111 'o'의 아스키코드<br></br>
-                    select to_hex(ascii('o')); -- 111을 16진수로 바꾼 것 = 6f
-                    <br></br>
-                    select ascii(UNISTR('\0308'));<br></br>
-                    select ascii('ö'); --246 'ö'의 아스키코드<br></br>
-                    select to_hex(ascii('ö')); -- 246을 16진수로 바꾸면 f6
-                  </p>
-                </div>
-              </details> */}
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  ROUND (date)
-                </summary>
-
-                <div className="pl-4">
-                  <p>PostgreSQL에 완벽히 대응하는 함수는 없지만 SUBSTR(time,n,n) 함수를 이용해 비슷하게 구현할 수 있습니다.</p>
-                  <p className="p-4 text-pink-700">
-                    select substr(sysdate,1,10) as dt from dual;
-                  </p>
-                  <p>
-                    {" "}
-                    위의 예문으로 예를 들어 yyyy-mm-dd 만 출력하기 위해서는 1번째 문자열 부터 시작해서
-                    총 10개의 문자열을 가져오면 됩니다.
-                  </p>
-                  <p className="p-4 text-pink-700">
-                    SELECT case <br></br>when substr(time,15,2){"<"}'10' then
-                    concat(substr(time,12,2),':00')
-                    <br></br>
-                    <span>
-                      when substr(time,15,2) {">"}='10' and substr(time,15,2)
-                      {"<"}'20' then concat(substr(time,12,2),':10'
-                    </span>
-                  </p>
-                  {/* <p className="font-bold leading-7">
-                    case when 조건 절에서 우선 분 단위 값만 추출 해서 10분
-                    단위로 구분짓고 여기에 해당 value의 hh 값을 가져와 쪼갤
-                    분단위를 붙여주는 작업
-                  </p> */}
-                  <ul className="ml-5 leading-7">
-                    <li>의미 : substr(time,15,2) = 분 mm만 추출</li>
-                    <li>의미 : substr(time,12,2) = 시간 hh 만 추출</li>
-                  </ul>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  LEAST / GREATEST
-                </summary>
-
-                <div className="pl-4">
-                  <p>
-                    ORACLE의 LESAT와 GREATEST 함수는 NULL값이 있을 시 NULL값을
-                    반환하지만, PostgreSQL은 NULL값을 무시합니다.
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  LPAD / RPAD
-                </summary>
-
-                <div className="pl-4">
-                  <p>
-                    ORACLE에서는 한글을 2byte, PostgreSQL에서는 1byte로 계산하여
-                    결과 값이 다르게 출력될 수 있습니다.
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">TZ_OFFSET</summary>
-
-                <div className="pl-4">
-                  <p>
-                    본 사이트의 TZ_OFFSET 변환은 예문 ‘SELECT
-                    TZ_OFFSET('US/Eastern') FROM DUAL;’을 기준으로 작성되어
-                    있습니다.<br></br>여러 행을 SELECT하여 에러가 발생할 경우
-                    다른 행들을 구문의 적절한 위치로 옮겨주어야 합니다.
-                  </p>
-                </div>
-              </details>
-            </div>
-
-            {/* 오른쪽 토글 */}
-            <div className="w-full lg:w-1/2 px-4 py-2">
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
-                  FIRST/LAST
-                </summary>
-
-                <div className="pl-4">
-                  <p>
-                    postgres에서는 first,last 함수를 제공하지 않아 프로시저
-                    함수를 추가해야만 동일한 기능을 사용할 수 있습니다.
-                  </p>
-                </div>
-              </details>
-
-
+              {/* CAST */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">CAST</summary>
 
@@ -446,6 +497,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* ASCIISTR */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">ASCIISTR</summary>
 
@@ -460,6 +512,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* CONVERT */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">CONVERT</summary>
 
@@ -486,6 +539,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* XMLQUERY */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">XMLQUERY</summary>
 
@@ -509,6 +563,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* UPDATEXML */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">UPDATEXML</summary>
 
@@ -540,6 +595,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* XMLSERIALIZE */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   XMLSERIALIZE
@@ -571,6 +627,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* TO_LOB */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">TO_LOB</summary>
 
@@ -584,6 +641,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* SYS_GUID */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">SYS_GUID</summary>
 
@@ -596,6 +654,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* TO_CHAR(NUMBER),TO_NCHAR(NUMBER) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TO_CHAR(NUMBER),TO_NCHAR(NUMBER)
@@ -629,29 +688,6 @@ function Functions() {
                   </p>
                 </div>
               </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">UID</summary>
-
-                <div className="pl-4">
-                  <p>
-                  PostgreSQL의 PG_BACKEND_PID()함수가 UID와 비슷한 역할을 하여 현재 로그인한 유저의 process id를 반환해줍니다.{" "}
-                  </p>
-                </div>
-              </details>
-
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">TZ_OFFSET</summary>
-
-                <div className="pl-4">
-                  <p>본 사이트의 TZ_OFFSET 변환은 예문</p>
-                  <p className="p-4 text-pink-700">‘SELECT TZ_OFFSET('US/Eastern') FROM DUAL;’</p>
-                  <p>을 기준으로 작성되어 있습니다. 여러 행을 SELECT하여 에러가 발생할 경우 다른 행들을 구문의 적절한 위치로 옮겨주어야 합니다.{" "}
-                  </p>
-                </div>
-              </details>
-
-
             </div>
             <p
               className="mt-3 text-center sm:text-2xl sm:font-bold tracking-tight text-gray-900
