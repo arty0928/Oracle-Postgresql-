@@ -73,7 +73,7 @@ export default function oraFunc2pgFunc(Qstr) {
   Qstr = Qstr.replace(/\bEMPTY_BLOB+\(+(\s)*\)+|EMPTY_CLOB+\(+(\s)*\)+/gis,
     (match) => {
       changedList.push(match);
-      return "\"\"";
+      return "\'\'";
     });
 
 
@@ -219,6 +219,7 @@ export default function oraFunc2pgFunc(Qstr) {
     } else if (day_sat.includes(day[2])) {
       day_num = 7;
     } else { day_num = "잘못된 요일입니다" };
+    changedList.push(day[0]);
   }
 
   Qstr = Qstr.replace(/NEXT_DAY\((.*?),(.*?)\)/gis,
