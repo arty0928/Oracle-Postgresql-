@@ -34,7 +34,11 @@ function Functions() {
             </p>
           </div>
           <div className="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
+
+
             <div className="w-full lg:w-1/2 px-4 py-2">
+
+              {/* TO_NCHAR(datetime), TO_NCHAR(character) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TO_NCHAR(datetime), TO_NCHAR(character)
@@ -42,16 +46,18 @@ function Functions() {
 
                 <div className="pl-4">
                   <p>
-                    Postgresql의 data type에서는 Oracle의 nchar를 지원하지
-                    않는다.<br></br> nchar에 대응하는 postgresql 의 data
-                    type에는 text, char, varchar가 있으며 ::data_type 으로
-                    변환이 가능하다. 변환시에는 함수의 parameter의 데이터타입이
-                    character 인지 datetime인지 number 인지 알 수 없기 때문에
-                    사용자가 매뉴얼하게 변환을 해주어야 한다.
+                    <b>Postgresql의 data type에서는 Oracle의 nchar를 지원하지
+                      않는다.</b><br></br> nchar에 대응하는 postgresql 의 data
+                    type에는 <b>text, char, varchar</b>가 있으며 ::data_type 으로
+                    변환이 가능하다.<br></br>
+                    변환시에는 함수의 parameter의 <b>데이터타입이
+                      character의 경우
+                      사용자가 따로 변환을 해주어야 한다.</b>
                   </p>
                 </div>
               </details>
 
+              {/* TO_MULTI_BYTE */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TO_MULTI_BYTE
@@ -59,24 +65,23 @@ function Functions() {
 
                 <div className="pl-4">
                   <p>
-                    postgresql에서는 지원하지 않는 함수. Oracle 의 to_multi_byte
+                    <b>postgresql에서는 지원하지 않는 함수다.</b> Oracle 의 to_multi_byte
                     함수는
                     <b className="font-bold ">
                       database의 characterset이 함수의 parameter의 single byte
                       character 와 multi byte character 를 모두 가지고 있을 때
-                      정상적으로 작동함.
+                      정상적으로 작동한다.
                     </b>
-                  </p>
-                  <p>
                     (single byte character를 multi byte character로 변환하는
-                    함수이기 때문에)<br></br>
+                    함수이기 때문)<br></br>
                     postgresql에서 비슷한 기능을 하는 함수는 없지만 convert_to
                     함수나 octet_length 함수를 사용해서 single byte character
-                    인지 multi byte character 인지 확인은 가능합니다.
+                    인지 multi byte character 인지 확인은 가능하다.
                   </p>
                 </div>
               </details>
 
+              {/* TO_BINARY_FLOAT, TO_BINARY_DOUBLE */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TO_BINARY_FLOAT, TO_BINARY_DOUBLE
@@ -84,12 +89,13 @@ function Functions() {
 
                 <div className="pl-4">
                   <p>
-                    Postgresql은 binary_float 데이터형을 지원하지 않음.numeric,
-                    float4, float8, char, varchar, text 로 대체 가능함.
+                    <b>Postgresql은 binary_float 데이터형을 지원하지 않는다.</b> numeric,
+                    float4, float8, char, varchar, text 로 대체 가능하다.
                   </p>
                 </div>
               </details>
 
+              {/* REGEXP_SUBSTR */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   REGEXP_SUBSTR
@@ -97,25 +103,27 @@ function Functions() {
 
                 <div className="pl-4">
                   <p>
-                    REGEXP_SUBSTR : 특정 패턴을 찾아 자르는 함수<br></br>
-                    POSTGRESQL 15에서부터 지원
+                    <b>REGEXP_SUBSTR :</b> 특정 패턴을 찾아 자르는 함수<br></br>
+                    POSTGRESQL 15에서부터 지원한다.
                   </p>
                 </div>
               </details>
 
+              {/* NVL2 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">NVL2</summary>
 
                 <div className="pl-4">
                   <p>
-                    NVL2 : NULL이 아닌 경우 지정값1 , NULL인 경우 지정값2 출력
+                    <b>NVL2 :</b> NULL이 아닌 경우 지정값1 , NULL인 경우 지정값2 출력
                     <br></br>
                     NVL을 coalesce 로 변환하므로 사용하면 비슷한 결괏값을 얻을
-                    수 있음
+                    수 있다.
                   </p>
                 </div>
               </details>
 
+              {/* REGEXP_INSTR */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   REGEXP_INSTR
@@ -124,27 +132,28 @@ function Functions() {
                 <div className="pl-4">
                   <p>
                     정규 표현 패턴에 대한 문자열 검색<br></br>
-                    POSTGRESQL 15에서부터 지원
+                    POSTGRESQL 15에서부터 지원한다.
                   </p>
                 </div>
               </details>
 
+              {/* NEW_TIME */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">NEW_TIME</summary>
 
                 <div className="pl-4">
-                  <b>NEW_TIME : ORACLE의 서버 시간대를 변경할 때 사용</b>
+                  <b>NEW_TIME :</b> ORACLE의 서버 시간대를 변경할 때 사용
                   <p className="p-4 text-pink-700">
                     POSTGRES : ALTER DATABASE 데이터베이스명 SET timezone =
                     'Asia/Seoul';
                   </p>
                   <p>
-                    postgres 서버의 시간대를 변경할 때 사용<br></br>
-                    postgresql.conf 에 쿼리 입력 후 재시작
+                    postgres 서버의 시간대를 변경할 때 사용한다. postgresql.conf 에 쿼리 입력 후 재시작
                   </p>
                 </div>
               </details>
 
+              {/* TRUNC (date) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TRUNC (date)
@@ -154,7 +163,7 @@ function Functions() {
                   <b> date_trunc(Date field, sourcetime_zone)</b>
                   <p>
                     date_trunc함수는 첫번째 인자로
-                    [year,month,day,hour,minute,second,millisecond] 와 같이 날짜
+                    [year, month, day, hour, minute, second, millisecond] 와 같이 날짜
                     키워드가 옵니다. 뒤의 인자는 timestamp 데이터가 옵니다.{" "}
                   </p>
                   <p className="p-4 text-pink-700">
@@ -163,10 +172,9 @@ function Functions() {
                     SELECT date_trunc('MONTH',TIMESTAMP'2022-11-16 14:41:20');
                     <br></br>
                     SELECT date_trunc('YEAR',TIMESTAMP'2022-11-16 14:41:20');
-                  </p>
-                  <br></br>
-                  <b>결과 값</b>
-                  <p className="p-4 text-pink-700">
+
+                    <br></br>                    <br></br>//결과 값<br></br>
+
                     2022-11-16 00:00:00.000<br></br>
                     2022-11-01 00:00:00.000<br></br>
                     2022-01-01 00:00:00.000
@@ -182,6 +190,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* DBTIMEZONE */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   DBTIMEZONE
@@ -200,6 +209,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* COMPOSE */}
               {/* <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">COMPOSE</summary>
 
@@ -216,6 +226,7 @@ function Functions() {
                 </div>
               </details> */}
 
+              {/* ROUND (date) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   ROUND (date)
@@ -253,6 +264,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* LEAST / GREATEST */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   LEAST / GREATEST
@@ -266,6 +278,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* LPAD / RPAD */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   LPAD / RPAD
@@ -279,6 +292,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* TZ_OFFSET */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">TZ_OFFSET</summary>
 
@@ -291,10 +305,16 @@ function Functions() {
                   </p>
                 </div>
               </details>
+
+
             </div>
+
+
 
             {/* 오른쪽 토글 */}
             <div className="w-full lg:w-1/2 px-4 py-2">
+
+              {/* FIRST/LAST */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   FIRST/LAST
@@ -308,6 +328,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* NEXT_DAY */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">NEXT_DAY</summary>
 
@@ -331,6 +352,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* XML 관련 함수 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   XML 관련 함수
@@ -388,6 +410,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* NLS 관련 함수 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   NLS 관련 함수
@@ -466,6 +489,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* CAST */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">CAST</summary>
 
@@ -480,6 +504,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* ASCIISTR */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">ASCIISTR</summary>
 
@@ -494,6 +519,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* CONVERT */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">CONVERT</summary>
 
@@ -520,6 +546,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* XMLQUERY */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">XMLQUERY</summary>
 
@@ -543,6 +570,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* UPDATEXML */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">UPDATEXML</summary>
 
@@ -574,6 +602,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* XMLSERIALIZE */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   XMLSERIALIZE
@@ -605,6 +634,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* TO_LOB */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">TO_LOB</summary>
 
@@ -618,6 +648,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* SYS_GUID */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">SYS_GUID</summary>
 
@@ -630,6 +661,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* TO_CHAR(NUMBER),TO_NCHAR(NUMBER) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TO_CHAR(NUMBER),TO_NCHAR(NUMBER)
@@ -663,6 +695,8 @@ function Functions() {
                   </p>
                 </div>
               </details>
+
+
             </div>
             <p
               className="mt-3 text-center sm:text-2xl sm:font-bold tracking-tight text-gray-900
