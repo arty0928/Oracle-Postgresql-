@@ -423,6 +423,12 @@ export default function oraFunc2pgFunc(Qstr) {
   changedList.push(SYS_GUID)
   };
 
+  //XMLPARSE function to
+  const XMLPARSE = Qstr.match(/XMLPARSE\(.*\)/gis);
+  if(XMLPARSE && Qstr.includes("WELLFORMED")){
+  Qstr = Qstr.replace(/WELLFORMED/gis,"");
+  changedList.push("WELLFORMED")};
+
 
 
   Qstr = Qstr.replace(/ *;/igs, ";\n")
