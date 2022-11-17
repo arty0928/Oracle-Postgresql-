@@ -196,34 +196,41 @@ export default function oraFunc2pgFunc(Qstr) {
     /NEXT_DAY\s*\((.*?),(.*?)\s*\)/gis,
     (match, standardDate, standardDow) => {
       changedList.push(match);
-      // console.log(`stdDate :${standardDate}, stdDow : ${standardDow}`);
-      let dow;
-      switch (standardDow) {
-        case "'일요일'" || "'일'" || "'SUNDAY'" || "'SUN'" || 1:
-          dow = 0;
-          break;
-        case "'월요일'" || "'월'" || "'MONDAY'" || "'MON'" || 2:
-          dow = 1;
-          break;
-        case "'화요일'" || "'화'" || "'TUESDAY'" || "'TUE'" || 3:
-          dow = 2;
-          break;
-        case "'수요일'" || "'수'" || "'WEDNESDAY'" || "'WED'" || 4:
-          dow = 3;
-          break;
-        case "'목요일'" || "'목'" || "'THURSDAY'" || "'THUR'" || 5:
-          dow = 4;
-          break;
-        case "'금요일'" || "'금'" || "'FRIDAY'" || "'FRI'" || 6:
-          dow = 5;
-          break;
-        case "'토요일'" || "'토'" || "'SATURDAY'" || "'SAT'" || 7:
-          dow = 6;
-          break;
-        default:
-          dow = 0;
-          break;
-      }
+      standardDow = standardDow.replace(/\s+/gi, "");
+      //console.log(`stdDow : ${standardDow}`);
+      const dowMap = {
+        "'일요일'": 0,
+        "'일 요일'": 0,
+        "'일'": 0,
+        "'SUNDAY'": 0,
+        "'SUN'": 0,
+        "'월요일'": 0,
+        "'월'": 1,
+        "'MONDAY'": 1,
+        "'MON'": 1,
+        "'화요일'": 2,
+        "'화'": 2,
+        "'TUESDAY'": 2,
+        "'TUE'": 2,
+        "'수요일'": 3,
+        "'수'": 3,
+        "'WEDNEDAY'": 3,
+        "'WED'": 3,
+        "'목요일'": 4,
+        "'목'": 4,
+        "'THURDAY'": 4,
+        "'THUR'": 4,
+        "'금요일'": 5,
+        "'금'": 5,
+        "'FRIDAY'": 5,
+        "'FRI'": 5,
+        "'토요일'": 6,
+        "'토'": 6,
+        "'SATURDAY'": 6,
+        "'SAT'": 6,
+      };
+      let dow = dowMap[standardDow] || 0;
+
       return `${standardDate}::date + COALESCE(NULLIF((${dow} + 7 - EXTRACT(dow FROM ${standardDate}::date))::int%7 , 0 ), 7)`;
     }
   );
