@@ -415,6 +415,11 @@ function Functions() {
                 </div>
               </details> */}
 
+            </div>
+
+            {/* 오른쪽 토글 */}
+            <div className="w-full lg:w-1/2 px-4 py-2">
+
               {/* ROUND (date) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
@@ -479,11 +484,6 @@ function Functions() {
                   </p>
                 </div>
               </details>
-
-            </div>
-
-            {/* 오른쪽 토글 */}
-            <div className="w-full lg:w-1/2 px-4 py-2">
 
               {/* FIRST / LAST */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
