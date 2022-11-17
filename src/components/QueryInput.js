@@ -99,6 +99,8 @@ export default function QueryInput() {
                           px-4 py-2 text-base font-bold text-gray-700 
                           hover:bg-gray-200 sm:w-auto sm:text-sm sm:bg-white"
               >
+                <ExclamationTriangleIcon className=" inline-flex w-5 justify-center 
+                       text-base font-bold text-yellow-700 mr-1.5"></ExclamationTriangleIcon>
                 Precautions
               </button>
             </div>
