@@ -192,42 +192,41 @@ export default function oraFunc2pgFunc(Qstr) {
   });
 
   //NEXT_DAY
-  const day = Qstr.match(/NEXT_DAY\((.*?),(.*?)\)/is);
-  let day_num = 0;
-  const day_sun = ["'일요일' ", "'일' ", "'SUNDAY' ", "'SUN' ", "1 "];
-  const day_mon = ["'월요일' ", "'월' ", "'MONDAY' ", "'MON' ", "2 "];
-  const day_tue = ["'화요일' ", "'화' ", "'TUEDAY' ", "'TUE' ", "3 "];
-  const day_wed = ["'수요일' ", "'수' ", "'WEDNESDAY' ", "'WED' ", "4 "];
-  const day_thu = ["'목요일' ", "'목' ", "'THURSDAY' ", "'THUR' ", "5 "];
-  const day_fri = ["'금요일' ", "'금' ", "'FRIDAY' ", "'FRI' ", "6 "];
-  const day_sat = ["'토요일' ", "'토' ", "'SATURDAY' ", "'SAT' ", "7 "];
-
-  //요구받은 요일을 정의하는 단계
-  if (Qstr.match(/NEXT_DAY\((.*?),(.*?)\)/gis)) {
-    if (day_sun.includes(day[2])) {
-      day_num = 1;
-    } else if (day_mon.includes(day[2])) {
-      day_num = 2;
-    } else if (day_tue.includes(day[2])) {
-      day_num = 3;
-    } else if (day_wed.includes(day[2])) {
-      day_num = 4;
-    } else if (day_thu.includes(day[2])) {
-      day_num = 5;
-    } else if (day_fri.includes(day[2])) {
-      day_num = 6;
-    } else if (day_sat.includes(day[2])) {
-      day_num = 7;
-    } else { day_num = "잘못된 요일입니다" };
-    changedList.push(day[0]);
-  }
-
-  Qstr = Qstr.replace(/NEXT_DAY\((.*?),(.*?)\)/gis,
-    `case\nwhen extract(dow from current_date) < ${day_num}-1\n
-    then now()::timestamp + CAST(${day_num}-1-extract(dow from current_date) ||' days' AS Interval)\n
-    when extract(dow from current_date) > ${day_num}-1\n
-    then now()::timestamp + CAST(${day_num}+6-extract(dow from current_date) ||' days' AS Interval)\n
-    end`)
+  Qstr = Qstr.replace(
+    /NEXT_DAY\s*\((.*?),(.*?)\s*\)/gis,
+    (match, standardDate, standardDow) => {
+      changedList.push(match);
+      // console.log(`stdDate :${standardDate}, stdDow : ${standardDow}`);
+      let dow;
+      switch (standardDow) {
+        case "'일요일'" || "'일'" || "'SUNDAY'" || "'SUN'" || 1:
+          dow = 0;
+          break;
+        case "'월요일'" || "'월'" || "'MONDAY'" || "'MON'" || 2:
+          dow = 1;
+          break;
+        case "'화요일'" || "'화'" || "'TUESDAY'" || "'TUE'" || 3:
+          dow = 2;
+          break;
+        case "'수요일'" || "'수'" || "'WEDNESDAY'" || "'WED'" || 4:
+          dow = 3;
+          break;
+        case "'목요일'" || "'목'" || "'THURSDAY'" || "'THUR'" || 5:
+          dow = 4;
+          break;
+        case "'금요일'" || "'금'" || "'FRIDAY'" || "'FRI'" || 6:
+          dow = 5;
+          break;
+        case "'토요일'" || "'토'" || "'SATURDAY'" || "'SAT'" || 7:
+          dow = 6;
+          break;
+        default:
+          dow = 0;
+          break;
+      }
+      return `${standardDate}::date + COALESCE(NULLIF((${dow} + 7 - EXTRACT(dow FROM ${standardDate}::date))::int%7 , 0 ), 7)`;
+    }
+  );
 
   //NANVL
   Qstr = Qstr.replace(/\b([\w]+)\s*(NANVL)\s*(\s*([^,]+)\s*,\s*([^\)]+)\s*)\)/gis,
@@ -402,37 +401,38 @@ export default function oraFunc2pgFunc(Qstr) {
 
   //SOUNDEX function to
   const SOUNDEX = Qstr.match(/SOUNDEX\(+(.*?)\)+/gis);
-  if(SOUNDEX){
+  if (SOUNDEX) {
     const create_extension_soundex = "CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;\n"
-  Qstr = create_extension_soundex + Qstr;
-  changedList.push(SOUNDEX)
+    Qstr = create_extension_soundex + Qstr;
+    changedList.push(SOUNDEX)
   };
 
   //STANDARD_HASH function to
   const STANDARD_HASH = Qstr.match(/STANDARD_HASH\(+(.*?)\)+/gis);
-  if(STANDARD_HASH){
+  if (STANDARD_HASH) {
     const create_extension_STANDARD_HASH = "CREATE EXTENSION IF NOT EXISTS pgcrypto;\n"
-    Qstr = Qstr.replace(/STANDARD_HASH\(+(.*?)\)+/gis,(_, $1) => {
+    Qstr = Qstr.replace(/STANDARD_HASH\(+(.*?)\)+/gis, (_, $1) => {
       return `encode(digest(${$1},'sha1'),'hex')`;
     });
     Qstr = create_extension_STANDARD_HASH + Qstr;
-  changedList.push(STANDARD_HASH)
+    changedList.push(STANDARD_HASH)
   };
 
   //SYS_GUID function to
   const SYS_GUID = Qstr.match(/SYS_GUID\(\s*\)/gis);
-  if(SYS_GUID){
+  if (SYS_GUID) {
     const create_extension_SYS_GUID = "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";\n"
-    Qstr = Qstr.replace(/sys_guid\(\s*\)/gis,"uuid_generate_v1()");
+    Qstr = Qstr.replace(/sys_guid\(\s*\)/gis, "uuid_generate_v1()");
     Qstr = create_extension_SYS_GUID + Qstr;
-  changedList.push(SYS_GUID)
+    changedList.push(SYS_GUID)
   };
 
   //XMLPARSE function to
   const XMLPARSE = Qstr.match(/XMLPARSE\(.*\)/gis);
-  if(XMLPARSE && Qstr.includes("WELLFORMED")){
-  Qstr = Qstr.replace(/WELLFORMED/gis,"");
-  changedList.push("WELLFORMED")};
+  if (XMLPARSE && Qstr.includes("WELLFORMED")) {
+    Qstr = Qstr.replace(/WELLFORMED/gis, "");
+    changedList.push("WELLFORMED")
+  };
 
 
 
