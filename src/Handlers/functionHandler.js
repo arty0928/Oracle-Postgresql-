@@ -312,6 +312,10 @@ export default function oraFunc2pgFunc(Qstr) {
 
   Qstr = Qstr.replace(/\bTO_NUMBER\s*\(.*?\)/gis, (match) => {
     let arr = match.match(/'\s*?(\S*?)\s*?'/gi);
+    if (arr[1] == undefined){
+      arr[1] = "'L9G999g999.99'";
+    }
+    changedList.push(`TO_NUMBER(${arr})`);
     return `TO_NUMBER( ${arr[0]}, ${arr[1]} )`;
   });
   //REVERSE function to ...
