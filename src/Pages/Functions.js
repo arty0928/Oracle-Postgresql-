@@ -36,13 +36,13 @@ function Functions() {
           <div className="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
             <div className="w-full lg:w-1/2 px-4 py-2">
 
-
-            <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
+              {/* NLS 관련 함수 */}
+              <details className="mb-4 bg-gray-200 rounded-md">
+                <summary className="font-bold leading-7 bg-indigo-300 rounded-md px-4 py-2">
                   NLS 관련 함수
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-8 px-4 pt-2">
                   <p>postgresql.conf 설정 파일</p>
                   <div className="m-2 p-3 pl-5 font-bold bg-gray-300 rounded-md">
                     {" "}
@@ -115,13 +115,13 @@ function Functions() {
                 </div>
               </details>
 
-
-            <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
+              {/* XML 관련 함수 */}
+              <details className="mb-4 bg-gray-200 rounded-md">
+                <summary className="font-bold leading-7 bg-indigo-300 rounded-md px-4 py-2">
                   XML 관련 함수
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-8 px-4 pt-2">
                   <ul className="ml-5 leading-7">
                     <li>EXTRACT(XML)</li>
                     <li>INCERTXMLBEFORE</li>
@@ -173,23 +173,25 @@ function Functions() {
                 </div>
               </details>
 
+              {/* XMLQUERY */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">XMLQUERY</summary>
 
                 <div className="pl-4">
                   <ul className="ml-5 leading-7">
-                    
-                      {" "}
-                      <span className="p-4 text-pink-700">
-                        XPATH(xpath, xml [, nsarray])
-                      </span>
-                      <span>로 대체합니다.</span>
-                   
-                    
+
+                    {" "}
+                    <span className="p-4 text-pink-700">
+                      XPATH(xpath, xml [, nsarray])
+                    </span>
+                    <span>로 대체합니다.</span>
+
+
                   </ul>
                 </div>
               </details>
 
+              {/* XMLSERIALIZE */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   XMLSERIALIZE
@@ -211,6 +213,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* UPDATEXML */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">UPDATEXML</summary>
 
@@ -223,9 +226,9 @@ function Functions() {
                     Infosys';
                   </p>
                   <ul className="ml-5 leading-7">
-                      <p className="font-bold leading-7">
-                        쿼리 실행을 위한 스키마 설정
-                      </p>
+                    <p className="font-bold leading-7">
+                      쿼리 실행을 위한 스키마 설정
+                    </p>
                   </ul>
                   <p className="p-4 text-pink-700">
                     CREATE TABLE xdata( id INT, xmlcode XML);<br></br>
@@ -240,7 +243,7 @@ function Functions() {
                 </div>
               </details>
 
-
+              {/* TO_NCHAR(datetime), TO_NCHAR(character) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TO_NCHAR(datetime), TO_NCHAR(character)
@@ -258,6 +261,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* TO_MULTI_BYTE */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TO_MULTI_BYTE
@@ -283,6 +287,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* TO_BINARY_FLOAT, TO_BINARY_DOUBLE */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TO_BINARY_FLOAT, TO_BINARY_DOUBLE
@@ -296,6 +301,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* REGEXP_SUBSTR / REGEXP_INSTR */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   REGEXP_SUBSTR / REGEXP_INSTR
@@ -308,6 +314,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* NVL2 */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">NVL2</summary>
 
@@ -318,6 +325,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* NEW_TIME */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">NEW_TIME</summary>
 
@@ -334,6 +342,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* TRUNC (date) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TRUNC (date)
@@ -371,6 +380,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* DBTIMEZONE */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   DBTIMEZONE
@@ -405,6 +415,12 @@ function Functions() {
                 </div>
               </details> */}
 
+            </div>
+
+            {/* 오른쪽 토글 */}
+            <div className="w-full lg:w-1/2 px-4 py-2">
+
+              {/* ROUND (date) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   ROUND (date)
@@ -441,6 +457,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* LEAST / GREATEST */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   LEAST / GREATEST
@@ -454,6 +471,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* LPAD / RPAD */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   LPAD / RPAD
@@ -467,13 +485,10 @@ function Functions() {
                 </div>
               </details>
 
-            </div>
-
-            {/* 오른쪽 토글 */}
-            <div className="w-full lg:w-1/2 px-4 py-2">
+              {/* FIRST / LAST */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
-                  FIRST/LAST
+                  FIRST / LAST
                 </summary>
 
                 <div className="pl-4">
@@ -484,7 +499,7 @@ function Functions() {
                 </div>
               </details>
 
-
+              {/* CAST */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">CAST</summary>
 
@@ -499,6 +514,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* ASCIISTR */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">ASCIISTR</summary>
 
@@ -513,6 +529,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* CONVERT */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">CONVERT</summary>
 
@@ -539,7 +556,7 @@ function Functions() {
                 </div>
               </details>
 
-
+              {/* TO_LOB */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">TO_LOB</summary>
 
@@ -553,6 +570,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* SYS_GUID */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">SYS_GUID</summary>
 
@@ -565,6 +583,7 @@ function Functions() {
                 </div>
               </details>
 
+              {/* TO_CHAR(NUMBER),TO_NCHAR(NUMBER) */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
                   TO_CHAR(NUMBER),TO_NCHAR(NUMBER)
@@ -599,16 +618,18 @@ function Functions() {
                 </div>
               </details>
 
+              {/* UID */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">UID</summary>
 
                 <div className="pl-4">
                   <p>
-                  PostgreSQL의 PG_BACKEND_PID()함수가 UID와 비슷한 역할을 하여 현재 로그인한 유저의 process id를 반환해줍니다.{" "}
+                    PostgreSQL의 PG_BACKEND_PID()함수가 UID와 비슷한 역할을 하여 현재 로그인한 유저의 process id를 반환해줍니다.{" "}
                   </p>
                 </div>
               </details>
 
+              {/* TZ_OFFSET */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">TZ_OFFSET</summary>
 
@@ -620,10 +641,10 @@ function Functions() {
                 </div>
               </details>
 
-              {/* TIMESTAMP/TZ */}
+              {/* TIMESTAMP / TZ */}
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">
-                  TIMESTAMP/TZ
+                  TIMESTAMP / TZ
                 </summary>
 
                 <div className="pl-4">
@@ -634,12 +655,6 @@ function Functions() {
               </details>
 
             </div>
-            <p
-              className="mt-3 text-center sm:text-2xl sm:font-bold tracking-tight text-gray-900
-                         text-3xl font-bold text-center title-font text-gray-900 mb-4"
-            >
-              Functions currently under consideration
-            </p>
           </div>
         </div>
       </section>
