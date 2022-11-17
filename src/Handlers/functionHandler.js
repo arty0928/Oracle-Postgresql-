@@ -244,9 +244,8 @@ export default function oraFunc2pgFunc(Qstr) {
         $$\n\
         select case when p_to_test = 'NaN' then p_default\n\
         else p_to_test\n\
-        end;\n\
-        $$\n\
-        language sql; ${match}`;
+        end;$$\
+        language sql;\n ${match}`;
     });
 
   //MONTHS_BETWEEN
