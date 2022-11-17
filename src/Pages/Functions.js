@@ -38,11 +38,11 @@ function Functions() {
 
               {/* NLS 관련 함수 */}
               <details className="mb-4 bg-gray-200 rounded-md">
-                <summary className="font-semibold leading-7 bg-indigo-200 rounded-md px-4 py-2">
+                <summary className="font-bold leading-7 bg-indigo-300 rounded-md px-4 py-2">
                   NLS 관련 함수
                 </summary>
 
-                <div className="pl-8 px-4">
+                <div className="pl-8 px-4 pt-2">
                   <p>postgresql.conf 설정 파일</p>
                   <div className="m-2 p-3 pl-5 font-bold bg-gray-300 rounded-md">
                     {" "}
@@ -116,12 +116,12 @@ function Functions() {
               </details>
 
               {/* XML 관련 함수 */}
-              <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
-                <summary className="font-semibold leading-7">
+              <details className="mb-4 bg-gray-200 rounded-md">
+                <summary className="font-bold leading-7 bg-indigo-300 rounded-md px-4 py-2">
                   XML 관련 함수
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-8 px-4 pt-2">
                   <ul className="ml-5 leading-7">
                     <li>EXTRACT(XML)</li>
                     <li>INCERTXMLBEFORE</li>
