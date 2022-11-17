@@ -38,7 +38,7 @@ function Functions() {
 
               {/* NLS 관련 함수 */}
               <details className="mb-4 bg-gray-200 rounded-md">
-                <summary className="font-bold leading-7 bg-indigo-300 rounded-md px-4 py-2">
+                <summary className="font-bold leading-7 bg-indigo-300 rounded-md px-4 py-2 ">
                   NLS 관련 함수
                 </summary>
 
