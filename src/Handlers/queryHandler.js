@@ -166,13 +166,13 @@ export default function ora2pg(Qstr) {
         changedList.push(match);
         return "";
       });
-      //removes NOVALIDATE option
-      Qstr = Qstr.replace(/NOVALIDATE/gis, (match) => {
+      //removes ENABLE NOVALIDATE option
+      Qstr = Qstr.replace(/ENABLE\s+NOVALIDATE/gis, (match) => {
         changedList.push(match);
         return "";
       });
-      //removes ENABLE NOVALIDATE option
-      Qstr = Qstr.replace(/ENABLE\s+NOVALIDATE/gis, (match) => {
+      //removes NOVALIDATE option
+      Qstr = Qstr.replace(/NOVALIDATE/gis, (match) => {
         changedList.push(match);
         return "";
       });
