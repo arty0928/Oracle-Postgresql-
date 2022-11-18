@@ -59,6 +59,7 @@ export default function ora2pg(Qstr) {
   //   }
   // );
 
+  // 어떤 페이지에 대한 내용인지 모르겠음.
   // regex positive lookbehind not supported on safari => changing positive lookbehind phrase to if statements
   if (
     Qstr.match(
