@@ -177,7 +177,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">XMLQUERY</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <ul className="ml-5 leading-7">
 
                     {" "}
@@ -197,7 +197,7 @@ function Functions() {
                   XMLSERIALIZE
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     PostgreSQL에서는 XMLSERIALIZE함수를 사용하여 단순히 값을 캐스팅하는 것이 가능합니다.
                     <br></br><br></br> XMLPARSE 및 XMLSERIALIZE를 사용하지 않고 문자열
@@ -217,7 +217,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">UPDATEXML</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>다음 방법으로 xml을 수정할 수 있습니다.</p>
                   <p className="p-4 text-pink-700">
                     UPDATE xdata SET xmlcode='
@@ -249,7 +249,7 @@ function Functions() {
                   TO_NCHAR(datetime), TO_NCHAR(character)
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     Postgresql의 data type에서는 Oracle의 nchar를 지원하지
                     않습니다.<br></br><br></br> nchar에 대응하는 postgresql 의 data
@@ -267,7 +267,7 @@ function Functions() {
                   TO_MULTI_BYTE
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     postgresql에서는 지원하지 않는 함수입니다. Oracle 의 to_multi_byte
                     함수는
@@ -293,7 +293,7 @@ function Functions() {
                   TO_BINARY_FLOAT, TO_BINARY_DOUBLE
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     Postgresql은 binary_float 데이터형을 지원하지 않지만 numeric,
                     float4, float8, char, varchar, text 로 대체 가능합니다.
@@ -307,7 +307,7 @@ function Functions() {
                   REGEXP_SUBSTR / REGEXP_INSTR
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     POSTGRESQL 15에서부터 지원합니다.
                   </p>
@@ -318,7 +318,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">NVL2</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     NVL과 유사하게 coalesce로 변환하면 비슷한 결괏값을 얻을수 있습니다.
                   </p>
@@ -329,7 +329,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">NEW_TIME</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <b>NEW_TIME : ORACLE의 서버 시간대를 변경할 때 사용하는 함수입니다.</b>
                   <p className="p-4 text-pink-700">
                     POSTGRES : ALTER DATABASE 데이터베이스명 SET timezone =
@@ -348,7 +348,7 @@ function Functions() {
                   TRUNC (date)
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <b> date_trunc(Date field, sourcetime_zone)로 변환</b>
                   <p>
                     date_trunc함수는 첫번째 인자로
@@ -392,7 +392,7 @@ function Functions() {
                     <br></br><br></br>서버의 시간대를 변경하거나 조회할 때 사용하므로 DBTIMEZONE을 대체할 수 있습니다.
                   </li>
                 </ul>
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p className="p-4 text-pink-700">
                     SELECT CURRENT_SETTING('TIMEZONE');
                   </p>
@@ -402,7 +402,7 @@ function Functions() {
               {/* <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">COMPOSE</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p></p>
                   <p className="p-4 text-pink-700">
                     select ascii('o'); --111 'o'의 아스키코드<br></br>
@@ -426,7 +426,7 @@ function Functions() {
                   ROUND (date)
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>PostgreSQL에 완벽히 대응하는 함수는 없지만 SUBSTR(time,n,n) 함수를 이용해 비슷하게 구현할 수 있습니다.</p>
                   <p className="p-4 text-pink-700">
                     select substr(sysdate,1,10) as dt from dual;
@@ -463,7 +463,7 @@ function Functions() {
                   LEAST / GREATEST
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     ORACLE의 LESAT와 GREATEST 함수는 NULL값이 있을 시 NULL값을
                     반환하지만, PostgreSQL은 NULL값을 무시합니다.
@@ -477,7 +477,7 @@ function Functions() {
                   LPAD / RPAD
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     ORACLE에서는 한글을 2byte, PostgreSQL에서는 1byte로 계산하여
                     결과 값이 다르게 출력될 수 있습니다.
@@ -491,7 +491,7 @@ function Functions() {
                   FIRST / LAST
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     postgres에서는 first,last 함수를 제공하지 않아 프로시저
                     함수를 추가해야만 동일한 기능을 사용할 수 있습니다.
@@ -503,7 +503,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">CAST</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     CAST 함수를 MULTISET과 함께 사용하는 경우가 있습니다.
                     <br></br>
@@ -518,7 +518,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">ASCIISTR</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     ASCII 이외의 문자는 아래와 같은 방법으로 \xxxx형태로 표현할
                     수 있습니다.
@@ -533,7 +533,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">CONVERT</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <ul className="ml-5 leading-7">
                     <li>
                       <a
@@ -560,7 +560,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">TO_LOB</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     Postgresql은 Oracle의 LONG, LONG RAW data type을 지원하지
                     않습니다.<br></br><br></br>비슷한 data type으로는 long(charater data)
@@ -574,7 +574,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">SYS_GUID</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     ORACLE의 SYS_GUID 함수는 16바이트로 구성된 전역 고유식별자를
                     생성해줍니다.<br></br>이와 유사한 기능을 하는 POSTGRES의
@@ -589,7 +589,7 @@ function Functions() {
                   TO_CHAR(NUMBER),TO_NCHAR(NUMBER)
                 </summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <li><b>TO_NCHAR(NUMBER)</b></li>
                   <p>
                     NCHAR : 고정폭 문자열(1-2바이트)<br></br>
@@ -622,7 +622,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">UID</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>
                     PostgreSQL의 PG_BACKEND_PID()함수가 UID와 비슷한 역할을 하여 현재 로그인한 유저의 process id를 반환해줍니다.{" "}
                   </p>
@@ -633,7 +633,7 @@ function Functions() {
               <details className="mb-4 bg-gray-200 rounded-md py-2 px-4">
                 <summary className="font-semibold leading-7">TZ_OFFSET</summary>
 
-                <div className="pl-4">
+                <div className="pl-4 pb-2">
                   <p>본 사이트의 TZ_OFFSET 변환은 예문</p>
                   <p className="p-4 text-pink-700">‘SELECT TZ_OFFSET('US/Eastern') FROM DUAL;’</p>
                   <p>을 기준으로 작성되어 있습니다. 여러 행을 SELECT하여 에러가 발생할 경우 다른 행들을 구문의 적절한 위치로 옮겨주어야 합니다.{" "}

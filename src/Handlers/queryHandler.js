@@ -28,6 +28,8 @@ export default function ora2pg(Qstr) {
     changedList.push(match);
     return "";
   });
+
+  // REGEXP_LIKE_SYNTAX_ERROR
   //replace regexp_like(arg1, arg2) to arg1 ~ arg2
   Qstr = Qstr.replace(
     /\bREGEXP_LIKE\s*\(\s*(.*),(.*)\s*\)/gis,
@@ -37,6 +39,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
+  // MOD_AS_ERROR
   //replace mod operator to %
   Qstr = Qstr.replace(
     /\(\B\s+((?:\w|\d)+)\s+mod\s+(.+)\s+\)\B/gis,
@@ -46,6 +49,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
+  // TRIGGER_RETURN_STATEMENT 
   //replace return to return :new ;
   // Qstr = Qstr.replace(
   //   /(?<=CREATE\s+(?:OR\s+REPLACE\s+)?(?:EDITIONABLE|NONEDITIONABLE)?TRIGGER.*)RETURN/gis,
@@ -54,6 +58,7 @@ export default function ora2pg(Qstr) {
   //     return "RETURN : new";
   //   }
   // );
+
   // regex positive lookbehind not supported on safari => changing positive lookbehind phrase to if statements
   if (
     Qstr.match(
@@ -68,6 +73,8 @@ export default function ora2pg(Qstr) {
       }
     );
   }
+
+  //END_LABEL_NAME
   //get rid of label name from end clause.
   const end_label_name = (Qstr) => {
     const regex = new RegExp(/\<\<(.+)\>\>/, "igs");
@@ -85,6 +92,7 @@ export default function ora2pg(Qstr) {
   };
   Qstr = end_label_name(Qstr);
 
+  //BLOCK_COMMENT_TERMINATOR
   //adding block_comment_terminator for each block_comment
   const block_comment_terminator = (Qstr) => {
     const regex = new RegExp("\\B\\/\\*+", "igs");
@@ -105,12 +113,16 @@ export default function ora2pg(Qstr) {
     return Qstr;
   };
   Qstr = block_comment_terminator(Qstr);
+
+  // CASE_STATEMENT_ALIAS
   //Adds AS for EDB Postgres Advanced Server reserved keyword CASE when used in CASE Expressions
   Qstr = Qstr.replace(/CASE.*?END\s+CASE/gis, (match) => {
     changedList.push(match);
     match = match.replace(/END\s+CASE/gis, "END AS CASE");
     return match;
   });
+
+  // GENERATED_IDENTITY_CACHED
   //replace some generated_identity_cached syntax.
   const generated_identity_cached = (Qstr) => {
     if (
@@ -143,6 +155,7 @@ export default function ora2pg(Qstr) {
   };
   Qstr = generated_identity_cached(Qstr);
 
+  // USING_INDEX_ENABLE_NOVALIDATE
   //removes USING INDEX ENABLE and NOVALIDATE clauses.
   const using_index_enable = (Qstr) => {
     //if the query contains CONSTRAINT then ...
@@ -167,7 +180,7 @@ export default function ora2pg(Qstr) {
   };
   Qstr = using_index_enable(Qstr);
 
-  //
+  // ENABLE_ROW_MOVEMENT
   const enable_row_movement = (Qstr) => {
     //if query contains create or alter table..
     if (Qstr.match(/(CREATE|ALTER)\s+(?:.*)?TABLE/gis)) {
@@ -181,6 +194,7 @@ export default function ora2pg(Qstr) {
   };
   Qstr = enable_row_movement(Qstr);
 
+  // CHAR_IN_SIZE
   //removes CHAR/BYTE from size specification
   Qstr = Qstr.replace(
     /\(\s+[0-9]{0,99999999999}\s+(CHAR|BYTE)\s+\)/,
@@ -193,6 +207,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
+  // FLOAT_PRECISION
   //fix float precision whenever neccessary
   Qstr = Qstr.replace(/FLOAT\(\s+([0-9]{0,3})\s+\)/gi, (match, group1) => {
     if (Number(group1) > 53) {
@@ -201,6 +216,7 @@ export default function ora2pg(Qstr) {
     }
   });
 
+  // ORGANIZATION_INDEX_COMPRESS
   //removes ORGANIZATION_INDEX_COMPLEX or ORGANIZATION_INDEX_NOCOMPRESS
   if (Qstr.match(/CREATE/gi)) {
     Qstr = Qstr.replace(
@@ -212,6 +228,7 @@ export default function ora2pg(Qstr) {
     );
   }
 
+  // FORCE
   //removes the FORCE clause from the CREATE VIEW or CREATE TYPE
   if (Qstr.match(/CREATE\s+.*\s+(VIEW|TYPE)/gis)) {
     Qstr = Qstr.replace(/FORCE\s+(?=(VIEW|TYPE))/gis, (match) => {
@@ -220,6 +237,7 @@ export default function ora2pg(Qstr) {
     });
   }
 
+  // EDITIONABLE
   //remove editionable from the CREATE object in the source DDL
   Qstr = Qstr.replace(/CREATE.*EDITIONABLE/gis, (match) => {
     match = match.replace(/EDITIONABLE/gi, (match) => {
@@ -229,6 +247,7 @@ export default function ora2pg(Qstr) {
     return match;
   });
 
+  // NUMBER_PRECISION
   //replacing * to 38 when used as NUMBER precision
   Qstr = Qstr.replace(/NUMBER\(\s+\*/gis, (match) => {
     match = match.replace(/\*/gis, (matching) => {
@@ -238,18 +257,21 @@ export default function ora2pg(Qstr) {
     return match;
   });
 
+  // UROWID_SYNTAX_ERROR
   //replace UROWID to VARCHAR
   Qstr = Qstr.replace(/UROWID/gis, (match) => {
     changedList.push(match);
     return "VARCHAR";
   });
 
+  // NCLOB_SYNTAX_ERROR
   //replace NCLOB to CLOB
   Qstr = Qstr.replace(/NCLOB/gis, (match) => {
     changedList.push(match);
     return "CLOB";
   });
 
+  // WITH_READ_ONLY_SYNTAX_ERROR
   //Removes the WITH READ ONLY clause from the CREATE VIEW in the source DDL
   if (Qstr.match(/CREATE\s+.*\s+VIEW/gis)) {
     Qstr = Qstr.replace(/WITH\s+READ\s+ONLY/gis, (match) => {
@@ -258,6 +280,7 @@ export default function ora2pg(Qstr) {
     });
   }
 
+  // CREATE_SEQUENCE_CACHED
   //if query includes CREATE SEQUENCE CACHED...
   if (Qstr.match(/CREATE\s+SEQUENCE.*CACHE/gis)) {
     Qstr = Qstr.replace(
@@ -269,6 +292,7 @@ export default function ora2pg(Qstr) {
     );
   }
 
+  // CREATE_SEQUENCE_NO_CACHE
   //if query includes CREATE SEQUENCE NOCACHED...
   if (Qstr.match(/CREATE\s+SEQUENCE.*NOCACHE/gis)) {
     Qstr = Qstr.replace(
@@ -280,6 +304,7 @@ export default function ora2pg(Qstr) {
     );
   }
 
+  // NOCACHE_SEQUENCE
   //remove nocache from CREATE SEQUENCE CLAUSE
   Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*NOCACHE/gis, (match) => {
     match = match.replace(/NOCACHE/gis, (matching) => {
@@ -289,6 +314,7 @@ export default function ora2pg(Qstr) {
     return match;
   });
 
+  // NOPARTITION_SEQUENCE
   //removing NOPARTITION option from the create sequence DDL
   Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*NOPARTITION/gis, (match) => {
     match = match.replace(/NOPARTITION/gis, (matching) => {
@@ -298,6 +324,7 @@ export default function ora2pg(Qstr) {
     return match;
   });
 
+  // NOKEEP_SEQUENCE
   //removing NOKEEP option from the create sequence DDL
   Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*(NO)?KEEP/gis, (match) => {
     match = match.replace(/(NO)?KEEP/gis, (matching) => {
@@ -307,6 +334,7 @@ export default function ora2pg(Qstr) {
     return match;
   });
 
+  // NOSCALE_SEQUENCE
   //removing NOSCALE option from the create sequence DDL
   Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*(NO)?SCALE/gis, (match) => {
     match = match.replace(/(NO)?SCALE/gis, (matching) => {
@@ -316,6 +344,7 @@ export default function ora2pg(Qstr) {
     return match;
   });
 
+  // SESSION_GLOBAL_SEQUENCE
   //removing SESSION option from the create sequence DDL
   Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*(SESSION|GLOBAL)/gis, (match) => {
     match = match.replace(/(SESSION|GLOBAL)/gis, (matching) => {
@@ -327,6 +356,7 @@ export default function ora2pg(Qstr) {
 
   //Translates Oracle's ALTER TABLE statement for adding NOT NULL constraint to compatible syntax
 
+  // REFERENCING_IN_TRIGGER
   //if query includes DDL with TRIGGER...REFERENCING...
   if (Qstr.match(/TRIGGER.*?REFERENCING/gis)) {
     //replace OLD AS [alias to be matched] to old
@@ -360,18 +390,21 @@ export default function ora2pg(Qstr) {
     }
   }
 
+  // BITMAP_INDEX
   //replace BITMAP INDEX to INDEX
   Qstr = Qstr.replace(/BITMAP\s+INDEX/gis, (match) => {
     changedList.push(match);
     return "INDEX";
   });
 
+  // NLS_CALENDAR_GREGORIAN
   //Removes NLS_CALENDAR=GREGORIAN option from the table DDL
   Qstr = Qstr.replace(/,\s+'NLS_CALENDAR=(\w+)'/gis, (match) => {
     changedList.push(match);
     return "";
   });
 
+  // INDEX_ON_PARTITIONS
   //remove LOCAL and PARTITION CLAUSE in creat or alter index.
   Qstr = Qstr.replace(
     /(?:CREATE|ALTER)\s+(?:UNIQUE\s+|BITMAP\s+|MULTIVALUE\s+)?INDEX.*LOCAL(?:\(.*\))?/gis,
@@ -384,6 +417,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
+  // NULL_IN_TYPES
   //removes NULL from attributes of user defined types.
   // Qstr = Qstr.replace(
   //   /(?<=CREATE\s+(?:OR\s+REPLACE\s+)?TYPE.*?)\(.*\)/gis,
