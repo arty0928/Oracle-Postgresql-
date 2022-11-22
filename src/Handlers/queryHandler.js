@@ -336,7 +336,6 @@ export default function ora2pg(Qstr) {
   });
 
   //Removes SCALE from the create sequence DDL statement.
- 
   Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*?SCALE\s+(NO)?EXTEND/gis, (match) => {
     match = match.replace(/(NO)?EXTEND/gis, (matching) => {
       changedList.push(matching);
@@ -460,6 +459,7 @@ export default function ora2pg(Qstr) {
     changedList.push(match);
     return "REAL";
   });
+
   //transforms BINARY_DOUBLE to DOUBLE PRECISION
   // Qstr = Qstr.replace(/(?<=\(\s+.*)BINARY_DOUBLE(?=.*\))/gis, (match) => {
   //   changedList.push(match);
@@ -469,6 +469,7 @@ export default function ora2pg(Qstr) {
     changedList.push(match);
     return "DOUBLE_PRECISION";
   });
+
   //transforms TIMESTAMP WITH LOCAL TIME ZONE to TIMESTAMP WITH TIME ZONE by removing LOCAL keyword.
   Qstr = Qstr.replace(
     /TIMESTAMP\s+(\(.*\)\s+)?WITH\s+LOCAL\s+TIME\s+ZONE/gis,
@@ -600,6 +601,7 @@ export default function ora2pg(Qstr) {
       return match;
     }
   );
+
   //Removes unsupported compress/nocompress options from CREATE INDEX statement.
   // Qstr = Qstr.replace(
   //   /(?<=CREATE(?:\s+UNIQUE|\s+BITMAP|\s+MULTIVALUE)?\s+INDEX.*)(NO)?COMPRESS+((?:\s+\d+)|(?:\s+ADVANCED\s+LOW)|(?:\s+ADVANCED\s+HIGH))?/gis,
@@ -765,8 +767,7 @@ export default function ora2pg(Qstr) {
     (match) => {
       changedList.push(match);
       return "";
-    }
-  );
+    });
 
   //Removes "NOT NULL DISABLE" clause from the source DDL for tables.
   Qstr = Qstr.replace(
@@ -781,12 +782,9 @@ export default function ora2pg(Qstr) {
     (match) => {
       changedList.push(match);
       match = match.replace(
-        /CONSTRAINT.*?(UNIQUE|PRIMARY KEY|CHECK(.*?)?\(.*?\))\s+DISABLE/gi,
-        ""
-      );
+        /CONSTRAINT.*?(UNIQUE|PRIMARY KEY|CHECK(.*?)?\(.*?\))\s+DISABLE/gi,"");
       return match;
-    }
-  );
+    });
 
   //CHECK_UNIQUE_PRIMARYKEY_DISABLE
   //Removes "CHECK|UNIQUE|PRIMARY KEY parameters DISABLE" clause from the source DDL for tables.
@@ -822,8 +820,7 @@ export default function ora2pg(Qstr) {
       changedList.push(match);
       match = match.replace(/USING\s*INDEX\s*REVERSE/, "");
       return match;
-    }
-  );
+    });
 
   //Converts SIMPLE_INTEGER data type to INTEGER type
   Qstr = Qstr.replace(/SIMPLE_INTEGER/gs, (match) => {
@@ -868,8 +865,7 @@ export default function ora2pg(Qstr) {
     (match) => {
       changedList.push(match);
       return "";
-    }
-  );
+    });
 
   //Replaces VIRTUAL keyword with STORED in TABLE definition
 
@@ -897,10 +893,12 @@ export default function ora2pg(Qstr) {
     changedList.push(match);
     return ">=";
   });
+
   Qstr = Qstr.replace(/!\s+=/gis, (match) => {
     changedList.push(match);
     return "!=";
   });
+
   Qstr = Qstr.replace(/<\s+>/gis, (match) => {
     changedList.push(match);
     return "<>";
@@ -923,8 +921,7 @@ export default function ora2pg(Qstr) {
       changedList.push(match);
       match = match.replace(/\s+\S*?(?=\.)./gi, " ");
       return match;
-    }
-  );
+    });
 
   //Possibly corresponding PostgreSQL variables: http://www.postgresql.org/docs/current/static/functions-info.html
   //replace sys context
@@ -933,57 +930,56 @@ export default function ora2pg(Qstr) {
     (match) => {
       changedList.push(match);
       return "session_user";
-    }
-  );
+    });
+
   Qstr = Qstr.replace(
     /SYS_CONTEXT\s*\(\s*'USERENV'\s*,\s*'BG_JOB_ID'\s*\)/gis,
     (match) => {
       changedList.push(match);
       return "pg_back_pid()";
-    }
-  );
+    });
+
   Qstr = Qstr.replace(
     /SYS_CONTEXT\s*\(\s*'USERENV'\s*,\s*'(CLIENT_IDENTIFIER|PROXY_USER)'\s*\)/gis,
     (match) => {
       changedList.push(match);
       return "session_user";
-    }
-  );
+    });
+
   Qstr = Qstr.replace(
     /SYS_CONTEXT\s*\(\s*'USERENV'\s*,\s*'CURRENT_SCHEMA'\s*\)/gis,
     (match) => {
       changedList.push(match);
       return "current_schema";
-    }
-  );
+    });
+
   Qstr = Qstr.replace(
     /SYS_CONTEXT\s*\(\s*'USERENV'\s*,\s*'CURRENT_USER'\s*\)/gis,
     (match) => {
       changedList.push(match);
       return "current_user";
-    }
-  );
+    });
+
   Qstr = Qstr.replace(
     /SYS_CONTEXT\s*\(\s*'USERENV'\s*,\s*'(DB_NAME|DB_UNIQUE_NAME)'\s*\)/gis,
     (match) => {
       changedList.push(match);
       return "current_database";
-    }
-  );
+    });
+
   Qstr = Qstr.replace(
     /SYS_CONTEXT\s*\(\s*'USERENV'\s*,\s*'(HOST|IP_ADDRESS)'\s*\)/gis,
     (match) => {
       changedList.push(match);
       return "inet_client_addr()";
-    }
-  );
+    });
+
   Qstr = Qstr.replace(
     /SYS_CONTEXT\s*\(\s*'USERENV'\s*,\s*'SERVER_HOST'\s*\)/gis,
     (match) => {
       changedList.push(match);
       return "inet_server_addr()";
-    }
-  );
+    });
 
   //Removes the CACHE keyword from CREATE TABLE statements to make them compatible with EDB Postgres Advanced Server.
   
@@ -994,8 +990,7 @@ export default function ora2pg(Qstr) {
       match = match.replace(/.*(?=\.)/gis, "");
       match = match.replace(/\./gis, " ");
       return match;
-    }
-  );
+    });
 
   //CACHE_TABLE
   Qstr = Qstr.replace(/CREATE\s+TABLE.*/gis, (match) => {
