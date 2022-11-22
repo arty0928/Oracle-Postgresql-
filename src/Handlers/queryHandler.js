@@ -49,7 +49,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  // TRIGGER_RETURN_STATEMENT 
+  // TRIGGER_RETURN_STATEMENT
   //replace return to return :new ;
   // Qstr = Qstr.replace(
   //   /(?<=CREATE\s+(?:OR\s+REPLACE\s+)?(?:EDITIONABLE|NONEDITIONABLE)?TRIGGER.*)RETURN/gis,
@@ -504,11 +504,11 @@ export default function ora2pg(Qstr) {
     });
   }
 
-  ////PARTITION 뒤에 오는 'TIMESTAMP'라는 단어를 소거함... 조건을 이렇게 줘도 괜찮을지 모르겠네요
-  // Qstr = Qstr.replace(/(?<=PARTITION+(?:.*))\bTIMESTAMP+/gis, (match) => {
-  //   changedList.push(match);
-  //   return "";
-  // });
+  //PARTITION 뒤에 오는 'TIMESTAMP'라는 단어를 소거함... 조건을 이렇게 줘도 괜찮을지 모르겠네요
+  Qstr = Qstr.replace(/(?<=PARTITION+(?:.*))\bTIMESTAMP+/gis, (match) => {
+    changedList.push(match);
+    return "";
+  });
 
   //removes YEAR precision from INTERVAL type in table definition.
   Qstr = Qstr.replace(
@@ -541,6 +541,12 @@ export default function ora2pg(Qstr) {
   });
 
   //Removes PARTITION from the create sequence DDL statement.
+
+  Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*/gis, (match) => {
+    changedList.push(match);
+    match = match.replace(/PARTITION.*/gis, "");
+    return match;
+  });
 
   //Transforms OLDCHAR2 data type to VARCHAR
   // Qstr = Qstr.replace(/(?<=\(\s+.*)OLDCHAR2(?=.*\))/gis, (match) => {
@@ -613,12 +619,6 @@ export default function ora2pg(Qstr) {
   //   }
   // );
 
-  Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*?SCALE\s+(NO)?EXTEND/gis, (match) => {
-    changedList.push(match);
-    match = match.replace(/(NO)?EXTEND/gi, "");
-    return match;
-  });
-
   //Removes REVERSE clause from index DDL statement.
   // Qstr = Qstr.replace(
   //   /(?<=CREATE\s+(?:UNIQUE\s+|BITMAP\s+)?INDEX\s+.*ON.*)REVERSE/gis,
@@ -687,6 +687,12 @@ export default function ora2pg(Qstr) {
     return "";
   });
 
+  //END Label is a reserved word, then END Label is enclosed with double quotes.
+  Qstr = Qstr.replace(/end array/gis, (match) => {
+    changedList.push(match);
+    return 'end "array"';
+  });
+
   //Removes Supplemental logging clause from the table DDL
   Qstr = Qstr.replace(
     /SUPPLEMENTAL LOG (?:(?:GROUP.*\(.*\)\s+(?:ALWAYS)?)|(?:DATA.*\(.*\)\s+COLUMNS))/gis,
@@ -752,6 +758,10 @@ export default function ora2pg(Qstr) {
   );
 
   //Removes "NOT NULL DISABLE" clause from the source DDL for tables.
+  Qstr = Qstr.replace(/(not\s+null)+\s+disable+/gis, (match) => {
+    changedList.push(match);
+    return "";
+  });
 
   //Removes "CONSTRAINT constraint_name CHECK|UNIQUE|PRIMARY KEY parameters DISABLE" clause from the source DDL for tables.
   Qstr = Qstr.replace(
@@ -814,6 +824,11 @@ export default function ora2pg(Qstr) {
   });
 
   //Removes NOT NULL clause from VARRAY collection type declaration within PL/SQL object.
+  Qstr = Qstr.replace(/VARRAY\S.*/gis, (match) => {
+    changedList.push(match);
+    match = match.replace(/NOT\s+NULL/gis, "");
+    return match;
+  });
 
   //Removes NOT NULL clause from nested table type declaration within PL/SQL object.
 
@@ -827,10 +842,33 @@ export default function ora2pg(Qstr) {
     }
   );
   //Converts ARRAY to VARRAY collection type declaration within PL/SQL object
+  Qstr = Qstr.replace(/ARRAY/gis, (match) => {
+    changedList.push(match);
+    return "VARRAY";
+  });
 
   //Removes STORE IN (tablespace) clause from PARTITIONED TABLE that has a PARTITION BY HASH or PARTITION BY RANGE syntax
+  Qstr = Qstr.replace(
+    /(?<=CREATE\s+(?:(?:(?:GLOBAL\s+|PRIVATE\s+)TEMPORARY\s+)|(?:SHARED\s+)|(?:DUPLICATED\s+)|(?:(?:IMMUTABLE\s+)?BLOCKCHAIN\s+))?TABLE.*\(.*\)\s+(?:PARTITION BY RANGE.*|PARTITION BY HASH.*))STORE\s+IN\s+\(\s+.*\s+\)/gis,
+    (match) => {
+      changedList.push(match);
+      return "";
+    }
+  );
+
+  //Removes RESULT_CACHE from the DDL statement for TYPE, TYPE BODY, PACKAGE, PACKAGE BODY, and FUNCTION objects
+  Qstr = Qstr.replace(/(FUNCTION|TYPE|PACKAGE)\s.*/gis, (match) => {
+    changedList.push(match);
+    match = match.replace(/RESULT_CACHE/gim, "");
+    return match;
+  });
 
   //Replaces VIRTUAL keyword with STORED in TABLE definition
+  // Qstr = Qstr.replace(/TABLE/gis, (match) => {
+  //   changedList.push(match);
+  //   match = match.replace(/VIRTUAL/gis, "STORED");
+  //   return match;
+  // });
 
   //Removes empty spaces from operators i.e. < =, > =, ! = or < >
   // Qstr = Qstr.replace(
@@ -939,6 +977,11 @@ export default function ora2pg(Qstr) {
   );
 
   //Removes the CACHE keyword from CREATE TABLE statements to make them compatible with EDB Postgres Advanced Server.
+  Qstr = Qstr.replace(/CREATE\s+TABLE.*/gis, (match) => {
+    changedList.push(match);
+    match = match.replace(/CACHE/gis, "");
+    return match;
+  });
 
   //Removes ALTER TRIGGER <triggerName> ENABLE statement or Transforms ALTER TRIGGER <triggerName> DISABLE statements to EDB Postgres Advanced Server compatible syntax
 
