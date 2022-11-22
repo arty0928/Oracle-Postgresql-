@@ -49,7 +49,7 @@ export default function ora2pg(Qstr) {
     }
   );
 
-  // TRIGGER_RETURN_STATEMENT 
+  // TRIGGER_RETURN_STATEMENT
   //replace return to return :new ;
   // Qstr = Qstr.replace(
   //   /(?<=CREATE\s+(?:OR\s+REPLACE\s+)?(?:EDITIONABLE|NONEDITIONABLE)?TRIGGER.*)RETURN/gis,
@@ -59,21 +59,15 @@ export default function ora2pg(Qstr) {
   //   }
   // );
 
-  // 어떤 페이지에 대한 내용인지 모르겠음.
   // regex positive lookbehind not supported on safari => changing positive lookbehind phrase to if statements
-  if (
-    Qstr.match(
-      /CREATE\s+(?:OR\s+REPLACE\s+)?(?:EDITIONABLE|NONEDITIONABLE)?TRIGGER.*?RETURN/gis
-    )
-  ) {
-    Qstr = Qstr.replace(
-      /CREATE\s+(?:OR\s+REPLACE\s+)?(?:EDITIONABLE|NONEDITIONABLE)?TRIGGER.*?RETURN/gis,
-      (match) => {
-        changedList.push(match);
-        return "RETURN : new";
-      }
-    );
-  }
+  Qstr = Qstr.replace(
+    /CREATE\s+(?:OR\s+REPLACE\s+)?(?:EDITIONABLE|NONEDITIONABLE)?TRIGGER.*?RETURN/gis,
+    (match) => {
+      changedList.push(match);
+      match = match.replace(/RETURN/, "RETURN : new");
+      return match;
+    }
+  );
 
   //END_LABEL_NAME
   //get rid of label name from end clause.
@@ -81,13 +75,12 @@ export default function ora2pg(Qstr) {
     const regex = new RegExp(/\<\<(.+)\>\>/, "igs");
     if (Qstr.match(regex)) {
       const labelName = Qstr.match(regex)[0].split("<")[2].split(">")[0];
-      // console.log(`labelName : ${labelName}`);
+
       const reg = new RegExp("\\bEND" + "\\s+" + labelName, "igs");
       Qstr = Qstr.replace(reg, (match) => {
         changedList.push(match);
         return "END";
       });
-      // console.log(`str after replacing : ${str}`);
     }
     return Qstr;
   };
@@ -166,13 +159,13 @@ export default function ora2pg(Qstr) {
         changedList.push(match);
         return "";
       });
-      //removes NOVALIDATE option
-      Qstr = Qstr.replace(/NOVALIDATE/gis, (match) => {
+      //removes ENABLE NOVALIDATE option
+      Qstr = Qstr.replace(/ENABLE\s+NOVALIDATE/gis, (match) => {
         changedList.push(match);
         return "";
       });
-      //removes ENABLE NOVALIDATE option
-      Qstr = Qstr.replace(/ENABLE\s+NOVALIDATE/gis, (match) => {
+      //removes NOVALIDATE option
+      Qstr = Qstr.replace(/NOVALIDATE/gis, (match) => {
         changedList.push(match);
         return "";
       });
@@ -332,6 +325,13 @@ export default function ora2pg(Qstr) {
       changedList.push(matching);
       return "";
     });
+    return match;
+  });
+
+  //Removes SCALE from the create sequence DDL statement.
+  Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*?SCALE\s+(NO)?EXTEND/gis, (match) => {
+    changedList.push(match);
+    match = match.replace(/(NO)?EXTEND/gi, "");
     return match;
   });
 
@@ -612,12 +612,6 @@ export default function ora2pg(Qstr) {
   //     return "";
   //   }
   // );
-
-  Qstr = Qstr.replace(/CREATE\s+SEQUENCE.*?SCALE\s+(NO)?EXTEND/gis, (match) => {
-    changedList.push(match);
-    match = match.replace(/(NO)?EXTEND/gi, "");
-    return match;
-  });
 
   //Removes REVERSE clause from index DDL statement.
   // Qstr = Qstr.replace(
