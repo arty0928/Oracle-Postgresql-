@@ -505,9 +505,10 @@ export default function ora2pg(Qstr) {
   }
 
   //PARTITION 뒤에 오는 'TIMESTAMP'라는 단어를 소거함... 조건을 이렇게 줘도 괜찮을지 모르겠네요
-  Qstr = Qstr.replace(/(?<=PARTITION+(?:.*))\bTIMESTAMP+/gis, (match) => {
+  Qstr = Qstr.replace(/PARTITION.*?TIMESTAMP/gis, (match) => {
     changedList.push(match);
-    return "";
+    match = match.replace(/TIMESTAMP/gis, "");
+    return match;
   });
 
   //removes YEAR precision from INTERVAL type in table definition.
