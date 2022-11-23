@@ -849,11 +849,21 @@ export default function ora2pg(Qstr) {
   });
 
   //Removes STORE IN (tablespace) clause from PARTITIONED TABLE that has a PARTITION BY HASH or PARTITION BY RANGE syntax
+  // Qstr = Qstr.replace(
+  //   /(?<=CREATE\s+(?:(?:(?:GLOBAL\s+|PRIVATE\s+)TEMPORARY\s+)|(?:SHARED\s+)|(?:DUPLICATED\s+)|(?:(?:IMMUTABLE\s+)?BLOCKCHAIN\s+))?TABLE.*\(.*\)\s+(?:PARTITION BY RANGE.*|PARTITION BY HASH.*))STORE\s+IN\s+\(\s+.*s\s+\)/gis,
+  //   (match) => {
+  //     changedList.push(match);
+  //     match = match.replace(/STORE\s+IN\s+\(.*\)/gim, "");
+  //     return "";
+  //   }
+  // );
+
   Qstr = Qstr.replace(
-    /(?<=CREATE\s+(?:(?:(?:GLOBAL\s+|PRIVATE\s+)TEMPORARY\s+)|(?:SHARED\s+)|(?:DUPLICATED\s+)|(?:(?:IMMUTABLE\s+)?BLOCKCHAIN\s+))?TABLE.*\(.*\)\s+(?:PARTITION BY RANGE.*|PARTITION BY HASH.*))STORE\s+IN\s+\(\s+.*\s+\)/gis,
+    /CREATE\s+TABLE\s.*\(.*\)\s+(?:PARTITION BY RANGE.*|PARTITION BY HASH.*)STORE\s+IN\s+\(.*\)/gis,
     (match) => {
       changedList.push(match);
-      return "";
+      match = match.replace(/STORE\s+IN\s+\(.*\)/gim, "");
+      return match;
     }
   );
 
