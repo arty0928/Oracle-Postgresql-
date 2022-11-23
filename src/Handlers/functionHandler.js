@@ -436,8 +436,6 @@ export default function oraFunc2pgFunc(Qstr) {
     changedList.push("WELLFORMED")
   };
 
-
-
   Qstr = Qstr.replace(/ *;/igs, ";\n")
 
   changedList = [...new Set(changedList)];
