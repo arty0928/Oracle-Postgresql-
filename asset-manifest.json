@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Oracle-Postgresql-/static/css/main.cdd30c14.css",
-    "main.js": "/Oracle-Postgresql-/static/js/main.90ddc882.js",
+    "main.js": "/Oracle-Postgresql-/static/js/main.3428dc1f.js",
     "static/js/787.4050217e.chunk.js": "/Oracle-Postgresql-/static/js/787.4050217e.chunk.js",
     "index.html": "/Oracle-Postgresql-/index.html",
     "main.cdd30c14.css.map": "/Oracle-Postgresql-/static/css/main.cdd30c14.css.map",
-    "main.90ddc882.js.map": "/Oracle-Postgresql-/static/js/main.90ddc882.js.map",
+    "main.3428dc1f.js.map": "/Oracle-Postgresql-/static/js/main.3428dc1f.js.map",
     "787.4050217e.chunk.js.map": "/Oracle-Postgresql-/static/js/787.4050217e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.cdd30c14.css",
-    "static/js/main.90ddc882.js"
+    "static/js/main.3428dc1f.js"
   ]
 }
