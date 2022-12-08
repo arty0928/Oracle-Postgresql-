@@ -1,6 +1,6 @@
 # 쿼리 컨버터
 
-### Oracle to PostgreSQL
+## Oracle to PostgreSQL
 
 오라클의 쿼리문을 포스트그레스 문법으로 변환할 수 있습니다.
 
