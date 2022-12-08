@@ -1,9 +1,21 @@
+# 쿼리 컨버터
+
+`Oracle to PostgreSQL`
+오라클의 쿼리문을 포스트그레스 문법으로 변환할 수 있습니다.
+`npm install` 후 `npm start`를 실행하고, 화면에 보이는 translate 버튼을 통해 변환이 가능합니다.
+새로고침은 Refresh
+변환이 불가능한 쿼리나 함수는 붉은 색 글자로 `Querys`, `Functions` 칸에 표시가 되니 지침 페이지인 Precautions를 참고하여 변환하시면 됩니다.
+
 # To applying tailwindcss
 
 ### $ npm install -D tailwindcss@latest
-### $ npm install -D postcss@latest 
+
+### $ npm install -D postcss@latest
+
 ### $ npm install -D autoprefixer@latest
+
 ### $ npm install -D postcss-loader
+
 https://goldfishdiary.tistory.com/97
 
 # Getting Started with Create React App
